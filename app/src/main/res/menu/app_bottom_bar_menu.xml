@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/bottom_bar_profile"
+        android:title="Profile"
+        android:icon="@drawable/ic_baseline_person_outline_24"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/bottom_bar_overflow"
+        android:icon="@drawable/ic_baseline_tree_24"
+        android:title="Settings"
+        app:showAsAction="ifRoom"/>
+</menu>
