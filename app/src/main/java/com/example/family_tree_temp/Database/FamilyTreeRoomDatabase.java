@@ -16,6 +16,7 @@ import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Models.MedicalHistoryNote;
 import com.example.family_tree_temp.Models.PhoneNumber;
 import com.example.family_tree_temp.Models.City;
+import com.example.family_tree_temp.Models.Zipcode;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -31,6 +32,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
         PhoneNumber.class,
         Email.class,
         City.class,
+        Zipcode.class,
         Address.class
 }, version = 1, exportSchema = false)
 public abstract class FamilyTreeRoomDatabase extends RoomDatabase {
