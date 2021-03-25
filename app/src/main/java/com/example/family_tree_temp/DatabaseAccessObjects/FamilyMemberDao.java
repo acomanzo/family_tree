@@ -15,7 +15,7 @@ import androidx.room.Update;
 public interface FamilyMemberDao {
 
     @Insert
-    void insert(FamilyMember familyMember);
+    long insert(FamilyMember familyMember);
 
     @Query("DELETE FROM FamilyMember")
     void deleteAll();
