@@ -134,7 +134,7 @@ public class FamilyMemberDetailFragment extends Fragment {
 //        town.setText(address.getTownCity());
 //        state.setText(address.getState());
 //        zipcode.setText(address.getZipcode());
-        gender.setText(familyMember.getGender());
+        gender.setText(familyMember.getGenderId());
 
 //        ArrayList<Person> children = person.getChildren();
 //        if (children.size() > 0) {
@@ -160,7 +160,7 @@ public class FamilyMemberDetailFragment extends Fragment {
 
             int id = familyMember.getFamilyMemberId();
 
-            FamilyMember updatedFamilyMember = new FamilyMember(id, updatedFirstName, updatedLastName, updatedGender);
+            FamilyMember updatedFamilyMember = new FamilyMember(id, updatedFirstName, updatedLastName, 0);
             mFamilyMemberViewModel.update(updatedFamilyMember);
         });
 

@@ -12,7 +12,7 @@ public class Person implements Parcelable {
     private int familyMemberId;
     private String firstName;
     private String lastName;
-    private String gender;
+    private int genderId;
 
     private String age;
 
@@ -23,16 +23,16 @@ public class Person implements Parcelable {
     private int futureRelativePosition;
     private String futureRelativeRelationship;
 
-    public Person(@NonNull String firstName, @NonNull String lastName, @NonNull String age, @NonNull String gender) {
-        this(firstName, lastName, age, gender, -1, null);
+    public Person(@NonNull String firstName, @NonNull String lastName, @NonNull String age, @NonNull int genderId) {
+        this(firstName, lastName, age, genderId, -1, null);
     }
 
-    public Person(@NonNull String firstName, @NonNull String lastName, @NonNull String age, @NonNull String gender, int futureRelativePosition, String futureRelativeRelationship) {
+    public Person(@NonNull String firstName, @NonNull String lastName, @NonNull String age, @NonNull int genderId, int futureRelativePosition, String futureRelativeRelationship) {
         children = new ArrayList<>();
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
-        this.gender = gender;
+        this.genderId = genderId;
 
         this.futureRelativePosition = futureRelativePosition;
         this.futureRelativeRelationship = futureRelativeRelationship;
@@ -138,8 +138,8 @@ public class Person implements Parcelable {
         return lastName;
     }
 
-    public String getGender() {
-        return gender;
+    public int getGenderId() {
+        return genderId;
     }
 
     public String getAge() {

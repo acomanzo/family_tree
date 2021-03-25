@@ -14,6 +14,7 @@ import com.example.family_tree_temp.Models.ContactInformation;
 import com.example.family_tree_temp.Models.Diagnosis;
 import com.example.family_tree_temp.Models.Email;
 import com.example.family_tree_temp.Models.FamilyMember;
+import com.example.family_tree_temp.Models.Gender;
 import com.example.family_tree_temp.Models.MedicalHistory;
 import com.example.family_tree_temp.Models.PhoneNumber;
 import com.example.family_tree_temp.Models.City;
@@ -25,6 +26,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 @Database(entities = {
+        Gender.class,
         FamilyMember.class,
         ContactInformation.class,
         PhoneNumber.class,

@@ -129,7 +129,7 @@ public class PersonAdaptor extends RecyclerView.Adapter<PersonAdaptor.MyViewHold
 //            configureTextEdit(state, "state");
 //            zipcode.setText(address.getZipcode());
 //            configureTextEdit(zipcode, "zipcode");
-            gender.setText(person.getGender());
+            gender.setText(person.getGenderId());
 
             ArrayList<Person> children = person.getChildren();
             if (children.size() > 0) {

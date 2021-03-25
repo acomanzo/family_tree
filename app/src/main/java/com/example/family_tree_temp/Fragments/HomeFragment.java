@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 Person person = (Person) result.get("newPersonKey");
                 //((PersonAdaptor) mAdaptor).add(person);
-                FamilyMember familyMember = new FamilyMember(person.getFirstName(), person.getLastName(), person.getGender());
+                FamilyMember familyMember = new FamilyMember(person.getFirstName(), person.getLastName(), person.getGenderId());
                 mFamilyMemberViewModel.insert(familyMember);
             }
         });
@@ -131,8 +131,8 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
                 for (FamilyMember familyMember : familyMembers) {
                     String firstName = familyMember.getFirstName();
                     String lastName = familyMember.getLastName();
-                    String gender = familyMember.getGender();
-                    people.add(new Person(firstName, lastName, "0", gender));
+                    int genderId = familyMember.getGenderId();
+                    people.add(new Person(firstName, lastName, "0", genderId));
                 }
                 mAdaptor.setDataset(people);
             }

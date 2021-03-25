@@ -3,10 +3,16 @@ package com.example.family_tree_temp.Models;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "FamilyMember")
+@Entity(tableName = "FamilyMember", foreignKeys = {@ForeignKey(
+        entity = Gender.class,
+        parentColumns = "genderId",
+        childColumns = "genderId",
+        onDelete = ForeignKey.CASCADE
+)})
 public class FamilyMember {
 
     @PrimaryKey(autoGenerate = true)
@@ -19,20 +25,20 @@ public class FamilyMember {
     private String lastName;
 
     @NonNull
-    private String gender;
+    private int genderId;
 
-    public FamilyMember(@NonNull String firstName, @NonNull String lastName, @NonNull String gender) {
+    public FamilyMember(@NonNull String firstName, @NonNull String lastName, @NonNull int genderId) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.gender = gender;
+        this.genderId = genderId;
     }
 
     @Ignore
-    public FamilyMember(int familyMemberId, @NonNull String firstName, @NonNull String lastName, @NonNull String gender) {
+    public FamilyMember(int familyMemberId, @NonNull String firstName, @NonNull String lastName, @NonNull int genderId) {
         this.familyMemberId = familyMemberId;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.gender = gender;
+        this.genderId = genderId;
     }
 
     public int getFamilyMemberId() {
@@ -47,8 +53,8 @@ public class FamilyMember {
         return lastName;
     }
 
-    public String getGender() {
-        return gender;
+    public int getGenderId() {
+        return genderId;
     }
 
     public void setFamilyMemberId(int familyMemberId) {
