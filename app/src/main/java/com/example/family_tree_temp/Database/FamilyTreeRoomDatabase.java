@@ -11,6 +11,7 @@ import com.example.family_tree_temp.DatabaseAccessObjects.MedicalHistoryNoteDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.PhoneNumberDao;
 import com.example.family_tree_temp.Models.Address;
 import com.example.family_tree_temp.Models.ContactInformation;
+import com.example.family_tree_temp.Models.Diagnosis;
 import com.example.family_tree_temp.Models.Email;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Models.MedicalHistory;
@@ -25,14 +26,15 @@ import androidx.room.RoomDatabase;
 
 @Database(entities = {
         FamilyMember.class,
-        MedicalHistory.class,
         ContactInformation.class,
         PhoneNumber.class,
         Email.class,
         City.class,
         State.class,
         Zipcode.class,
-        Address.class
+        Address.class,
+        Diagnosis.class,
+        MedicalHistory.class,
 }, version = 1, exportSchema = false)
 public abstract class FamilyTreeRoomDatabase extends RoomDatabase {
 

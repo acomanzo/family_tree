@@ -10,6 +10,11 @@ import androidx.room.PrimaryKey;
         parentColumns = "familyMemberId",
         childColumns = "familyMemberId",
         onDelete = ForeignKey.CASCADE
+), @ForeignKey(
+        entity = Diagnosis.class,
+        parentColumns = "diagnosisId",
+        childColumns = "diagnosisId",
+        onDelete = ForeignKey.CASCADE
 )})
 public class MedicalHistory {
 
@@ -17,20 +22,22 @@ public class MedicalHistory {
     @NonNull
     private int medicalHistoryNoteId;
 
-    @NonNull
     private int date;
 
     @NonNull
-    private String diagnosis;
+    private int diagnosisId;
 
     @NonNull
     private int familyMemberId;
 
-    public MedicalHistory(@NonNull int medicalHistoryNoteId, @NonNull int date, @NonNull String diagnosis, @NonNull int familyMemberId) {
+    private String note;
+
+    public MedicalHistory(@NonNull int medicalHistoryNoteId, int date, @NonNull int diagnosisId, @NonNull int familyMemberId, String note) {
         this.medicalHistoryNoteId =  medicalHistoryNoteId;
         this.date = date;
-        this.diagnosis = diagnosis;
+        this.diagnosisId = diagnosisId;
         this.familyMemberId = familyMemberId;
+        this.note = note;
     }
 
     public int getMedicalHistoryNoteId() {
@@ -41,11 +48,15 @@ public class MedicalHistory {
         return date;
     }
 
-    public String getDiagnosis() {
-        return diagnosis;
+    public int getDiagnosisId() {
+        return diagnosisId;
     }
 
     public int getFamilyMemberId() {
         return familyMemberId;
+    }
+
+    public String getNote() {
+        return note;
     }
 }
