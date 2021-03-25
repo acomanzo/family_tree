@@ -16,6 +16,11 @@ import androidx.room.PrimaryKey;
         childColumns = "cityId",
         onDelete = ForeignKey.CASCADE
 ), @ForeignKey(
+        entity = State.class,
+        parentColumns = "stateId",
+        childColumns = "stateId",
+        onDelete = ForeignKey.CASCADE
+), @ForeignKey(
         entity = Zipcode.class,
         parentColumns = "zipcodeId",
         childColumns = "zipcodeId",

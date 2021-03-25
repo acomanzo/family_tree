@@ -16,6 +16,7 @@ import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Models.MedicalHistoryNote;
 import com.example.family_tree_temp.Models.PhoneNumber;
 import com.example.family_tree_temp.Models.City;
+import com.example.family_tree_temp.Models.State;
 import com.example.family_tree_temp.Models.Zipcode;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
         PhoneNumber.class,
         Email.class,
         City.class,
+        State.class,
         Zipcode.class,
         Address.class
 }, version = 1, exportSchema = false)
