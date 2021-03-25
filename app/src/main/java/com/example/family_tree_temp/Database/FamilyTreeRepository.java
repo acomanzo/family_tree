@@ -4,17 +4,20 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import com.example.family_tree_temp.DatabaseAccessObjects.AddressDao;
+import com.example.family_tree_temp.DatabaseAccessObjects.AncestorDescendantDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.ContactInformationDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.EmailDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.FamilyMemberDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.MedicalHistoryNoteDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.PhoneNumberDao;
 import com.example.family_tree_temp.Models.Address;
+import com.example.family_tree_temp.Models.AncestorDescendant;
 import com.example.family_tree_temp.Models.ContactInformation;
 import com.example.family_tree_temp.Models.Email;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Models.MedicalHistory;
 import com.example.family_tree_temp.Models.PhoneNumber;
+import com.example.family_tree_temp.ViewModels.AncestorDescendantBundle;
 
 import java.util.List;
 
@@ -28,6 +31,7 @@ public class FamilyTreeRepository {
     private PhoneNumberDao mPhoneNumberDao;
     private EmailDao mEmailDao;
     private AddressDao mAddressDao;
+    private AncestorDescendantDao mAncestorDescendantDao;
 
     private LiveData<List<FamilyMember>> mAllFamilyMembers;
     private LiveData<List<MedicalHistory>> mAllMedicalHistoryNotes;
@@ -44,6 +48,7 @@ public class FamilyTreeRepository {
         mPhoneNumberDao = db.phoneNumberDao();
         mEmailDao = db.emailDao();
         mAddressDao = db.addressDao();
+        mAncestorDescendantDao = db.ancestorDescendantDao();
 
         mAllFamilyMembers = mFamilyMemberDao.getAllFamilyMembers();
         mAllMedicalHistoryNotes = mMedicalHistoryNoteDao.getAllMedicalHistoryNotes();
@@ -87,6 +92,10 @@ public class FamilyTreeRepository {
 
     public void deleteFamilyMember(FamilyMember familyMember) {
         new DeleteFamilyMemberAsyncTask(mFamilyMemberDao).execute(familyMember);
+    }
+
+    public void insertDescendant(AncestorDescendantBundle ancestorDescendantBundle) {
+        new InsertDescendantAsyncTask(mAncestorDescendantDao, mFamilyMemberDao).execute(ancestorDescendantBundle);
     }
 
     private static class insertFamilyMemberAsyncTask extends AsyncTask<FamilyMember, Void, Void> {
@@ -197,6 +206,30 @@ public class FamilyTreeRepository {
         @Override
         protected Void doInBackground(final Address... params) {
             mAsyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+
+    private static class InsertDescendantAsyncTask extends AsyncTask<AncestorDescendantBundle, Void, Void> {
+        private AncestorDescendantDao ancestorDescendantDao;
+        private FamilyMemberDao familyMemberDao;
+
+        InsertDescendantAsyncTask(AncestorDescendantDao ancestorDescendantDao, FamilyMemberDao familyMemberDao) {
+            this.ancestorDescendantDao = ancestorDescendantDao;
+            this.familyMemberDao = familyMemberDao;
+        }
+
+        @Override
+        protected Void doInBackground(AncestorDescendantBundle... ancestorDescendantBundles) {
+            AncestorDescendantBundle ancestorDescendantBundle = ancestorDescendantBundles[0];
+            FamilyMember descendant = ancestorDescendantBundle.getDescendant();
+            int ancestorId = ancestorDescendantBundle.getAncestorId();
+            int depth = ancestorDescendantBundle.getDepth();
+
+            int descendantId = (int) familyMemberDao.insert(descendant);
+            AncestorDescendant ancestorDescendant = new AncestorDescendant(ancestorId, descendantId, depth);
+            ancestorDescendantDao.insert(ancestorDescendant);
+
             return null;
         }
     }

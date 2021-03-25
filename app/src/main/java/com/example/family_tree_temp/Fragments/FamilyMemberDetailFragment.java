@@ -43,7 +43,7 @@ public class FamilyMemberDetailFragment extends Fragment {
     private TextInputEditText gender;
     private TextView descendants;
 
-    private Button addRelativeButton;
+    private Button addDescendantButton;
     private Button updateButton;
     private Button deleteButton;
 
@@ -90,8 +90,6 @@ public class FamilyMemberDetailFragment extends Fragment {
             familyMember = mFamilyMemberViewModel.getFamilyMemberAtIndex(getArguments().getInt("familyMemberPosition"));
         }
 
-
-
         getParentFragmentManager().setFragmentResultListener("familyMemberPosition", this, new FragmentResultListener() {
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
@@ -117,7 +115,7 @@ public class FamilyMemberDetailFragment extends Fragment {
         gender = view.findViewById(R.id.family_member_detail_gender);
         descendants = view.findViewById(R.id.family_member_detail_descendants);
 
-        addRelativeButton = view.findViewById(R.id.family_member_detail_add_relationship_button);
+        addDescendantButton = view.findViewById(R.id.family_member_detail_add_descendant_button);
         updateButton = view.findViewById(R.id.family_member_detail_update_button);
         deleteButton = view.findViewById(R.id.family_member_detail_delete_button);
 
@@ -134,7 +132,7 @@ public class FamilyMemberDetailFragment extends Fragment {
 //        town.setText(address.getTownCity());
 //        state.setText(address.getState());
 //        zipcode.setText(address.getZipcode());
-        gender.setText(familyMember.getGenderId());
+        gender.setText(String.valueOf(familyMember.getGenderId()));
 
 //        ArrayList<Person> children = person.getChildren();
 //        if (children.size() > 0) {
@@ -160,16 +158,23 @@ public class FamilyMemberDetailFragment extends Fragment {
 
             int id = familyMember.getFamilyMemberId();
 
-            FamilyMember updatedFamilyMember = new FamilyMember(id, updatedFirstName, updatedLastName, 0);
+            FamilyMember updatedFamilyMember = new FamilyMember(id, updatedFirstName, updatedLastName, 10, 0);
             mFamilyMemberViewModel.update(updatedFamilyMember);
         });
 
         deleteButton.setOnClickListener(v -> mFamilyMemberViewModel.delete(familyMember));
 
-//        addRelativeButton.setOnClickListener(v -> {
-//            int position = getAdapterPosition();
-//            mainActivity.toggleHomeFragmentToAddPersonFragment(true, position);
-//        });
+        addDescendantButton.setOnClickListener(v -> {
+            Fragment addDescendantFragment = new AddDescendantFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
+            addDescendantFragment.setArguments(bundle);
+
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.host_fragment, addDescendantFragment, "addDescendantViewStart")
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         return view;
     }

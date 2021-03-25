@@ -25,6 +25,7 @@ import com.example.family_tree_temp.Adaptors.PersonAdaptor;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Adaptors.Person;
 import com.example.family_tree_temp.R;
+import com.example.family_tree_temp.ViewModels.AncestorDescendantBundle;
 import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;
 
 import java.util.ArrayList;
@@ -91,8 +92,16 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 Person person = (Person) result.get("newPersonKey");
                 //((PersonAdaptor) mAdaptor).add(person);
-                FamilyMember familyMember = new FamilyMember(person.getFirstName(), person.getLastName(), person.getGenderId());
+                FamilyMember familyMember = new FamilyMember(person.getFirstName(), person.getLastName(), 10, person.getGenderId());
                 mFamilyMemberViewModel.insert(familyMember);
+            }
+        });
+
+        getParentFragmentManager().setFragmentResultListener("newDescendantKey", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                AncestorDescendantBundle ancestorDescendantBundle = (AncestorDescendantBundle) result.get("newDescendantKey");
+                mFamilyMemberViewModel.insertDescendant(ancestorDescendantBundle);
             }
         });
 

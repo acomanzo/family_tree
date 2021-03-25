@@ -24,7 +24,11 @@ public class Person implements Parcelable {
     private String futureRelativeRelationship;
 
     public Person(@NonNull String firstName, @NonNull String lastName, @NonNull String age, @NonNull int genderId) {
-        this(firstName, lastName, age, genderId, -1, null);
+        this(firstName, lastName, age, genderId, null);
+    }
+
+    public Person(@NonNull String firstName, @NonNull String lastName, String age, int genderId, String relationship) {
+        this(firstName, lastName, age, genderId, -1, relationship);
     }
 
     public Person(@NonNull String firstName, @NonNull String lastName, @NonNull String age, @NonNull int genderId, int futureRelativePosition, String futureRelativeRelationship) {

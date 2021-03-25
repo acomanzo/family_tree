@@ -119,7 +119,7 @@ public class AddPersonFragment extends Fragment {
             int genderId;
             switch (gender) {
                 default:
-                    genderId = 0;
+                    genderId = 1;
                     break;
             }
             String relationship = null;

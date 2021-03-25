@@ -3,6 +3,7 @@ package com.example.family_tree_temp.Models;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(foreignKeys = {@ForeignKey(
@@ -18,8 +19,7 @@ import androidx.room.PrimaryKey;
 )})
 public class AncestorDescendant {
 
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey(autoGenerate = true)
     private int ancestorDescendantId;
 
     @NonNull
@@ -31,7 +31,14 @@ public class AncestorDescendant {
     @NonNull
     private int depth;
 
-    public AncestorDescendant(@NonNull int ancestorDescendantId, @NonNull int ancestorId, @NonNull int descendantId, @NonNull int depth) {
+    @Ignore
+    public AncestorDescendant(@NonNull int ancestorId, @NonNull int descendantId, @NonNull int depth) {
+        this.ancestorId = ancestorId;
+        this.descendantId = descendantId;
+        this.depth = depth;
+    }
+
+    public AncestorDescendant(int ancestorDescendantId, @NonNull int ancestorId, @NonNull int descendantId, @NonNull int depth) {
         this.ancestorDescendantId = ancestorDescendantId;
         this.ancestorId = ancestorId;
         this.descendantId = descendantId;

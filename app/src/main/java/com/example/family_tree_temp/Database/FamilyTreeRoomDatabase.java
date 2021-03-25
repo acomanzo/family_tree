@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.family_tree_temp.DatabaseAccessObjects.AddressDao;
+import com.example.family_tree_temp.DatabaseAccessObjects.AncestorDescendantDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.ContactInformationDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.EmailDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.FamilyMemberDao;
@@ -53,12 +54,13 @@ public abstract class FamilyTreeRoomDatabase extends RoomDatabase {
     public abstract EmailDao emailDao();
     public abstract AddressDao addressDao();
     public abstract GenderDao genderDao();
+    public abstract AncestorDescendantDao ancestorDescendantDao();
 
     private static FamilyTreeRoomDatabase INSTANCE;
 
     static FamilyTreeRoomDatabase getDatabase(final Context context) {
         // to re build database without doing migration, just do this
-        context.deleteDatabase("FamilyTreeDatabase");
+        //context.deleteDatabase("FamilyTreeDatabase");
         if (INSTANCE == null) {
             synchronized (FamilyTreeRoomDatabase.class) {
                 if (INSTANCE == null) {
