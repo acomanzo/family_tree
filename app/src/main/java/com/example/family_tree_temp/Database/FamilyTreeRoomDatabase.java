@@ -13,22 +13,19 @@ import com.example.family_tree_temp.Models.Address;
 import com.example.family_tree_temp.Models.ContactInformation;
 import com.example.family_tree_temp.Models.Email;
 import com.example.family_tree_temp.Models.FamilyMember;
-import com.example.family_tree_temp.Models.MedicalHistoryNote;
+import com.example.family_tree_temp.Models.MedicalHistory;
 import com.example.family_tree_temp.Models.PhoneNumber;
 import com.example.family_tree_temp.Models.City;
 import com.example.family_tree_temp.Models.State;
 import com.example.family_tree_temp.Models.Zipcode;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.migration.Migration;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {
         FamilyMember.class,
-        MedicalHistoryNote.class,
+        MedicalHistory.class,
         ContactInformation.class,
         PhoneNumber.class,
         Email.class,

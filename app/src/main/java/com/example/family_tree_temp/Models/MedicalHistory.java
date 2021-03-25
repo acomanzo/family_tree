@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey;
         childColumns = "familyMemberId",
         onDelete = ForeignKey.CASCADE
 )})
-public class MedicalHistoryNote {
+public class MedicalHistory {
 
     @PrimaryKey
     @NonNull
@@ -26,7 +26,7 @@ public class MedicalHistoryNote {
     @NonNull
     private int familyMemberId;
 
-    public MedicalHistoryNote(@NonNull int medicalHistoryNoteId, @NonNull int date, @NonNull String diagnosis, @NonNull int familyMemberId) {
+    public MedicalHistory(@NonNull int medicalHistoryNoteId, @NonNull int date, @NonNull String diagnosis, @NonNull int familyMemberId) {
         this.medicalHistoryNoteId =  medicalHistoryNoteId;
         this.date = date;
         this.diagnosis = diagnosis;

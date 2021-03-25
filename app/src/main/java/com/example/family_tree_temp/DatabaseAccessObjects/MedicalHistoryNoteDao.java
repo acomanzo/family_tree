@@ -1,7 +1,6 @@
 package com.example.family_tree_temp.DatabaseAccessObjects;
 
-import com.example.family_tree_temp.Models.FamilyMember;
-import com.example.family_tree_temp.Models.MedicalHistoryNote;
+import com.example.family_tree_temp.Models.MedicalHistory;
 
 import java.util.List;
 
@@ -14,11 +13,11 @@ import androidx.room.Query;
 public interface MedicalHistoryNoteDao {
 
     @Insert
-    void insert(MedicalHistoryNote medicalHistoryNote);
+    void insert(MedicalHistory medicalHistory);
 
-    @Query("DELETE FROM MedicalHistoryNote")
+    @Query("DELETE FROM MedicalHistory")
     void deleteAll();
 
-    @Query("SELECT * FROM MedicalHistoryNote")
-    LiveData<List<MedicalHistoryNote>> getAllMedicalHistoryNotes();
+    @Query("SELECT * FROM MedicalHistory")
+    LiveData<List<MedicalHistory>> getAllMedicalHistoryNotes();
 }

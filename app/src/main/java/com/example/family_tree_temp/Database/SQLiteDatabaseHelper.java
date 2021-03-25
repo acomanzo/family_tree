@@ -17,7 +17,7 @@
 //
 //    // Table names
 //    private static final String FAMILY_MEMBER = "FamilyMember";
-//    private static final String MEDICAL_HISTORY = "MedicalHistoryNote";      // (many to one with family member)
+//    private static final String MEDICAL_HISTORY = "MedicalHistory";      // (many to one with family member)
 //    private static final String CONTACT_INFORMATION = "ContactInformation";  // (one to one with family member)
 //    private static final String PHONE_NUMBER = "PhoneNumber";                // (many to one with contact information)
 //    private static final String EMAIL = "Email";                             // (many to one with contact information)
@@ -38,13 +38,13 @@
 //                    FAMILY_MEMBER_COLUMN_GENDER + " TEXT NOT NULL" +
 //                    ");";
 //
-//    // Columns MedicalHistoryNote
+//    // Columns MedicalHistory
 //    private static final String MEDICAL_HISTORY_NOTE_COLUMN_ID = "MedicalHistoryNoteId";
 //    private static final String MEDICAL_HISTORY_NOTE_COLUMN_DATE = "Date";
 //    private static final String MEDICAL_HISTORY_NOTE_COLUMN_DIAGNOSIS = "Diagnosis";
 //    private static final String MEDICAL_HISTORY_NOTE_COLUMN_FAMILY_MEMBER_ID = "FamilyMemberId";
 //
-//    // Create MedicalHistoryNote
+//    // Create MedicalHistory
 //    private static final String CREATE_MEDICAL_HISTORY_TABLE =
 //            "CREATE TABLE " + MEDICAL_HISTORY + "(" +
 //                    MEDICAL_HISTORY_NOTE_COLUMN_ID + " INTEGER PRIMARY KEY," +

@@ -3,7 +3,6 @@ package com.example.family_tree_temp.Database;
 import android.app.Application;
 import android.os.AsyncTask;
 
-import com.example.family_tree_temp.Database.FamilyTreeRoomDatabase;
 import com.example.family_tree_temp.DatabaseAccessObjects.AddressDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.ContactInformationDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.EmailDao;
@@ -14,7 +13,7 @@ import com.example.family_tree_temp.Models.Address;
 import com.example.family_tree_temp.Models.ContactInformation;
 import com.example.family_tree_temp.Models.Email;
 import com.example.family_tree_temp.Models.FamilyMember;
-import com.example.family_tree_temp.Models.MedicalHistoryNote;
+import com.example.family_tree_temp.Models.MedicalHistory;
 import com.example.family_tree_temp.Models.PhoneNumber;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public class FamilyTreeRepository {
     private AddressDao mAddressDao;
 
     private LiveData<List<FamilyMember>> mAllFamilyMembers;
-    private LiveData<List<MedicalHistoryNote>> mAllMedicalHistoryNotes;
+    private LiveData<List<MedicalHistory>> mAllMedicalHistoryNotes;
     private LiveData<List<ContactInformation>> mAllContactInformation;
     private LiveData<List<PhoneNumber>> mAllPhoneNumbers;
     private LiveData<List<Email>> mAllEmails;
@@ -58,7 +57,7 @@ public class FamilyTreeRepository {
         return mAllFamilyMembers;
     }
 
-    public LiveData<List<MedicalHistoryNote>> getAllMedicalHistoryNotes() {
+    public LiveData<List<MedicalHistory>> getAllMedicalHistoryNotes() {
         return mAllMedicalHistoryNotes;
     }
 
@@ -132,7 +131,7 @@ public class FamilyTreeRepository {
         }
     }
 
-    private static class insertMedicalHistoryNoteAsyncTask extends AsyncTask<MedicalHistoryNote, Void, Void> {
+    private static class insertMedicalHistoryNoteAsyncTask extends AsyncTask<MedicalHistory, Void, Void> {
         private MedicalHistoryNoteDao mAsyncTaskDao;
 
         insertMedicalHistoryNoteAsyncTask(MedicalHistoryNoteDao dao) {
@@ -140,7 +139,7 @@ public class FamilyTreeRepository {
         }
 
         @Override
-        protected Void doInBackground(final MedicalHistoryNote... params) {
+        protected Void doInBackground(final MedicalHistory... params) {
             mAsyncTaskDao.insert(params[0]);
             return null;
         }
