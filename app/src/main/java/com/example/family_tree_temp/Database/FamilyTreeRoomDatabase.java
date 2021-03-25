@@ -1,12 +1,14 @@
 package com.example.family_tree_temp.Database;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.family_tree_temp.DatabaseAccessObjects.AddressDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.ContactInformationDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.EmailDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.FamilyMemberDao;
+import com.example.family_tree_temp.DatabaseAccessObjects.GenderDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.MedicalHistoryNoteDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.PhoneNumberDao;
 import com.example.family_tree_temp.Models.Address;
@@ -22,9 +24,11 @@ import com.example.family_tree_temp.Models.City;
 import com.example.family_tree_temp.Models.State;
 import com.example.family_tree_temp.Models.Zipcode;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {
         Gender.class,
@@ -48,6 +52,7 @@ public abstract class FamilyTreeRoomDatabase extends RoomDatabase {
     public abstract PhoneNumberDao phoneNumberDao();
     public abstract EmailDao emailDao();
     public abstract AddressDao addressDao();
+    public abstract GenderDao genderDao();
 
     private static FamilyTreeRoomDatabase INSTANCE;
 
@@ -59,11 +64,38 @@ public abstract class FamilyTreeRoomDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(), FamilyTreeRoomDatabase.class, "FamilyTreeDatabase")
                             .fallbackToDestructiveMigration()
+                            .addCallback(sRoomDatabaseCallback)
                             .build();
                     Log.i("FamilyTreeRoomDatabase", "Created DB");
                 }
             }
         }
         return INSTANCE;
+    }
+
+    private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
+        @Override
+        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+            super.onOpen(db);
+            new PopulateDbAsync(INSTANCE).execute();
+        }
+    };
+
+    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
+        private final GenderDao mDao;
+        String[] genders = {"Agender", "Androgyne", "Androgynous", "Bigender", "Cis", "Cisgender", "Cis Female", "Cis Male", "Cis Man", "Cis Woman", "Cisgender Female", "Cisgender Male", "Cisgender Man", "Male", "Female"};
+
+        PopulateDbAsync(FamilyTreeRoomDatabase db) {
+            mDao = db.genderDao();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            for (String genderLabel : genders) {
+                Gender gender = new Gender(genderLabel);
+                mDao.insert(gender);
+            }
+            return null;
+        }
     }
 }
