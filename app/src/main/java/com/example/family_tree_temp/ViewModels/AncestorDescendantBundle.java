@@ -11,15 +11,15 @@ import java.util.ArrayList;
 
 public class AncestorDescendantBundle implements Parcelable {
 
-    private FamilyMember descendant;
+    private FamilyMember newFamilyMember;
 
-    private int ancestorId;
+    private int existingFamilyMemberId;
 
     private int depth;
 
-    public AncestorDescendantBundle(FamilyMember descendant, int ancestorId, int depth) {
-        this.descendant = descendant;
-        this.ancestorId = ancestorId;
+    public AncestorDescendantBundle(FamilyMember newFamilyMember, int existingFamilyMemberId, int depth) {
+        this.newFamilyMember = newFamilyMember;
+        this.existingFamilyMemberId = existingFamilyMemberId;
         this.depth = depth;
     }
 
@@ -28,22 +28,22 @@ public class AncestorDescendantBundle implements Parcelable {
         String lastName = in.readString();
         int age = in.readInt();
         int genderId = in.readInt();
-        FamilyMember descendant = new FamilyMember(firstName, lastName, age, genderId);
+        FamilyMember newFamilyMember = new FamilyMember(firstName, lastName, age, genderId);
 
-        int ancestorId = in.readInt();
+        int existingFamilyMemberId = in.readInt();
         int depth = in.readInt();
 
-        this.descendant = descendant;
-        this.ancestorId = ancestorId;
+        this.newFamilyMember = newFamilyMember;
+        this.existingFamilyMemberId = existingFamilyMemberId;
         this.depth = depth;
     }
 
-    public FamilyMember getDescendant() {
-        return descendant;
+    public FamilyMember getNewFamilyMember() {
+        return newFamilyMember;
     }
 
-    public int getAncestorId() {
-        return ancestorId;
+    public int getExistingFamilyMemberId() {
+        return existingFamilyMemberId;
     }
 
     public int getDepth() {
@@ -69,12 +69,12 @@ public class AncestorDescendantBundle implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(descendant.getFirstName());
-        dest.writeString(descendant.getLastName());
-        dest.writeInt(descendant.getAge());
-        dest.writeInt(descendant.getGenderId());
+        dest.writeString(newFamilyMember.getFirstName());
+        dest.writeString(newFamilyMember.getLastName());
+        dest.writeInt(newFamilyMember.getAge());
+        dest.writeInt(newFamilyMember.getGenderId());
 
-        dest.writeInt(ancestorId);
+        dest.writeInt(existingFamilyMemberId);
         dest.writeInt(depth);
     }
 

@@ -105,6 +105,14 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
             }
         });
 
+        getParentFragmentManager().setFragmentResultListener("newAncestorKey", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+                AncestorDescendantBundle ancestorDescendantBundle = (AncestorDescendantBundle) result.get("newAncestorKey");
+                mFamilyMemberViewModel.insertAncestor(ancestorDescendantBundle);
+            }
+        });
+
         setHasOptionsMenu(true);
     }
 

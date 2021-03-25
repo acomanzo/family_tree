@@ -48,4 +48,8 @@ public class FamilyMemberViewModel extends AndroidViewModel {
     public void insertDescendant(AncestorDescendantBundle ancestorDescendantBundle) {
         mRepository.insertDescendant(ancestorDescendantBundle);
     }
+
+    public void insertAncestor(AncestorDescendantBundle ancestorDescendantBundle) {
+        mRepository.insertAncestor(ancestorDescendantBundle);
+    }
 }

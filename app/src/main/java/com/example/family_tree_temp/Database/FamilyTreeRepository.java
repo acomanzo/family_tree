@@ -98,6 +98,10 @@ public class FamilyTreeRepository {
         new InsertDescendantAsyncTask(mAncestorDescendantDao, mFamilyMemberDao).execute(ancestorDescendantBundle);
     }
 
+    public void insertAncestor(AncestorDescendantBundle ancestorDescendantBundle) {
+        new InsertAncestorAsyncTask(mAncestorDescendantDao, mFamilyMemberDao).execute(ancestorDescendantBundle);
+    }
+
     private static class insertFamilyMemberAsyncTask extends AsyncTask<FamilyMember, Void, Void> {
         private FamilyMemberDao mAsyncTaskDao;
 
@@ -222,11 +226,35 @@ public class FamilyTreeRepository {
         @Override
         protected Void doInBackground(AncestorDescendantBundle... ancestorDescendantBundles) {
             AncestorDescendantBundle ancestorDescendantBundle = ancestorDescendantBundles[0];
-            FamilyMember descendant = ancestorDescendantBundle.getDescendant();
-            int ancestorId = ancestorDescendantBundle.getAncestorId();
+            FamilyMember descendant = ancestorDescendantBundle.getNewFamilyMember();
+            int ancestorId = ancestorDescendantBundle.getExistingFamilyMemberId();
             int depth = ancestorDescendantBundle.getDepth();
 
             int descendantId = (int) familyMemberDao.insert(descendant);
+            AncestorDescendant ancestorDescendant = new AncestorDescendant(ancestorId, descendantId, depth);
+            ancestorDescendantDao.insert(ancestorDescendant);
+
+            return null;
+        }
+    }
+
+    private static class InsertAncestorAsyncTask extends AsyncTask<AncestorDescendantBundle, Void, Void> {
+        private AncestorDescendantDao ancestorDescendantDao;
+        private FamilyMemberDao familyMemberDao;
+
+        InsertAncestorAsyncTask(AncestorDescendantDao ancestorDescendantDao, FamilyMemberDao familyMemberDao) {
+            this.ancestorDescendantDao = ancestorDescendantDao;
+            this.familyMemberDao = familyMemberDao;
+        }
+
+        @Override
+        protected Void doInBackground(AncestorDescendantBundle... ancestorDescendantBundles) {
+            AncestorDescendantBundle ancestorDescendantBundle = ancestorDescendantBundles[0];
+            FamilyMember ancestor = ancestorDescendantBundle.getNewFamilyMember();
+            int descendantId = ancestorDescendantBundle.getExistingFamilyMemberId();
+            int depth = ancestorDescendantBundle.getDepth();
+
+            int ancestorId = (int) familyMemberDao.insert(ancestor);
             AncestorDescendant ancestorDescendant = new AncestorDescendant(ancestorId, descendantId, depth);
             ancestorDescendantDao.insert(ancestorDescendant);
 

@@ -43,6 +43,7 @@ public class FamilyMemberDetailFragment extends Fragment {
     private TextInputEditText gender;
     private TextView descendants;
 
+    private Button addAncestorButton;
     private Button addDescendantButton;
     private Button updateButton;
     private Button deleteButton;
@@ -115,6 +116,7 @@ public class FamilyMemberDetailFragment extends Fragment {
         gender = view.findViewById(R.id.family_member_detail_gender);
         descendants = view.findViewById(R.id.family_member_detail_descendants);
 
+        addAncestorButton = view.findViewById(R.id.family_member_detail_add_ancestor_button);
         addDescendantButton = view.findViewById(R.id.family_member_detail_add_descendant_button);
         updateButton = view.findViewById(R.id.family_member_detail_update_button);
         deleteButton = view.findViewById(R.id.family_member_detail_delete_button);
@@ -163,6 +165,18 @@ public class FamilyMemberDetailFragment extends Fragment {
         });
 
         deleteButton.setOnClickListener(v -> mFamilyMemberViewModel.delete(familyMember));
+
+        addAncestorButton.setOnClickListener(v -> {
+            Fragment addAncestorFragment = new AddAncestorFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
+            addAncestorFragment.setArguments(bundle);
+
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.host_fragment, addAncestorFragment, "addAncestorViewStart")
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         addDescendantButton.setOnClickListener(v -> {
             Fragment addDescendantFragment = new AddDescendantFragment();
