@@ -10,6 +10,11 @@ import androidx.room.PrimaryKey;
         parentColumns = "familyMemberId",
         childColumns = "familyMemberId",
         onDelete = ForeignKey.CASCADE
+), @ForeignKey(
+        entity = City.class,
+        parentColumns = "cityId",
+        childColumns = "cityId",
+        onDelete = ForeignKey.CASCADE
 )})
 public class Address {
 
@@ -29,22 +34,22 @@ public class Address {
     private String extra;
 
     @NonNull
-    private String city;
+    private int cityId;
 
     @NonNull
-    private String state;
+    private int stateId;
 
     @NonNull
-    private int zipcode;
+    private int zipcodeId;
 
-    public Address(@NonNull int addressId, @NonNull int familyMemberId, @NonNull int houseNumber, @NonNull String streetName, String extra, @NonNull String city, @NonNull String state, @NonNull int zipcode) {
+    public Address(@NonNull int addressId, @NonNull int familyMemberId, @NonNull int houseNumber, @NonNull String streetName, String extra, @NonNull int cityId, @NonNull int stateId, @NonNull int zipcodeId) {
         this.addressId = addressId;
         this.familyMemberId = familyMemberId;
         this.houseNumber = houseNumber;
         this.streetName = streetName;
-        this.city = city;
-        this.state = state;
-        this.zipcode = zipcode;
+        this.cityId = cityId;
+        this.stateId = stateId;
+        this.zipcodeId = zipcodeId;
     }
 
     public int getAddressId() {
@@ -67,20 +72,20 @@ public class Address {
         return extra;
     }
 
-    public String getCity() {
-        return city;
+    public int getCityId() {
+        return cityId;
     }
 
-    public String getState() {
-        return state;
+    public int getStateId() {
+        return stateId;
     }
 
-    public int getZipcode() {
-        return zipcode;
+    public int getZipcodeId() {
+        return zipcodeId;
     }
 
     @Override
     public String toString() {
-        return houseNumber + " " + streetName + ", " + city + ", " + state + " " + zipcode;
+        return houseNumber + " " + streetName + ", " + cityId + ", " + stateId + " " + zipcodeId;
     }
 }

@@ -15,10 +15,14 @@ import com.example.family_tree_temp.Models.Email;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Models.MedicalHistoryNote;
 import com.example.family_tree_temp.Models.PhoneNumber;
+import com.example.family_tree_temp.Models.City;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {
         FamilyMember.class,
@@ -26,6 +30,7 @@ import androidx.room.RoomDatabase;
         ContactInformation.class,
         PhoneNumber.class,
         Email.class,
+        City.class,
         Address.class
 }, version = 1, exportSchema = false)
 public abstract class FamilyTreeRoomDatabase extends RoomDatabase {
@@ -40,6 +45,8 @@ public abstract class FamilyTreeRoomDatabase extends RoomDatabase {
     private static FamilyTreeRoomDatabase INSTANCE;
 
     static FamilyTreeRoomDatabase getDatabase(final Context context) {
+        // to re build database without doing migration, just do this
+        context.deleteDatabase("FamilyTreeDatabase");
         if (INSTANCE == null) {
             synchronized (FamilyTreeRoomDatabase.class) {
                 if (INSTANCE == null) {
