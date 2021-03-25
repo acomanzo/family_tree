@@ -6,9 +6,9 @@ import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 @Entity(foreignKeys = {@ForeignKey(
-        entity = FamilyMember.class,
-        parentColumns = "familyMemberId",
-        childColumns = "familyMemberId",
+        entity = ContactInformation.class,
+        parentColumns = "contactInformationId",
+        childColumns = "contactInformationId",
         onDelete = ForeignKey.CASCADE
 )})
 public class Email {
@@ -18,14 +18,14 @@ public class Email {
     private int emailId;
 
     @NonNull
-    private int familyMemberId;
+    private int contactInformationId;
 
     @NonNull
     private String email;
 
-    public Email(@NonNull int emailId, @NonNull int familyMemberId, @NonNull String email) {
+    public Email(@NonNull int emailId, @NonNull int contactInformationId, @NonNull String email) {
         this.emailId = emailId;
-        this.familyMemberId = familyMemberId;
+        this.contactInformationId = contactInformationId;
         this.email = email;
     }
 
@@ -33,8 +33,8 @@ public class Email {
         return emailId;
     }
 
-    public int getFamilyMemberId() {
-        return getFamilyMemberId();
+    public int getContactInformationId() {
+        return contactInformationId;
     }
 
     public String getEmail() {
