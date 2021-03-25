@@ -18,6 +18,7 @@ import android.view.Window;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.family_tree_temp.Fragments.AddDescendantFragment;
 import com.example.family_tree_temp.Fragments.AddPersonFragment;
 import com.example.family_tree_temp.Fragments.FamilyMemberDetailFragment;
 import com.example.family_tree_temp.Fragments.HomeFragment;
@@ -156,6 +157,10 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
         }
         if (fragment instanceof FamilyMemberDetailFragment) {
 
+        }
+        if (fragment instanceof AddDescendantFragment) {
+            AddDescendantFragment addDescendantFragment = (AddDescendantFragment) fragment;
+            addDescendantFragment.setOnPersonItemAddedListener(this);
         }
     }
 
