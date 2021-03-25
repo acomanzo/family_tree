@@ -114,6 +114,13 @@
             android:layout_marginTop="16dp"/>
 
         <Button
+            android:id="@+id/family_member_detail_add_ancestor_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Ancestor"
+            android:layout_gravity="center"/>
+
+        <Button
             android:id="@+id/family_member_detail_add_descendant_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
