@@ -205,13 +205,7 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
             bundle.putInt("familyMemberPosition", position);
             getParentFragmentManager().setFragmentResult("familyMemberPosition", bundle);
 
-            FamilyMemberDetailFragment nextFragment = new FamilyMemberDetailFragment();
-            nextFragment.setArguments(bundle);
-
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.host_fragment, nextFragment, "familyMemberDetailViewStart")
-                    .addToBackStack(null)
-                    .commit();
+            ((MainActivity) getActivity()).transitionFromHomeToFamilyMemberDetail(bundle);
         }
     }
 }

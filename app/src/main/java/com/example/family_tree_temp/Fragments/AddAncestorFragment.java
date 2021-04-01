@@ -12,9 +12,11 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.family_tree_temp.Activities.MainActivity;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.R;
 import com.example.family_tree_temp.ViewModels.AncestorDescendantBundle;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 /**
@@ -141,6 +143,7 @@ public class AddAncestorFragment extends Fragment {
             getParentFragmentManager().setFragmentResult("newAncestorKey", bundle);
 
             // tell MainActivity to switch to the home fragment
+            getParentFragmentManager().popBackStack(); // since we're two away from home
             callback.onPersonItemAdded(0);
         });
 

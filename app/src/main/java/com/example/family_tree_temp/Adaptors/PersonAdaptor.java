@@ -157,7 +157,7 @@ public class PersonAdaptor extends RecyclerView.Adapter<PersonAdaptor.MyViewHold
 
             addRelativeButton.setOnClickListener(v -> {
                 int position = getAdapterPosition();
-                mainActivity.toggleHomeFragmentToAddPersonFragment(true, position);
+                //mainActivity.toggleHomeFragmentToAddPersonFragment(true, position);
             });
         }
 

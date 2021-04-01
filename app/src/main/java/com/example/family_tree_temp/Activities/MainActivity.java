@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,11 +35,14 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
 
     private BottomAppBar bottomAppBar;
     private FloatingActionButton floatingActionButton;
-
-    private final String HOME_FRAG_TAG = "homeFragTag";
-    private final String ADD_PERSON_FRAG_TAG = "addPersonFragTag";
-
-    private String currentFragTag;
+    
+    public final String HOME_FRAGMENT = "home_fragment";
+    public final String NEW_FAMILY_MEMBER_FRAGMENT = "new_family_member_fragment";
+    public final String FAMILY_MEMBER_DETAIL_FRAGMENT = "family_member_detail_fragment";
+    public final String ADD_ANCESTOR_FRAGMENT = "add_ancestor_fragment";
+    public final String ADD_DESCENDANT_FRAGMENT = "add_descendant_fragment";
+    
+    private String currentFragmentTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
         setContentView(R.layout.activity_main);
 
         // make the home fragment our initial fragment
-        getSupportFragmentManager().beginTransaction().add(R.id.host_fragment, new HomeFragment(), HOME_FRAG_TAG).commit();
-        currentFragTag = HOME_FRAG_TAG;
+        getSupportFragmentManager().beginTransaction().add(R.id.host_fragment, new HomeFragment(), HOME_FRAGMENT).commit();
+        currentFragmentTag = HOME_FRAGMENT;
 
         bottomAppBar = findViewById(R.id.bottomAppBar);
         bottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -86,68 +90,153 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
 
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                switch (currentFragTag) {
-                    case HOME_FRAG_TAG:
-                        fragmentTransaction.replace(R.id.host_fragment, new AddPersonFragment());
-                        //bottomAppBar.setNavigationIcon(null);
-                        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-                        bottomAppBar.replaceMenu(R.menu.app_bottom_bar_menu_secondary);
-                        floatingActionButton.setImageResource(R.drawable.ic_baseline_reply_24);
-                        currentFragTag = ADD_PERSON_FRAG_TAG;
-                        fragmentTransaction.addToBackStack(null);
+                switch (currentFragmentTag) {
+                    case HOME_FRAGMENT:
+                        transitionFromHomeToAddFamilyMember();
                         break;
-                    case ADD_PERSON_FRAG_TAG:
-                        fragmentTransaction.replace(R.id.host_fragment, new HomeFragment());
-                        bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_menu_24);
-                        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-                        bottomAppBar.replaceMenu(R.menu.app_bottom_bar_menu);
-                        floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24);
-                        currentFragTag = HOME_FRAG_TAG;
-                        fragmentManager.popBackStack();
+                    case NEW_FAMILY_MEMBER_FRAGMENT:
+                    case FAMILY_MEMBER_DETAIL_FRAGMENT:
+                    case ADD_ANCESTOR_FRAGMENT:
+                    case ADD_DESCENDANT_FRAGMENT:
+                        fabBackPressed();
                         break;
                 }
-                fragmentTransaction.commit();
             }
         });
     }
 
-    public void toggleHomeFragmentToAddPersonFragment(boolean isAddingRelative, int position) {
-        if (currentFragTag.equals(HOME_FRAG_TAG)) {
+    public void transitionFromHomeToAddFamilyMember() {
+        if (currentFragmentTag.equals(HOME_FRAGMENT)) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
             AddPersonFragment addPersonFragment = new AddPersonFragment();
-            Bundle args = new Bundle();
-            args.putBoolean("isAddingRelative", isAddingRelative);
-            args.putInt("oldRelativePosition", position);
-            addPersonFragment.setArguments(args);
 
-            fragmentTransaction.replace(R.id.host_fragment, addPersonFragment);
+            fragmentTransaction.replace(R.id.host_fragment, addPersonFragment, NEW_FAMILY_MEMBER_FRAGMENT);
             //bottomAppBar.setNavigationIcon(null);
             bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-            bottomAppBar.replaceMenu(R.menu.app_bottom_bar_menu_secondary);
+            //bottomAppBar.replaceMenu(R.menu.app_bottom_bar_menu_secondary);
+            bottomAppBar.performHide();
+            bottomAppBar.setVisibility(View.GONE);
             floatingActionButton.setImageResource(R.drawable.ic_baseline_reply_24);
-            currentFragTag = ADD_PERSON_FRAG_TAG;
-            fragmentTransaction.addToBackStack(null);
+            currentFragmentTag = NEW_FAMILY_MEMBER_FRAGMENT;
+            fragmentTransaction.addToBackStack(NEW_FAMILY_MEMBER_FRAGMENT);
             fragmentTransaction.commit();
         }
     }
 
-    @Override
-    public void onPersonItemAdded(int position) {
+    public void transitionToHomeFromSomeView() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.replace(R.id.host_fragment, new HomeFragment());
+
+        HomeFragment homeFragment = new HomeFragment();
+
+        fragmentTransaction.replace(R.id.host_fragment, homeFragment);
         bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_menu_24);
         bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+        //bottomAppBar.replaceMenu(R.menu.app_bottom_bar_menu);
+        bottomAppBar.performShow();
+        bottomAppBar.setVisibility(View.VISIBLE);
         floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24);
-        currentFragTag = HOME_FRAG_TAG;
+        currentFragmentTag = HOME_FRAGMENT;
+        fragmentManager.popBackStack();
         fragmentTransaction.commit();
+    }
+
+    public void transitionToHomeFromSomeViewAndDontPop() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
+        HomeFragment homeFragment = new HomeFragment();
+
+        fragmentTransaction.replace(R.id.host_fragment, homeFragment);
+        bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_menu_24);
+        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+        //bottomAppBar.replaceMenu(R.menu.app_bottom_bar_menu);
+        bottomAppBar.performShow();
+        bottomAppBar.setVisibility(View.VISIBLE);
+        floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24);
+        currentFragmentTag = HOME_FRAGMENT;
+        fragmentTransaction.commit();
+    }
+
+    public void transitionFromHomeToFamilyMemberDetail(Bundle bundle) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        String newTag = FAMILY_MEMBER_DETAIL_FRAGMENT;
+
+        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+        bottomAppBar.performHide();
+        floatingActionButton.setImageResource(R.drawable.ic_baseline_reply_24);
+        currentFragmentTag = newTag;
+
+        FamilyMemberDetailFragment nextFragment = new FamilyMemberDetailFragment();
+        nextFragment.setArguments(bundle);
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.host_fragment, nextFragment, newTag)
+                .addToBackStack(newTag)
+                .commit();
+    }
+
+    public void transitionFromFamilyMemberDetailToAddAncestor(Bundle bundle) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        String newTag = ADD_ANCESTOR_FRAGMENT;
+
+        Fragment addAncestorFragment = new AddAncestorFragment();
+        addAncestorFragment.setArguments(bundle);
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.host_fragment, addAncestorFragment, newTag)
+                .addToBackStack(newTag)
+                .commit();
+    }
+
+    public void transitionFromFamilyMemberDetailToAddDescendant(Bundle bundle) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        String newTag = ADD_DESCENDANT_FRAGMENT;
+
+        Fragment addDescendantFragment = new AddDescendantFragment();
+        addDescendantFragment.setArguments(bundle);
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.host_fragment, addDescendantFragment, newTag)
+                .addToBackStack(newTag)
+                .commit();
+    }
+
+
+
+    public void fabBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
+        int size = fragmentManager.getBackStackEntryCount();
+        if (size > 1) {
+
+            // peek second to last
+            FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(size - 2);
+            String name = backStackEntry.getName();
+            switch (name) {
+                case HOME_FRAGMENT:
+                    transitionToHomeFromSomeView();
+                default:
+                    Fragment fragment = fragmentManager.findFragmentByTag(name);
+                    fragmentTransaction.replace(R.id.host_fragment, fragment);
+                    currentFragmentTag = fragment.getTag();
+                    fragmentManager.popBackStack();
+                    fragmentTransaction.commit();
+                    break;
+            }
+        } else if (size == 1) {
+            transitionToHomeFromSomeView();
+        }
     }
 
     @Override
@@ -157,7 +246,9 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
             addPersonFragment.setOnPersonItemAddedListener(this);
         }
         if (fragment instanceof FamilyMemberDetailFragment) {
-
+//            FamilyMemberDetailFragment familyMemberDetailFragment = (FamilyMemberDetailFragment) fragment;
+//            familyMemberDetailFragment.setOnDeleteListener(this);
+//            familyMemberDetailFragment.setOnUpdateListener(this);
         }
         if (fragment instanceof AddDescendantFragment) {
             AddDescendantFragment addDescendantFragment = (AddDescendantFragment) fragment;
@@ -167,6 +258,11 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
             AddAncestorFragment addAncestorFragment = (AddAncestorFragment) fragment;
             addAncestorFragment.setOnPersonItemAddedListener(this);
         }
+    }
+
+    @Override
+    public void onPersonItemAdded(int position) {
+        transitionToHomeFromSomeView();
     }
 
     public static class BottomNavigationDrawerFragment extends BottomSheetDialogFragment {
@@ -200,39 +296,39 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         switch(selectedFrag) {
-            case HOME_FRAG_TAG:
-                if (fragmentManager.findFragmentByTag(HOME_FRAG_TAG) != null) {
+            case HOME_FRAGMENT:
+                if (fragmentManager.findFragmentByTag(HOME_FRAGMENT) != null) {
                     // if the fragment exists, show it
-                    fragmentTransaction.show(fragmentManager.findFragmentByTag(HOME_FRAG_TAG));
+                    fragmentTransaction.show(fragmentManager.findFragmentByTag(HOME_FRAGMENT));
                 } else {
                     // if the fragment does not exist, add it to the fragment manager
-                    fragmentTransaction.add(R.id.host_fragment, new HomeFragment(), HOME_FRAG_TAG);
+                    fragmentTransaction.add(R.id.host_fragment, new HomeFragment(), HOME_FRAGMENT);
                 }
-                if (fragmentManager.findFragmentByTag(ADD_PERSON_FRAG_TAG) != null) {
+                if (fragmentManager.findFragmentByTag(NEW_FAMILY_MEMBER_FRAGMENT) != null) {
                     // if the other fragment is visible, hide it
-                    fragmentTransaction.hide(fragmentManager.findFragmentByTag(ADD_PERSON_FRAG_TAG));
+                    fragmentTransaction.hide(fragmentManager.findFragmentByTag(NEW_FAMILY_MEMBER_FRAGMENT));
                 }
                 fragmentTransaction.commit();
                 bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_menu_24);
                 bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
                 floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24);
-                currentFragTag = HOME_FRAG_TAG;
+                currentFragmentTag = HOME_FRAGMENT;
                 fragmentManager.popBackStack();
                 break;
-            case ADD_PERSON_FRAG_TAG:
-                if (fragmentManager.findFragmentByTag(ADD_PERSON_FRAG_TAG) != null) {
-                    fragmentTransaction.show(fragmentManager.findFragmentByTag(ADD_PERSON_FRAG_TAG));
+            case NEW_FAMILY_MEMBER_FRAGMENT:
+                if (fragmentManager.findFragmentByTag(NEW_FAMILY_MEMBER_FRAGMENT) != null) {
+                    fragmentTransaction.show(fragmentManager.findFragmentByTag(NEW_FAMILY_MEMBER_FRAGMENT));
                 } else {
-                    fragmentTransaction.add(R.id.host_fragment, new AddPersonFragment(), ADD_PERSON_FRAG_TAG);
+                    fragmentTransaction.add(R.id.host_fragment, new AddPersonFragment(), NEW_FAMILY_MEMBER_FRAGMENT);
                 }
-                if (fragmentManager.findFragmentByTag(HOME_FRAG_TAG) != null) {
-                    fragmentTransaction.hide(fragmentManager.findFragmentByTag(HOME_FRAG_TAG));
+                if (fragmentManager.findFragmentByTag(HOME_FRAGMENT) != null) {
+                    fragmentTransaction.hide(fragmentManager.findFragmentByTag(HOME_FRAGMENT));
                 }
                 fragmentTransaction.commit();
                 bottomAppBar.setNavigationIcon(null);
                 bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
                 floatingActionButton.setImageResource(R.drawable.ic_baseline_reply_24);
-                currentFragTag = ADD_PERSON_FRAG_TAG;
+                currentFragmentTag = NEW_FAMILY_MEMBER_FRAGMENT;
                 fragmentTransaction.addToBackStack(null);
                 break;
         }
@@ -243,17 +339,18 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        switch (currentFragTag) {
-            case ADD_PERSON_FRAG_TAG:
-                fragmentTransaction.replace(R.id.host_fragment, new HomeFragment());
-                bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_menu_24);
-                bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-                bottomAppBar.replaceMenu(R.menu.app_bottom_bar_menu);
-                floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24);
-                currentFragTag = HOME_FRAG_TAG;
-                break;
+
+        int size = fragmentManager.getBackStackEntryCount();
+
+        if (size == 1) {
+            bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_menu_24);
+            bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+            bottomAppBar.performShow();
+            bottomAppBar.setVisibility(View.VISIBLE);
+            floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24);
+            currentFragmentTag = HOME_FRAGMENT;
         }
-        fragmentTransaction.commit();
+
         super.onBackPressed();
     }
 }

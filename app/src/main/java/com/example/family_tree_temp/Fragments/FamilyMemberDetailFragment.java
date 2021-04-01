@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.family_tree_temp.Activities.MainActivity;
 import com.example.family_tree_temp.Adaptors.Person;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.R;
@@ -56,6 +57,25 @@ public class FamilyMemberDetailFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private OnUpdateListener updateCallback;
+    private OnDeleteListener deleteCallback;
+
+    public void setOnUpdateListener(OnUpdateListener updateCallback) {
+        this.updateCallback = updateCallback;
+    }
+
+    public interface OnUpdateListener {
+        void onFamilyMemberUpdated();
+    }
+
+    public void setOnDeleteListener(OnDeleteListener deleteCallback) {
+        this.deleteCallback = deleteCallback;
+    }
+
+    public interface OnDeleteListener {
+        void onFamilyMemberDeleted();
+    }
 
     public FamilyMemberDetailFragment() {
         // Required empty public constructor
@@ -149,6 +169,8 @@ public class FamilyMemberDetailFragment extends Fragment {
 //        }
 
         updateButton.setOnClickListener(v -> {
+
+            // need to add code to validate input
             String updatedFirstName = firstName.getText().toString();
             String updatedLastName = lastName.getText().toString();
             String updatedHouseNumber = houseNumber.getText().toString();
@@ -160,34 +182,29 @@ public class FamilyMemberDetailFragment extends Fragment {
 
             int id = familyMember.getFamilyMemberId();
 
-            FamilyMember updatedFamilyMember = new FamilyMember(id, updatedFirstName, updatedLastName, 10, 0);
+            FamilyMember updatedFamilyMember = new FamilyMember(id, updatedFirstName, updatedLastName, 10, Integer.valueOf(updatedGender));
             mFamilyMemberViewModel.update(updatedFamilyMember);
+
+            ((MainActivity) getActivity()).transitionToHomeFromSomeView();
         });
 
-        deleteButton.setOnClickListener(v -> mFamilyMemberViewModel.delete(familyMember));
+        deleteButton.setOnClickListener(v -> {
+            mFamilyMemberViewModel.delete(familyMember);
+            ((MainActivity) getActivity()).transitionToHomeFromSomeView();
+        });
 
         addAncestorButton.setOnClickListener(v -> {
-            Fragment addAncestorFragment = new AddAncestorFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
-            addAncestorFragment.setArguments(bundle);
 
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.host_fragment, addAncestorFragment, "addAncestorViewStart")
-                    .addToBackStack(null)
-                    .commit();
+            ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddAncestor(bundle);
         });
 
         addDescendantButton.setOnClickListener(v -> {
-            Fragment addDescendantFragment = new AddDescendantFragment();
             Bundle bundle = new Bundle();
             bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
-            addDescendantFragment.setArguments(bundle);
 
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.host_fragment, addDescendantFragment, "addDescendantViewStart")
-                    .addToBackStack(null)
-                    .commit();
+            ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddDescendant(bundle);
         });
 
         return view;

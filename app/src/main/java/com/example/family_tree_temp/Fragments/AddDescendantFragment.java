@@ -144,6 +144,7 @@ public class AddDescendantFragment extends Fragment {
             getParentFragmentManager().setFragmentResult("newDescendantKey", bundle);
 
             // tell MainActivity to switch to the home fragment
+            getParentFragmentManager().popBackStack(); // since we're two away from home
             callback.onPersonItemAdded(0);
         });
 
