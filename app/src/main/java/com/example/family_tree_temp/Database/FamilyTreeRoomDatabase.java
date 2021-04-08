@@ -58,9 +58,9 @@ public abstract class FamilyTreeRoomDatabase extends RoomDatabase {
 
     private static FamilyTreeRoomDatabase INSTANCE;
 
-    static FamilyTreeRoomDatabase getDatabase(final Context context) {
+    public static FamilyTreeRoomDatabase getDatabase(final Context context) {
         // to re build database without doing migration, just do this
-        //context.deleteDatabase("FamilyTreeDatabase");
+//        context.deleteDatabase("FamilyTreeDatabase");
         if (INSTANCE == null) {
             synchronized (FamilyTreeRoomDatabase.class) {
                 if (INSTANCE == null) {
@@ -79,25 +79,25 @@ public abstract class FamilyTreeRoomDatabase extends RoomDatabase {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
-            new PopulateDbAsync(INSTANCE).execute();
+//            new PopulateDbAsync(INSTANCE).execute();
         }
     };
 
-    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
-        private final GenderDao mDao;
-        String[] genders = {"Agender", "Androgyne", "Androgynous", "Bigender", "Cis", "Cisgender", "Cis Female", "Cis Male", "Cis Man", "Cis Woman", "Cisgender Female", "Cisgender Male", "Cisgender Man", "Male", "Female"};
-
-        PopulateDbAsync(FamilyTreeRoomDatabase db) {
-            mDao = db.genderDao();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            for (String genderLabel : genders) {
-                Gender gender = new Gender(genderLabel);
-                mDao.insert(gender);
-            }
-            return null;
-        }
-    }
+//    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
+//        private final GenderDao mDao;
+//        String[] genders = {"Agender", "Androgyne", "Androgynous", "Bigender", "Cis", "Cisgender", "Cis Female", "Cis Male", "Cis Man", "Cis Woman", "Cisgender Female", "Cisgender Male", "Cisgender Man", "Cisgender Woman", "Male", "Female"};
+//
+//        PopulateDbAsync(FamilyTreeRoomDatabase db) {
+//            mDao = db.genderDao();
+//        }
+//
+//        @Override
+//        protected Void doInBackground(Void... voids) {
+//            for (String genderLabel : genders) {
+//                Gender gender = new Gender(genderLabel);
+//                mDao.insert(gender);
+//            }
+//            return null;
+//        }
+//    }
 }
