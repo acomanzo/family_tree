@@ -64,7 +64,8 @@
                 android:id="@+id/new_house_number_text_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="House Number">
+                android:hint="House Number"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/new_person_house_number"
@@ -76,7 +77,8 @@
                 android:id="@+id/new_person_street_name_text_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Street Name">
+                android:hint="Street Name"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/new_person_street_name"
@@ -88,7 +90,8 @@
                 android:id="@+id/new_person_town_text_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Town or City">
+                android:hint="Town or City"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/new_person_town"
@@ -100,7 +103,8 @@
                 android:id="@+id/new_person_state_text_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="State">
+                android:hint="State"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/new_person_state"
@@ -112,7 +116,8 @@
                 android:id="@+id/new_person_country_text_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Country">
+                android:hint="Country"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/new_person_country"
@@ -124,7 +129,8 @@
                 android:id="@+id/new_person_zipcode_text_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Zipcode">
+                android:hint="Zipcode"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/new_person_zipcode"

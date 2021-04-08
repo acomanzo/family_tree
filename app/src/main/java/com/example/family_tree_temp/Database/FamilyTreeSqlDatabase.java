@@ -2,6 +2,7 @@ package com.example.family_tree_temp.Database;
 
 import android.util.Log;
 
+import com.example.family_tree_temp.Models.Address;
 import com.example.family_tree_temp.Models.ContactInformation;
 import com.example.family_tree_temp.Models.Email;
 import com.example.family_tree_temp.Models.FamilyMember;
@@ -29,7 +30,7 @@ public class FamilyTreeSqlDatabase {
     }
 
     private enum Model {
-        FAMILY_MEMBER, EMAIL, CONTACT_INFORMATION, PHONE_NUMBER
+        FAMILY_MEMBER, EMAIL, CONTACT_INFORMATION, PHONE_NUMBER, ADDRESS
     }
 
     private String baseUrl;
@@ -130,6 +131,8 @@ public class FamilyTreeSqlDatabase {
                 return parseContactInformation(responseBody, status, crudMethod);
             case PHONE_NUMBER:
                 return parsePhoneNumber(responseBody, status, crudMethod);
+            case ADDRESS:
+                return parseAddress(responseBody, status, crudMethod);
             default:
                 return null;
         }
@@ -235,6 +238,31 @@ public class FamilyTreeSqlDatabase {
         return null;
     }
 
+    public static String parseAddress(String responseBody, int status, CrudMethod crudMethod) {
+        try {
+            JSONObject response = new JSONObject(responseBody);
+            if (status > 299) {
+                String message = response.getString("message");
+                Log.i("familyTreeSqlDatabase", message);
+            }
+            else {
+                switch (crudMethod) {
+                    case CREATE:
+                        JSONArray recordSet = response.getJSONArray("recordset");
+                        JSONObject address = recordSet.getJSONObject(0);
+                        int emailId = address.getInt("ContactAddressId");
+                        return String.valueOf(emailId);
+                    case UPDATE:
+                    case DELETE:
+                        break;
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("familyTreeSqlDatabase", e.getLocalizedMessage());
+        }
+        return null;
+    }
+
     public String insertEmail(Email email) {
 
         String stubs = "/email" +
@@ -259,6 +287,20 @@ public class FamilyTreeSqlDatabase {
                 "&contactInformationId=" + phoneNumber.getContactInformationServerId();
 
         String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.PHONE_NUMBER);
+        return response;
+    }
+
+    public String insertAddress(Address address) {
+        String stubs = "/contactaddress" +
+                "?streetName=" + address.getStreetName() +
+                "&houseNumber=" + address.getHouseNumber() +
+                "&extra=" + "null" +
+                "&city=" + address.getCity() +
+                "&state=" + address.getState() +
+                "&zipcode=" + address.getZipCode() +
+                "&contactInformationId=" + address.getContactInformationServerId();
+
+        String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.ADDRESS);
         return response;
     }
 }
