@@ -48,26 +48,26 @@
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/new_person_age_text_field"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Age">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/new_person_age"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"/>-->
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/new_person_age_text_field"
+                android:id="@+id/new_house_number_text_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Age">
+                android:hint="House Number">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/new_person_age"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/new_street_number_text_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Street Number">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/new_person_street_number"
+                    android:id="@+id/new_person_house_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -144,15 +144,29 @@
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/relationship_spinner"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/new_person_birthdate_text_field"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dialog"
-                android:layout_gravity="center"
-                android:padding="8dp"
-                android:layout_margin="8dp"
-                android:visibility="gone"/>
+                android:hint="Birth date"
+                app:placeholderText="mm/dd/yyyy">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/new_person_birthdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+<!--            <Spinner-->
+<!--                android:id="@+id/relationship_spinner"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:spinnerMode="dialog"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:padding="8dp"-->
+<!--                android:layout_margin="8dp"-->
+<!--                android:visibility="gone"/>-->
+
 
             <Button
                 android:id="@+id/finish_button"

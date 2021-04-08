@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/family_member_dropdown_update"
+        android:title="Update"
+        android:contentDescription="update"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/family_member_dropdown_delete"
+        android:title="Delete"
+        android:contentDescription="delete"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/family_member_dropdown_add_ancestor"
+        android:title="Add ancestor"
+        android:contentDescription="add ancestor"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/family_member_dropdown_add_descendant"
+        android:title="Add descendant"
+        android:contentDescription="add descendant"
+        app:showAsAction="never" />
+</menu>

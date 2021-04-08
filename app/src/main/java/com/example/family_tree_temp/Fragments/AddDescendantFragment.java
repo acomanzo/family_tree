@@ -94,7 +94,7 @@ public class AddDescendantFragment extends Fragment {
 
             String firstName = ((TextInputEditText) view.findViewById(R.id.add_descendant_first_name)).getText().toString();
             String lastName = ((TextInputEditText) view.findViewById(R.id.add_descendant_last_name)).getText().toString();
-            String age = ((TextInputEditText) view.findViewById(R.id.add_descendant_age)).getText().toString();
+//            String age = ((TextInputEditText) view.findViewById(R.id.add_descendant_age)).getText().toString();
             String streetNumber = ((TextInputEditText) view.findViewById(R.id.add_descendant_street_number)).getText().toString();
             String streetName = ((TextInputEditText) view.findViewById(R.id.add_descendant_street_name)).getText().toString();
             String townCity = ((TextInputEditText) view.findViewById(R.id.add_descendant_town)).getText().toString();
@@ -105,15 +105,18 @@ public class AddDescendantFragment extends Fragment {
             //Address address = new Address(streetNumber, streetName, townCity, state, country, zipcode);
 
             String gender = ((TextInputEditText) view.findViewById(R.id.add_descendant_gender)).getText().toString();
-            int genderId;
-            switch (gender) {
-                default:
-                    genderId = 1;
-                    break;
-            }
+            String birthDate = ((TextInputEditText) view.findViewById(R.id.add_descendant_birth_date)).getText().toString();
+
+//            int genderId;
+//            switch (gender) {
+//                default:
+//                    genderId = 1;
+//                    break;
+//            }
+
+
             String relationship = null;
             relationship = spinner.getSelectedItem().toString();
-
             int depth;
             switch (relationship.toLowerCase()) {
                 case "child":
@@ -131,7 +134,7 @@ public class AddDescendantFragment extends Fragment {
                     break;
             }
 
-            FamilyMember descendant = new FamilyMember(firstName, lastName, 10, genderId);
+            FamilyMember descendant = new FamilyMember(firstName, lastName, birthDate, gender);
 
             AncestorDescendantBundle ancestorDescendantBundle = new AncestorDescendantBundle(descendant, ancestorId, depth);
 

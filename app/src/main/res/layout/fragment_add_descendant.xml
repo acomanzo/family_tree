@@ -49,17 +49,17 @@
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/add_descendant_age_text_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Age">
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/add_descendant_age_text_field"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Age">-->
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/add_descendant_age"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            </com.google.android.material.textfield.TextInputLayout>
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/add_descendant_age"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"/>-->
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/add_descendant_street_number_text_field"
@@ -141,6 +141,19 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/add_descendant_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/add_descendant_birth_date_text_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Birth date"
+                app:placeholderText="mm/dd/yyyy">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/add_descendant_birth_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>

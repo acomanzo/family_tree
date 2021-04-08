@@ -7,12 +7,13 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "FamilyMember", foreignKeys = {@ForeignKey(
-        entity = Gender.class,
-        parentColumns = "genderId",
-        childColumns = "genderId",
-        onDelete = ForeignKey.CASCADE
-)})
+//@Entity(tableName = "FamilyMember", foreignKeys = {@ForeignKey(
+//        entity = Gender.class,
+//        parentColumns = "genderId",
+//        childColumns = "genderId",
+//        onDelete = ForeignKey.CASCADE
+//)})
+@Entity(tableName = "FamilyMember")
 public class FamilyMember {
 
     @PrimaryKey(autoGenerate = true)
@@ -24,24 +25,45 @@ public class FamilyMember {
     @NonNull
     private String lastName;
 
-    private int age;
+    //private int age;
+    private String birthDate;
 
-    private int genderId;
+    //private int genderId;
+    private String gender;
 
-    public FamilyMember(@NonNull String firstName, @NonNull String lastName, int age, int genderId) {
+    private int serverId;
+
+//    public FamilyMember(@NonNull String firstName, @NonNull String lastName, int age, int genderId) {
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.age = age;
+//        this.genderId = genderId;
+//    }
+    public FamilyMember(@NonNull String firstName, @NonNull String lastName, String birthDate, String gender) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.age = age;
-        this.genderId = genderId;
+        this.birthDate = birthDate;
+        this.gender = gender;
+    }
+
+//    @Ignore
+//    public FamilyMember(@NonNull String firstName, @NonNull String lastName, int age, int genderId, int serverId) {
+//        this(-1, firstName, lastName, age, genderId, serverId);
+//    }
+
+    @Ignore
+    public FamilyMember(@NonNull String firstName, @NonNull String lastName, String birthDate, String gender, int serverId) {
+        this(-1, firstName, lastName, birthDate, gender, serverId);
     }
 
     @Ignore
-    public FamilyMember(int familyMemberId, @NonNull String firstName, @NonNull String lastName, int age, int genderId) {
+    public FamilyMember(int familyMemberId, @NonNull String firstName, @NonNull String lastName, String birthDate, String gender, int serverId) {
         this.familyMemberId = familyMemberId;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.age = age;
-        this.genderId = genderId;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.serverId = serverId;
     }
 
     public int getFamilyMemberId() {
@@ -56,15 +78,31 @@ public class FamilyMember {
         return lastName;
     }
 
-    public int getAge() {
-        return age;
+//    public int getAge() {
+//        return age;
+//    }
+
+    public String getBirthDate() {
+        return birthDate;
     }
 
-    public int getGenderId() {
-        return genderId;
+//    public int getGenderId() {
+//        return genderId;
+//    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public int getServerId() {
+        return serverId;
     }
 
     public void setFamilyMemberId(int familyMemberId) {
         this.familyMemberId = familyMemberId;
+    }
+
+    public void setServerId(int serverId) {
+        this.serverId = serverId;
     }
 }

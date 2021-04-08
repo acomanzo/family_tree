@@ -8,10 +8,14 @@ import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.family_tree_temp.Activities.MainActivity;
@@ -42,12 +46,8 @@ public class FamilyMemberDetailFragment extends Fragment {
     private TextInputEditText state;
     private TextInputEditText zipcode;
     private TextInputEditText gender;
+    private TextInputEditText birthDate;
     private TextView descendants;
-
-    private Button addAncestorButton;
-    private Button addDescendantButton;
-    private Button updateButton;
-    private Button deleteButton;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -118,6 +118,8 @@ public class FamilyMemberDetailFragment extends Fragment {
                 familyMember = mFamilyMemberViewModel.getFamilyMemberAtIndex(position);
             }
         });
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -134,12 +136,8 @@ public class FamilyMemberDetailFragment extends Fragment {
         state = view.findViewById(R.id.family_member_detail_state);
         zipcode = view.findViewById(R.id.family_member_detail_zipcode);
         gender = view.findViewById(R.id.family_member_detail_gender);
+        birthDate = view.findViewById(R.id.family_member_detail_birth_date);
         descendants = view.findViewById(R.id.family_member_detail_descendants);
-
-        addAncestorButton = view.findViewById(R.id.family_member_detail_add_ancestor_button);
-        addDescendantButton = view.findViewById(R.id.family_member_detail_add_descendant_button);
-        updateButton = view.findViewById(R.id.family_member_detail_update_button);
-        deleteButton = view.findViewById(R.id.family_member_detail_delete_button);
 
         mFamilyMemberViewModel = ViewModelProviders.of(getActivity()).get(FamilyMemberViewModel.class);
 
@@ -154,8 +152,10 @@ public class FamilyMemberDetailFragment extends Fragment {
 //        town.setText(address.getTownCity());
 //        state.setText(address.getState());
 //        zipcode.setText(address.getZipcode());
-        gender.setText(String.valueOf(familyMember.getGenderId()));
+//        gender.setText(String.valueOf(familyMember.getGenderId()));
+        gender.setText(familyMember.getGender());
 
+        birthDate.setText(familyMember.getBirthDate());
 //        ArrayList<Person> children = person.getChildren();
 //        if (children.size() > 0) {
 //            String descendantsStr = "";
@@ -168,45 +168,74 @@ public class FamilyMemberDetailFragment extends Fragment {
 //            descendants.setText("No children.");
 //        }
 
-        updateButton.setOnClickListener(v -> {
-
-            // need to add code to validate input
-            String updatedFirstName = firstName.getText().toString();
-            String updatedLastName = lastName.getText().toString();
-            String updatedHouseNumber = houseNumber.getText().toString();
-            String updatedStreetName = streetName.getText().toString();
-            String updatedTown = town.getText().toString();
-            String updatedState = state.getText().toString();
-            String updatedZipcode = zipcode.getText().toString();
-            String updatedGender = gender.getText().toString();
-
-            int id = familyMember.getFamilyMemberId();
-
-            FamilyMember updatedFamilyMember = new FamilyMember(id, updatedFirstName, updatedLastName, 10, Integer.valueOf(updatedGender));
-            mFamilyMemberViewModel.update(updatedFamilyMember);
-
-            ((MainActivity) getActivity()).transitionToHomeFromSomeView();
-        });
-
-        deleteButton.setOnClickListener(v -> {
-            mFamilyMemberViewModel.delete(familyMember);
-            ((MainActivity) getActivity()).transitionToHomeFromSomeView();
-        });
-
-        addAncestorButton.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
-
-            ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddAncestor(bundle);
-        });
-
-        addDescendantButton.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
-
-            ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddDescendant(bundle);
-        });
-
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.family_member_detail_top_bar, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.family_member_dropdown_update:
+                update();
+                return true;
+            case R.id.family_member_dropdown_delete:
+                delete();
+                return true;
+            case R.id.family_member_dropdown_add_ancestor:
+                addAncestor();
+                return true;
+            case R.id.family_member_dropdown_add_descendant:
+                addDescendant();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    private void update() {
+        // need to add code to validate input
+        String updatedFirstName = firstName.getText().toString();
+        String updatedLastName = lastName.getText().toString();
+        String updatedHouseNumber = houseNumber.getText().toString();
+        String updatedStreetName = streetName.getText().toString();
+        String updatedTown = town.getText().toString();
+        String updatedState = state.getText().toString();
+        String updatedZipcode = zipcode.getText().toString();
+        String updatedGender = gender.getText().toString();
+        String updatedBirthDate = birthDate.getText().toString();
+
+        int id = familyMember.getFamilyMemberId();
+        int serverId = familyMember.getServerId();
+
+        FamilyMember updatedFamilyMember = new FamilyMember(id, updatedFirstName, updatedLastName, updatedBirthDate, updatedGender, serverId);
+        mFamilyMemberViewModel.update(updatedFamilyMember);
+
+        ((MainActivity) getActivity()).transitionToHomeFromSomeView();
+    }
+
+    private void delete() {
+        mFamilyMemberViewModel.delete(familyMember);
+        ((MainActivity) getActivity()).transitionToHomeFromSomeView();
+    }
+
+    private void addAncestor() {
+        Bundle bundle = new Bundle();
+        bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
+
+        ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddAncestor(bundle);
+    }
+
+    private void addDescendant() {
+        Bundle bundle = new Bundle();
+        bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
+
+        ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddDescendant(bundle);
     }
 }
