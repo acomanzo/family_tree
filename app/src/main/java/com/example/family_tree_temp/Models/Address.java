@@ -5,25 +5,31 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+//@Entity(foreignKeys = {@ForeignKey(
+//        entity = FamilyMember.class,
+//        parentColumns = "familyMemberId",
+//        childColumns = "familyMemberId",
+//        onDelete = ForeignKey.CASCADE
+//), @ForeignKey(
+//        entity = City.class,
+//        parentColumns = "cityId",
+//        childColumns = "cityId",
+//        onDelete = ForeignKey.CASCADE
+//), @ForeignKey(
+//        entity = State.class,
+//        parentColumns = "stateId",
+//        childColumns = "stateId",
+//        onDelete = ForeignKey.CASCADE
+//), @ForeignKey(
+//        entity = Zipcode.class,
+//        parentColumns = "zipcodeId",
+//        childColumns = "zipcodeId",
+//        onDelete = ForeignKey.CASCADE
+//)})
 @Entity(foreignKeys = {@ForeignKey(
         entity = FamilyMember.class,
         parentColumns = "familyMemberId",
         childColumns = "familyMemberId",
-        onDelete = ForeignKey.CASCADE
-), @ForeignKey(
-        entity = City.class,
-        parentColumns = "cityId",
-        childColumns = "cityId",
-        onDelete = ForeignKey.CASCADE
-), @ForeignKey(
-        entity = State.class,
-        parentColumns = "stateId",
-        childColumns = "stateId",
-        onDelete = ForeignKey.CASCADE
-), @ForeignKey(
-        entity = Zipcode.class,
-        parentColumns = "zipcodeId",
-        childColumns = "zipcodeId",
         onDelete = ForeignKey.CASCADE
 )})
 public class Address {
@@ -43,23 +49,42 @@ public class Address {
 
     private String extra;
 
-    @NonNull
-    private int cityId;
+//    @NonNull
+//    private int cityId;
+//
+//    @NonNull
+//    private int stateId;
+//
+//    @NonNull
+//    private int zipcodeId;
 
     @NonNull
-    private int stateId;
+    private String city;
 
     @NonNull
-    private int zipcodeId;
+    private String state;
 
-    public Address(@NonNull int addressId, @NonNull int familyMemberId, @NonNull int houseNumber, @NonNull String streetName, String extra, @NonNull int cityId, @NonNull int stateId, @NonNull int zipcodeId) {
+    @NonNull
+    private String zipCode;
+
+//    public Address(@NonNull int addressId, @NonNull int familyMemberId, @NonNull int houseNumber, @NonNull String streetName, String extra, @NonNull int cityId, @NonNull int stateId, @NonNull int zipcodeId) {
+//        this.addressId = addressId;
+//        this.familyMemberId = familyMemberId;
+//        this.houseNumber = houseNumber;
+//        this.streetName = streetName;
+//        this.cityId = cityId;
+//        this.stateId = stateId;
+//        this.zipcodeId = zipcodeId;
+//    }
+
+    public Address(@NonNull int addressId, @NonNull int familyMemberId, @NonNull int houseNumber, @NonNull String streetName, String extra, @NonNull String city, @NonNull String state, @NonNull String zipCode) {
         this.addressId = addressId;
         this.familyMemberId = familyMemberId;
         this.houseNumber = houseNumber;
         this.streetName = streetName;
-        this.cityId = cityId;
-        this.stateId = stateId;
-        this.zipcodeId = zipcodeId;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
     }
 
     public int getAddressId() {
@@ -82,20 +107,34 @@ public class Address {
         return extra;
     }
 
-    public int getCityId() {
-        return cityId;
+//    public int getCityId() {
+//        return cityId;
+//    }
+//
+//    public int getStateId() {
+//        return stateId;
+//    }
+//
+//    public int getZipcodeId() {
+//        return zipcodeId;
+//    }
+
+
+    @NonNull
+    public String getCity() {
+        return city;
     }
 
-    public int getStateId() {
-        return stateId;
+    public String getState() {
+        return state;
     }
 
-    public int getZipcodeId() {
-        return zipcodeId;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    @Override
-    public String toString() {
-        return houseNumber + " " + streetName + ", " + cityId + ", " + stateId + " " + zipcodeId;
-    }
+//    @Override
+//    public String toString() {
+//        return houseNumber + " " + streetName + ", " + cityId + ", " + stateId + " " + zipcodeId;
+//    }
 }
