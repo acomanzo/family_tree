@@ -12,9 +12,11 @@ public class Person implements Parcelable {
     private int familyMemberId;
     private String firstName;
     private String lastName;
-    private int genderId;
+//    private int genderId;
+    private String gender;
 
-    private String age;
+//    private String age;
+    private String birthDate;
 
     private ArrayList<Person> children;
     private boolean expanded;
@@ -23,20 +25,39 @@ public class Person implements Parcelable {
     private int futureRelativePosition;
     private String futureRelativeRelationship;
 
-    public Person(@NonNull String firstName, @NonNull String lastName, @NonNull String age, @NonNull int genderId) {
-        this(firstName, lastName, age, genderId, null);
+//    public Person(@NonNull String firstName, @NonNull String lastName, @NonNull String age, @NonNull int genderId) {
+//        this(firstName, lastName, age, genderId, null);
+//    }
+//
+//    public Person(@NonNull String firstName, @NonNull String lastName, String age, int genderId, String relationship) {
+//        this(firstName, lastName, age, genderId, -1, relationship);
+//    }
+//
+//    public Person(@NonNull String firstName, @NonNull String lastName, @NonNull String age, @NonNull int genderId, int futureRelativePosition, String futureRelativeRelationship) {
+//        children = new ArrayList<>();
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.age = age;
+//        this.genderId = genderId;
+//
+//        this.futureRelativePosition = futureRelativePosition;
+//        this.futureRelativeRelationship = futureRelativeRelationship;
+//    }
+
+    public Person(@NonNull String firstName, @NonNull String lastName, @NonNull String birthDate, @NonNull String gender) {
+        this(firstName, lastName, birthDate, gender, null);
     }
 
-    public Person(@NonNull String firstName, @NonNull String lastName, String age, int genderId, String relationship) {
-        this(firstName, lastName, age, genderId, -1, relationship);
+    public Person(@NonNull String firstName, @NonNull String lastName, @NonNull String birthDate, @NonNull String gender, String relationship) {
+        this(firstName, lastName, birthDate, gender, -1, relationship);
     }
 
-    public Person(@NonNull String firstName, @NonNull String lastName, @NonNull String age, @NonNull int genderId, int futureRelativePosition, String futureRelativeRelationship) {
+    public Person(@NonNull String firstName, @NonNull String lastName, @NonNull String birthDate, @NonNull String gender, int futureRelativePosition, String futureRelativeRelationship) {
         children = new ArrayList<>();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.age = age;
-        this.genderId = genderId;
+        this.birthDate = birthDate;
+        this.gender = gender;
 
         this.futureRelativePosition = futureRelativePosition;
         this.futureRelativeRelationship = futureRelativeRelationship;
@@ -45,7 +66,8 @@ public class Person implements Parcelable {
     protected Person(Parcel in) {
         firstName = in.readString();
         lastName = in.readString();
-        age = in.readString();
+//        age = in.readString();
+        birthDate = in.readString();
         String streetNumber = in.readString();
         String streetName = in.readString();
         String townCity = in.readString();
@@ -115,7 +137,8 @@ public class Person implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(firstName);
         dest.writeString(lastName);
-        dest.writeString(age);
+        dest.writeString(birthDate);
+//        dest.writeString(age);
 //        dest.writeString(address.getStreetNumber());
 //        dest.writeString(address.getStreetName());
 //        dest.writeString(address.getTownCity());
@@ -142,12 +165,20 @@ public class Person implements Parcelable {
         return lastName;
     }
 
-    public int getGenderId() {
-        return genderId;
+//    public int getGenderId() {
+//        return genderId;
+//    }
+//
+//    public String getAge() {
+//        return age;
+//    }
+
+    public String getGender() {
+        return gender;
     }
 
-    public String getAge() {
-        return age;
+    public String getBirthDate() {
+        return birthDate;
     }
 
     @Override
@@ -169,7 +200,7 @@ public class Person implements Parcelable {
         this.lastName = lastName;
     }
 
-    public void setAge(String age) {
-        this.age = age;
-    }
+//    public void setAge(String age) {
+//        this.age = age;
+//    }
 }

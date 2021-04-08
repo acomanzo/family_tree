@@ -26,9 +26,13 @@ public class AncestorDescendantBundle implements Parcelable {
     protected AncestorDescendantBundle(Parcel in) {
         String firstName = in.readString();
         String lastName = in.readString();
-        int age = in.readInt();
-        int genderId = in.readInt();
-        FamilyMember newFamilyMember = new FamilyMember(firstName, lastName, age, genderId);
+//        int age = in.readInt();
+//        int genderId = in.readInt();
+//        FamilyMember newFamilyMember = new FamilyMember(firstName, lastName, age, genderId);
+
+        String birthDate = in.readString();
+        String gender = in.readString();
+        FamilyMember newFamilyMember = new FamilyMember(firstName, lastName, birthDate, gender);
 
         int existingFamilyMemberId = in.readInt();
         int depth = in.readInt();
@@ -71,8 +75,10 @@ public class AncestorDescendantBundle implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(newFamilyMember.getFirstName());
         dest.writeString(newFamilyMember.getLastName());
-        dest.writeInt(newFamilyMember.getAge());
-        dest.writeInt(newFamilyMember.getGenderId());
+//        dest.writeInt(newFamilyMember.getAge());
+//        dest.writeInt(newFamilyMember.getGenderId());
+        dest.writeString(newFamilyMember.getBirthDate());
+        dest.writeString(newFamilyMember.getGender());
 
         dest.writeInt(existingFamilyMemberId);
         dest.writeInt(depth);
