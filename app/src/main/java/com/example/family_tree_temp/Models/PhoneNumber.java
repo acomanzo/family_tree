@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey;
 )})
 public class PhoneNumber {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     private int phoneNumberId;
 

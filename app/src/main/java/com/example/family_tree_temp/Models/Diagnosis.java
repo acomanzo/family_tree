@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Diagnosis {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     private int diagnosisId;
 

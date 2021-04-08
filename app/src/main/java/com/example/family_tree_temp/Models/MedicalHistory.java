@@ -24,7 +24,7 @@ import androidx.room.PrimaryKey;
 )})
 public class MedicalHistory {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     private int medicalHistoryNoteId;
 

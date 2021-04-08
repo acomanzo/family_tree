@@ -34,7 +34,7 @@ import androidx.room.PrimaryKey;
 )})
 public class Address {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     private int addressId;
 
