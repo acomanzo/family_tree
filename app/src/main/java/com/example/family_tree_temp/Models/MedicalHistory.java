@@ -3,6 +3,7 @@ package com.example.family_tree_temp.Models;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 //@Entity(foreignKeys = {@ForeignKey(
@@ -28,7 +29,7 @@ public class MedicalHistory {
     @NonNull
     private int medicalHistoryNoteId;
 
-    private int date;
+    private String dateDiagnosed;
 
 //    @NonNull
 //    private int diagnosisId;
@@ -41,6 +42,20 @@ public class MedicalHistory {
 
     private String note;
 
+    private int serverId;
+
+    @Ignore
+    private int familyMemberServerId;
+
+    @Ignore
+    public MedicalHistory(String dateDiagnosed, String note, String diagnosis, int familyMemberId, int familyMemberServerId) {
+        this.dateDiagnosed = dateDiagnosed;
+        this.note = note;
+        this.diagnosis = diagnosis;
+        this.familyMemberId = familyMemberId;
+        this.familyMemberServerId = familyMemberServerId;
+    }
+
 //    public MedicalHistory(@NonNull int medicalHistoryNoteId, int date, @NonNull int diagnosisId, @NonNull int familyMemberId, String note) {
 //        this.medicalHistoryNoteId =  medicalHistoryNoteId;
 //        this.date = date;
@@ -49,9 +64,9 @@ public class MedicalHistory {
 //        this.note = note;
 //    }
 
-    public MedicalHistory(@NonNull int medicalHistoryNoteId, int date, @NonNull String diagnosis, @NonNull int familyMemberId, String note) {
+    public MedicalHistory(@NonNull int medicalHistoryNoteId, String dateDiagnosed, @NonNull String diagnosis, @NonNull int familyMemberId, String note) {
         this.medicalHistoryNoteId =  medicalHistoryNoteId;
-        this.date = date;
+        this.dateDiagnosed = dateDiagnosed;
         this.diagnosis = diagnosis;
         this.familyMemberId = familyMemberId;
         this.note = note;
@@ -61,8 +76,8 @@ public class MedicalHistory {
         return medicalHistoryNoteId;
     }
 
-    public int getDate() {
-        return date;
+    public String getDateDiagnosed() {
+        return dateDiagnosed;
     }
 
 //    public int getDiagnosisId() {
@@ -79,5 +94,17 @@ public class MedicalHistory {
 
     public String getNote() {
         return note;
+    }
+
+    public int getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(int serverId) {
+        this.serverId = serverId;
+    }
+
+    public int getFamilyMemberServerId() {
+        return familyMemberServerId;
     }
 }

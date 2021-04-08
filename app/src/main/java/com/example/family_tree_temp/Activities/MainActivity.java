@@ -24,6 +24,7 @@ import com.example.family_tree_temp.Fragments.FamilyMemberDetailFragment;
 import com.example.family_tree_temp.Fragments.HomeFragment;
 import com.example.family_tree_temp.Fragments.NewAddressFragment;
 import com.example.family_tree_temp.Fragments.NewEmailFragment;
+import com.example.family_tree_temp.Fragments.NewMedicalHistoryFragment;
 import com.example.family_tree_temp.Fragments.NewPhoneNumberFragment;
 import com.example.family_tree_temp.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
     public final String ADD_EMAIL_FRAGMENT = "add_email_fragment";
     public final String ADD_PHONE_NUMBER_FRAGMENT = "add_phone_number_fragment";
     public final String ADD_ADDRESS_FRAGMENT = "add_address_fragment";
+    public final String ADD_MEDICAL_HISTORY_FRAGMENT = "add_medical_history_fragment";
     
     private String currentFragmentTag;
 
@@ -252,6 +254,20 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
 
         fragmentManager.beginTransaction()
                 .replace(R.id.host_fragment, addAddressFragment, newTag)
+                .addToBackStack(newTag)
+                .commit();
+    }
+
+    public void transitionFromDetailToAddMedicalHistory(Bundle bundle) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        String newTag = ADD_MEDICAL_HISTORY_FRAGMENT;
+
+        Fragment addMedicalHistoryFragment = new NewMedicalHistoryFragment();
+        addMedicalHistoryFragment.setArguments(bundle);
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.host_fragment, addMedicalHistoryFragment, newTag)
                 .addToBackStack(newTag)
                 .commit();
     }

@@ -227,6 +227,9 @@ public class FamilyMemberDetailFragment extends Fragment {
             case R.id.family_member_dropdown_add_address:
                 addAddress();
                 return true;
+            case R.id.family_member_dropdown_add_medical_history:
+                addMedicalHistory();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -307,5 +310,15 @@ public class FamilyMemberDetailFragment extends Fragment {
         getParentFragmentManager().setFragmentResult("contactInformation", bundle);
 
         ((MainActivity) getActivity()).transitionFromDetailToAddAddress(bundle);
+    }
+
+    public void addMedicalHistory() {
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("familyMemberServerId", familyMember.getServerId());
+        bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
+        getParentFragmentManager().setFragmentResult("familyMember", bundle);
+
+        ((MainActivity) getActivity()).transitionFromDetailToAddMedicalHistory(bundle);
     }
 }

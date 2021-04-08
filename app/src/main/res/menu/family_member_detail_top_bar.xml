@@ -36,4 +36,9 @@
         android:title="Add Address"
         android:contentDescription="add address"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/family_member_dropdown_add_medical_history"
+        android:title="Add Medical History"
+        android:contentDescription="add medical history"
+        app:showAsAction="never" />
 </menu>

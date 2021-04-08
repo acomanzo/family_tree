@@ -65,7 +65,8 @@
                 android:id="@+id/add_descendant_street_number_text_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Street Number">
+                android:hint="Street Number"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/add_descendant_street_number"
@@ -77,7 +78,8 @@
                 android:id="@+id/add_descendant_street_name_text_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Street Name">
+                android:hint="Street Name"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/add_descendant_street_name"
@@ -89,7 +91,8 @@
                 android:id="@+id/add_descendant_town_text_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Town or City">
+                android:hint="Town or City"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/add_descendant_town"
@@ -101,7 +104,8 @@
                 android:id="@+id/add_descendant_state_text_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="State">
+                android:hint="State"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/add_descendant_state"
@@ -113,7 +117,8 @@
                 android:id="@+id/add_descendant_country_text_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Country">
+                android:hint="Country"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/add_descendant_country"
@@ -125,7 +130,8 @@
                 android:id="@+id/add_descendant_zipcode_text_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Zipcode">
+                android:hint="Zipcode"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/add_descendant_zipcode"

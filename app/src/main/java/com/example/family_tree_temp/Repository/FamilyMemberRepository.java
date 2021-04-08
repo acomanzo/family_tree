@@ -103,7 +103,15 @@ public class FamilyMemberRepository {
     }
 
     public void insertAncestor(AncestorDescendantBundle ancestorDescendantBundle) {
-        new InsertAncestorAsyncTask(mAncestorDescendantDao, mFamilyMemberDao).execute(ancestorDescendantBundle);
+//        ExecutorService executor = Executors.newSingleThreadExecutor();
+//        Handler handler = new Handler(Looper.getMainLooper());
+//        executor.execute(() -> {
+//            FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
+//            familyTreeSqlDatabase.insertAncestor(ancestorDescendantBundle);
+//            handler.post(() -> {
+//                new InsertAncestorAsyncTask(mAncestorDescendantDao, mFamilyMemberDao).execute(ancestorDescendantBundle);           });
+//        });
+                new InsertAncestorAsyncTask(mAncestorDescendantDao, mFamilyMemberDao).execute(ancestorDescendantBundle);
     }
 
     private static class insertFamilyMemberAsyncTask extends AsyncTask<FamilyMember, Void, Void> {

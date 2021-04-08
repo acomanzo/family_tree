@@ -6,7 +6,9 @@ import com.example.family_tree_temp.Models.Address;
 import com.example.family_tree_temp.Models.ContactInformation;
 import com.example.family_tree_temp.Models.Email;
 import com.example.family_tree_temp.Models.FamilyMember;
+import com.example.family_tree_temp.Models.MedicalHistory;
 import com.example.family_tree_temp.Models.PhoneNumber;
+import com.example.family_tree_temp.ViewModels.AncestorDescendantBundle;
 import com.google.gson.*;
 
 import org.json.JSONArray;
@@ -30,7 +32,7 @@ public class FamilyTreeSqlDatabase {
     }
 
     private enum Model {
-        FAMILY_MEMBER, EMAIL, CONTACT_INFORMATION, PHONE_NUMBER, ADDRESS
+        FAMILY_MEMBER, EMAIL, CONTACT_INFORMATION, PHONE_NUMBER, ADDRESS, MEDICAL_HISTORY
     }
 
     private String baseUrl;
@@ -133,6 +135,8 @@ public class FamilyTreeSqlDatabase {
                 return parsePhoneNumber(responseBody, status, crudMethod);
             case ADDRESS:
                 return parseAddress(responseBody, status, crudMethod);
+            case MEDICAL_HISTORY:
+                return parseMedicalHistory(responseBody, status, crudMethod);
             default:
                 return null;
         }
@@ -263,6 +267,31 @@ public class FamilyTreeSqlDatabase {
         return null;
     }
 
+    public static String parseMedicalHistory(String responseBody, int status, CrudMethod crudMethod) {
+        try {
+            JSONObject response = new JSONObject(responseBody);
+            if (status > 299) {
+                String message = response.getString("message");
+                Log.i("familyTreeSqlDatabase", message);
+            }
+            else {
+                switch (crudMethod) {
+                    case CREATE:
+                        JSONArray recordSet = response.getJSONArray("recordset");
+                        JSONObject medicalHistory = recordSet.getJSONObject(0);
+                        int emailId = medicalHistory.getInt("MedicalHistoryId");
+                        return String.valueOf(emailId);
+                    case UPDATE:
+                    case DELETE:
+                        break;
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("familyTreeSqlDatabase", e.getLocalizedMessage());
+        }
+        return null;
+    }
+
     public String insertEmail(Email email) {
 
         String stubs = "/email" +
@@ -303,4 +332,25 @@ public class FamilyTreeSqlDatabase {
         String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.ADDRESS);
         return response;
     }
+
+    public String insertMedicalHistory(MedicalHistory medicalHistory) {
+        String stubs = "/medicalhistory" +
+                "?dateDiagnosed=" + medicalHistory.getDateDiagnosed() +
+                "&note=" + medicalHistory.getNote() +
+                "&diagnosis=" + medicalHistory.getDiagnosis() +
+                "&familyMemberId=" + medicalHistory.getFamilyMemberServerId();
+
+        String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.MEDICAL_HISTORY);
+        return response;
+    }
+
+//    public String insertAncestor(AncestorDescendantBundle ancestorDescendantBundle) {
+//        String stubs = "/ancestordescendant" +
+//                "?ancestorId=" + ancestorDescendantBundle.getNewFamilyMember() +
+//                "&descendantId=" + ancestorDescendantBundle.getExistingFamilyMemberId() +
+//                "&depth=" + ancestorDescendantBundle.getDepth();
+//
+//        String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.ANCESTOR_DESCENDANT);
+//        return response;
+//    }
 }
