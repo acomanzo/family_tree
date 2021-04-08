@@ -23,6 +23,7 @@ import com.example.family_tree_temp.Fragments.AddPersonFragment;
 import com.example.family_tree_temp.Fragments.FamilyMemberDetailFragment;
 import com.example.family_tree_temp.Fragments.HomeFragment;
 import com.example.family_tree_temp.Fragments.NewEmailFragment;
+import com.example.family_tree_temp.Fragments.NewPhoneNumberFragment;
 import com.example.family_tree_temp.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
     public final String ADD_ANCESTOR_FRAGMENT = "add_ancestor_fragment";
     public final String ADD_DESCENDANT_FRAGMENT = "add_descendant_fragment";
     public final String ADD_EMAIL_FRAGMENT = "add_email_fragment";
+    public final String ADD_PHONE_NUMBER_FRAGMENT = "add_phone_number_fragment";
     
     private String currentFragmentTag;
 
@@ -220,6 +222,20 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
 
         fragmentManager.beginTransaction()
                 .replace(R.id.host_fragment, addEmailFragment, newTag)
+                .addToBackStack(newTag)
+                .commit();
+    }
+
+    public void transitionFromDetailToAddPhoneNumber(Bundle bundle) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        String newTag = ADD_PHONE_NUMBER_FRAGMENT;
+
+        Fragment addPhoneNumberFragment = new NewPhoneNumberFragment();
+        addPhoneNumberFragment.setArguments(bundle);
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.host_fragment, addPhoneNumberFragment, newTag)
                 .addToBackStack(newTag)
                 .commit();
     }

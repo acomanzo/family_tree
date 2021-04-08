@@ -2,12 +2,18 @@ package com.example.family_tree_temp.Repository;
 
 import android.app.Application;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.example.family_tree_temp.Database.FamilyTreeRoomDatabase;
+import com.example.family_tree_temp.Database.FamilyTreeSqlDatabase;
 import com.example.family_tree_temp.DatabaseAccessObjects.PhoneNumberDao;
+import com.example.family_tree_temp.Models.Email;
 import com.example.family_tree_temp.Models.PhoneNumber;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import androidx.lifecycle.LiveData;
 
@@ -20,17 +26,35 @@ public class PhoneNumberRepository {
         FamilyTreeRoomDatabase db = FamilyTreeRoomDatabase.getDatabase(application);
         mPhoneNumberDao = db.phoneNumberDao();
         mAllPhoneNumbers = mPhoneNumberDao.getAllPhoneNumbers();
-
     }
 
     public LiveData<List<PhoneNumber>> getAllPhoneNumbers() {
         return mAllPhoneNumbers;
     }
 
-    private static class insertPhoneNumberTask extends AsyncTask<PhoneNumber, Void, Void> {
+    public void insertPhoneNumber(PhoneNumber phoneNumber) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executor.execute(() -> {
+            FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
+            String id = familyTreeSqlDatabase.insertPhoneNumber(phoneNumber);
+            phoneNumber.setServerId(Integer.valueOf(id));
+            handler.post(() -> new PhoneNumberRepository.insertPhoneNumberAsyncTask(mPhoneNumberDao).execute(phoneNumber));
+        });
+    }
+
+    public void updatePhoneNumber(PhoneNumber phoneNumber) {
+
+    }
+
+    public void deletePhoneNumber(PhoneNumber phoneNumber) {
+
+    }
+
+    private static class insertPhoneNumberAsyncTask extends AsyncTask<PhoneNumber, Void, Void> {
         private PhoneNumberDao mAsyncTaskDao;
 
-        insertPhoneNumberTask(PhoneNumberDao dao) {
+        insertPhoneNumberAsyncTask(PhoneNumberDao dao) {
             mAsyncTaskDao = dao;
         }
 

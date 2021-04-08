@@ -21,4 +21,19 @@
         android:title="Add descendant"
         android:contentDescription="add descendant"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/family_member_dropdown_add_email"
+        android:title="Add Email"
+        android:contentDescription="add email"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/family_member_dropdown_add_phone_number"
+        android:title="Add Phone Number"
+        android:contentDescription="add phone number"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/family_member_dropdown_add_address"
+        android:title="Add Address"
+        android:contentDescription="add address"
+        app:showAsAction="never" />
 </menu>

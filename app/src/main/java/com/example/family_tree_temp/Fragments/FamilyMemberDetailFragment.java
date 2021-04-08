@@ -222,6 +222,7 @@ public class FamilyMemberDetailFragment extends Fragment {
                 addEmail();
                 return true;
             case R.id.family_member_dropdown_add_phone_number:
+                addPhoneNumber();
                 return true;
             case R.id.family_member_dropdown_add_address:
                 return true;
@@ -281,5 +282,17 @@ public class FamilyMemberDetailFragment extends Fragment {
         getParentFragmentManager().setFragmentResult("contactInformation", bundle);
 
         ((MainActivity) getActivity()).transitionFromDetailToAddEmail(bundle);
+    }
+
+    private void addPhoneNumber() {
+        ContactInformationViewModel contactInformationViewModel = ViewModelProviders.of(getActivity()).get(ContactInformationViewModel.class);
+        ContactInformation contactInformation = contactInformationViewModel.getContactInformationFor(familyMember);
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("contactInformationServerId", contactInformation.getServerId());
+        bundle.putInt("contactInformationId", contactInformation.getContactInformationId());
+        getParentFragmentManager().setFragmentResult("contactInformation", bundle);
+
+        ((MainActivity) getActivity()).transitionFromDetailToAddPhoneNumber(bundle);
     }
 }
