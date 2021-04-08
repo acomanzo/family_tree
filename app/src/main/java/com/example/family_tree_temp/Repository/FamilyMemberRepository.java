@@ -8,8 +8,10 @@ import android.os.Looper;
 import com.example.family_tree_temp.Database.FamilyTreeRoomDatabase;
 import com.example.family_tree_temp.Database.FamilyTreeSqlDatabase;
 import com.example.family_tree_temp.DatabaseAccessObjects.AncestorDescendantDao;
+import com.example.family_tree_temp.DatabaseAccessObjects.ContactInformationDao;
 import com.example.family_tree_temp.DatabaseAccessObjects.FamilyMemberDao;
 import com.example.family_tree_temp.Models.AncestorDescendant;
+import com.example.family_tree_temp.Models.ContactInformation;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.ViewModels.AncestorDescendantBundle;
 
@@ -18,11 +20,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Entity;
 
 public class FamilyMemberRepository {
 
     private FamilyMemberDao mFamilyMemberDao;
     private AncestorDescendantDao mAncestorDescendantDao;
+    private ContactInformationDao mContactInformationDao;
 
     private LiveData<List<FamilyMember>> mAllFamilyMembers;
 
@@ -32,6 +36,7 @@ public class FamilyMemberRepository {
         mAllFamilyMembers = mFamilyMemberDao.getAllFamilyMembers();
 
         mAncestorDescendantDao = db.ancestorDescendantDao();
+        mContactInformationDao = db.contactInformationDao();
     }
 
     public LiveData<List<FamilyMember>> getAllFamilyMembers() {
@@ -45,8 +50,28 @@ public class FamilyMemberRepository {
             FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
             String id = familyTreeSqlDatabase.insertFamilyMember(familyMember);
             familyMember.setServerId(Integer.valueOf(id));
+
             handler.post(() -> {
-                new insertFamilyMemberAsyncTask(mFamilyMemberDao).execute(familyMember);
+                ExecutorService secondExecutor = Executors.newSingleThreadExecutor();
+                Handler secondHandler = new Handler(Looper.getMainLooper());
+                secondExecutor.execute(() -> {
+                    ContactInformation contactInformation = new ContactInformation(familyMember.getServerId());
+                    String contactInformationId = familyTreeSqlDatabase.insertContactInformation(contactInformation);
+                    contactInformation.setServerId(Integer.valueOf(contactInformationId));
+
+                    secondHandler.post(() -> {
+                        new InsertFamilyMemberWithContactInformation(mFamilyMemberDao, mContactInformationDao).execute(familyMember, contactInformation);
+
+//                        ExecutorService thirdExecutor = Executors.newSingleThreadExecutor();
+//                        Handler thirdHandler = new Handler(Looper.getMainLooper());
+//                        thirdExecutor.execute(() -> {
+//                            new insertFamilyMemberAsyncTask(mFamilyMemberDao).execute(familyMember);
+//                            thirdHandler.post(() -> {
+//                                new InsertContactInformationAsyncTask(mContactInformationDao).execute(contactInformation);
+//                            });
+//                        });
+                    });
+                });
             });
         });
     }
@@ -92,6 +117,30 @@ public class FamilyMemberRepository {
         @Override
         protected Void doInBackground(final FamilyMember... params) {
             mAsyncTaskDao.insert(params[0]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
+    private static class InsertFamilyMemberWithContactInformation extends AsyncTask<Object, Void, Void> {
+        private FamilyMemberDao mFamilyMemberDao;
+        private ContactInformationDao mContactInformationDao;
+        InsertFamilyMemberWithContactInformation(FamilyMemberDao mFamilyMemberDao, ContactInformationDao mContactInformationDao) {
+            this.mFamilyMemberDao = mFamilyMemberDao;
+            this.mContactInformationDao = mContactInformationDao;
+        }
+
+        @Override
+        protected Void doInBackground(final Object... params) {
+            FamilyMember familyMember = (FamilyMember) params[0];
+            ContactInformation contactInformation = (ContactInformation) params[1];
+            long id = mFamilyMemberDao.insert(familyMember);
+            contactInformation.setFamilyMemberId((int) id);
+            mContactInformationDao.insert(contactInformation);
             return null;
         }
 
@@ -173,6 +222,20 @@ public class FamilyMemberRepository {
             AncestorDescendant ancestorDescendant = new AncestorDescendant(ancestorId, descendantId, depth);
             ancestorDescendantDao.insert(ancestorDescendant);
 
+            return null;
+        }
+    }
+
+    private static class InsertContactInformationAsyncTask extends AsyncTask<ContactInformation, Void, Void> {
+        private ContactInformationDao mAsyncTaskDao;
+
+        InsertContactInformationAsyncTask(ContactInformationDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final ContactInformation... params) {
+            mAsyncTaskDao.insert(params[0]);
             return null;
         }
     }

@@ -10,13 +10,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.family_tree_temp.Fragments.AddAncestorFragment;
@@ -24,6 +22,7 @@ import com.example.family_tree_temp.Fragments.AddDescendantFragment;
 import com.example.family_tree_temp.Fragments.AddPersonFragment;
 import com.example.family_tree_temp.Fragments.FamilyMemberDetailFragment;
 import com.example.family_tree_temp.Fragments.HomeFragment;
+import com.example.family_tree_temp.Fragments.NewEmailFragment;
 import com.example.family_tree_temp.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -41,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
     public final String FAMILY_MEMBER_DETAIL_FRAGMENT = "family_member_detail_fragment";
     public final String ADD_ANCESTOR_FRAGMENT = "add_ancestor_fragment";
     public final String ADD_DESCENDANT_FRAGMENT = "add_descendant_fragment";
+    public final String ADD_EMAIL_FRAGMENT = "add_email_fragment";
     
     private String currentFragmentTag;
 
@@ -210,7 +210,19 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
                 .commit();
     }
 
+    public void transitionFromDetailToAddEmail(Bundle bundle) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
+        String newTag = ADD_EMAIL_FRAGMENT;
+
+        Fragment addEmailFragment = new NewEmailFragment();
+        addEmailFragment.setArguments(bundle);
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.host_fragment, addEmailFragment, newTag)
+                .addToBackStack(newTag)
+                .commit();
+    }
 
     public void fabBackPressed() {
         FragmentManager fragmentManager = getSupportFragmentManager();

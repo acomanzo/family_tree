@@ -3,10 +3,13 @@ package com.example.family_tree_temp.Fragments;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,13 +22,18 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.family_tree_temp.Activities.MainActivity;
+import com.example.family_tree_temp.Adaptors.FamilyMemberAdaptor;
 import com.example.family_tree_temp.Adaptors.Person;
+import com.example.family_tree_temp.Models.ContactInformation;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.R;
+import com.example.family_tree_temp.ViewModels.ContactInformationViewModel;
+import com.example.family_tree_temp.ViewModels.EmailViewModel;
 import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +43,8 @@ import java.util.ArrayList;
 public class FamilyMemberDetailFragment extends Fragment {
 
     private FamilyMemberViewModel mFamilyMemberViewModel;
+    private ContactInformationViewModel mContactInformationViewModel;
+    private EmailViewModel mEmailViewModel;
 
     private FamilyMember familyMember;
 
@@ -168,6 +178,21 @@ public class FamilyMemberDetailFragment extends Fragment {
 //            descendants.setText("No children.");
 //        }
 
+//        mAdaptor = new FamilyMemberAdaptor((MainActivity) getActivity(), new HomeFragment.OnFamilyMemberItemClickedListener());
+
+        mContactInformationViewModel = ViewModelProviders.of(getActivity()).get(ContactInformationViewModel.class);
+
+        // listen for changes in mAllContactInformation in the ViewModel
+        mContactInformationViewModel.getAllContactInformation().observe(getViewLifecycleOwner(), new Observer<List<ContactInformation>>() {
+            @Override
+            public void onChanged(List<ContactInformation> contactInformations) {
+                Log.d("please", "please");
+
+            }
+        });
+
+        //recyclerView.setAdapter(mAdaptor);
+
         return view;
     }
 
@@ -192,6 +217,13 @@ public class FamilyMemberDetailFragment extends Fragment {
                 return true;
             case R.id.family_member_dropdown_add_descendant:
                 addDescendant();
+                return true;
+            case R.id.family_member_dropdown_add_email:
+                addEmail();
+                return true;
+            case R.id.family_member_dropdown_add_phone_number:
+                return true;
+            case R.id.family_member_dropdown_add_address:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -237,5 +269,17 @@ public class FamilyMemberDetailFragment extends Fragment {
         bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
 
         ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddDescendant(bundle);
+    }
+
+    private void addEmail() {
+        ContactInformationViewModel contactInformationViewModel = ViewModelProviders.of(getActivity()).get(ContactInformationViewModel.class);
+        ContactInformation contactInformation = contactInformationViewModel.getContactInformationFor(familyMember);
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("contactInformationServerId", contactInformation.getServerId());
+        bundle.putInt("contactInformationId", contactInformation.getContactInformationId());
+        getParentFragmentManager().setFragmentResult("contactInformation", bundle);
+
+        ((MainActivity) getActivity()).transitionFromDetailToAddEmail(bundle);
     }
 }

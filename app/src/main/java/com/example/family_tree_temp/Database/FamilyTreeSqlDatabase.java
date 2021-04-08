@@ -2,6 +2,8 @@ package com.example.family_tree_temp.Database;
 
 import android.util.Log;
 
+import com.example.family_tree_temp.Models.ContactInformation;
+import com.example.family_tree_temp.Models.Email;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.google.gson.*;
 
@@ -25,6 +27,10 @@ public class FamilyTreeSqlDatabase {
         CREATE, UPDATE, DELETE
     }
 
+    private enum Model {
+        FAMILY_MEMBER, EMAIL, CONTACT_INFORMATION
+    }
+
     private String baseUrl;
     
     public FamilyTreeSqlDatabase() {
@@ -32,7 +38,7 @@ public class FamilyTreeSqlDatabase {
         baseUrl = "http://10.0.2.2:3000";
     }
 
-    private String makeHttpUrlRequest(String stubs, String method, CrudMethod crudMethod) {
+    private String makeHttpUrlRequest(String stubs, String method, CrudMethod crudMethod, Model model) {
         BufferedReader reader;
         String line;
         StringBuffer responseContent = new StringBuffer();
@@ -62,7 +68,7 @@ public class FamilyTreeSqlDatabase {
             }
             reader.close();
 
-            parsedResponse = parse(responseContent.toString(), status, crudMethod);
+            parsedResponse = parse(responseContent.toString(), status, crudMethod, model);
         } catch (MalformedURLException e) {
             Log.e("familyTreeSqlDatabase", e.getLocalizedMessage());
         } catch (IOException e) {
@@ -87,7 +93,7 @@ public class FamilyTreeSqlDatabase {
                 "&birthDate=" + familyMember.getBirthDate() +
                 "&gender=" + familyMember.getGender();
 
-        String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE);
+        String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.FAMILY_MEMBER);
         return response;
     }
 
@@ -103,17 +109,30 @@ public class FamilyTreeSqlDatabase {
                 "&lastName=" + familyMember.getLastName() +
                 "&birthDate=" + familyMember.getBirthDate() +
                 "&gender=" + familyMember.getGender();
-        String response = makeHttpUrlRequest(stubs, "PATCH", CrudMethod.UPDATE);
+        String response = makeHttpUrlRequest(stubs, "PATCH", CrudMethod.UPDATE, Model.FAMILY_MEMBER);
         return response;
     }
 
     public String deleteFamilyMember(FamilyMember familyMember) {
         String stubs = "/familymember/" + familyMember.getServerId();
-        String response = makeHttpUrlRequest(stubs, "DELETE", CrudMethod.DELETE);
+        String response = makeHttpUrlRequest(stubs, "DELETE", CrudMethod.DELETE, Model.FAMILY_MEMBER);
         return response;
     }
 
-    public static String parse(String responseBody, int status, CrudMethod crudMethod) {
+    public static String parse(String responseBody, int status, CrudMethod crudMethod, Model model) {
+        switch (model) {
+            case FAMILY_MEMBER:
+                return parseFamilyMember(responseBody, status, crudMethod);
+            case EMAIL:
+                return parseEmail(responseBody, status, crudMethod);
+            case CONTACT_INFORMATION:
+                return parseContactInformation(responseBody, status, crudMethod);
+            default:
+                return null;
+        }
+    }
+
+    public static String parseFamilyMember(String responseBody, int status, CrudMethod crudMethod) {
         try {
             JSONObject response = new JSONObject(responseBody);
             if (status > 299) {
@@ -136,5 +155,73 @@ public class FamilyTreeSqlDatabase {
             Log.e("familyTreeSqlDatabase", e.getLocalizedMessage());
         }
         return null;
+    }
+
+    public static String parseEmail(String responseBody, int status, CrudMethod crudMethod) {
+        try {
+            JSONObject response = new JSONObject(responseBody);
+            if (status > 299) {
+                String message = response.getString("message");
+                Log.i("familyTreeSqlDatabase", message);
+            }
+            else {
+                switch (crudMethod) {
+                    case CREATE:
+                        JSONArray recordSet = response.getJSONArray("recordset");
+                        JSONObject email = recordSet.getJSONObject(0);
+                        int emailId = email.getInt("EmailId");
+                        return String.valueOf(emailId);
+                    case UPDATE:
+                    case DELETE:
+                        break;
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("familyTreeSqlDatabase", e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    public static String parseContactInformation(String responseBody, int status, CrudMethod crudMethod) {
+        try {
+            JSONObject response = new JSONObject(responseBody);
+            if (status > 299) {
+                String message = response.getString("message");
+                Log.i("familyTreeSqlDatabase", message);
+            }
+            else {
+                switch (crudMethod) {
+                    case CREATE:
+                        JSONArray recordSet = response.getJSONArray("recordset");
+                        JSONObject contactInformation = recordSet.getJSONObject(0);
+                        int emailId = contactInformation.getInt("ContactInformationId");
+                        return String.valueOf(emailId);
+                    case UPDATE:
+                    case DELETE:
+                        break;
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("familyTreeSqlDatabase", e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    public String insertEmail(Email email) {
+
+        String stubs = "/email" +
+                "?email=" + email.getEmail() +
+                "&contactInformationId=" + email.getContactInformationServerId();
+
+        String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.EMAIL);
+        return response;
+    }
+
+    public String insertContactInformation(ContactInformation contactInformation) {
+        String stubs = "/contactinformation" +
+                "?familyMemberId=" + contactInformation.getFamilyMemberId();
+
+        String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.CONTACT_INFORMATION);
+        return response;
     }
 }

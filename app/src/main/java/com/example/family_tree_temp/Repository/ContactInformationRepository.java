@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import com.example.family_tree_temp.Database.FamilyTreeRoomDatabase;
 import com.example.family_tree_temp.DatabaseAccessObjects.ContactInformationDao;
 import com.example.family_tree_temp.Models.ContactInformation;
+import com.example.family_tree_temp.Models.FamilyMember;
 
 import java.util.List;
 
@@ -25,6 +26,18 @@ public class ContactInformationRepository {
 
     public LiveData<List<ContactInformation>> getAllContactInformation() {
         return mAllContactInformation;
+    }
+
+    public void insertContactInformation(ContactInformation contactInformation) {
+
+    }
+
+    public void updateContactInformation(ContactInformation contactInformation) {
+
+    }
+
+    public void deleteContactInformation(ContactInformation contactInformation) {
+
     }
 
     private static class insertContactInformationAsyncTask extends AsyncTask<ContactInformation, Void, Void> {

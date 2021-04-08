@@ -51,4 +51,8 @@ public class FamilyMemberViewModel extends AndroidViewModel {
     public void insertAncestor(AncestorDescendantBundle ancestorDescendantBundle) {
         mRepository.insertAncestor(ancestorDescendantBundle);
     }
+
+    public void getContactInformationId(FamilyMember familyMember) {
+
+    }
 }
