@@ -21,7 +21,7 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import com.example.family_tree_temp.Activities.MainActivity;
-import com.example.family_tree_temp.Adaptors.PersonAdaptor;
+import com.example.family_tree_temp.Adaptors.FamilyMemberAdaptor;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Adaptors.Person;
 import com.example.family_tree_temp.R;
@@ -39,7 +39,8 @@ import java.util.List;
 public class HomeFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private RecyclerView recyclerView;
-    private PersonAdaptor mAdaptor;
+//    private PersonAdaptor mAdaptor;
+    private FamilyMemberAdaptor mAdaptor;
     private RecyclerView.LayoutManager layoutManager;
 
     private ArrayList<Person> detailJson;
@@ -92,7 +93,8 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 Person person = (Person) result.get("newPersonKey");
                 //((PersonAdaptor) mAdaptor).add(person);
-                FamilyMember familyMember = new FamilyMember(person.getFirstName(), person.getLastName(), 10, person.getGenderId());
+//                FamilyMember familyMember = new FamilyMember(person.getFirstName(), person.getLastName(), Integer.valueOf(person.getAge()), person.getGenderId());
+                FamilyMember familyMember = new FamilyMember(person.getFirstName(), person.getLastName(), person.getBirthDate(), person.getGender());
                 mFamilyMemberViewModel.insert(familyMember);
             }
         });
@@ -123,7 +125,7 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         recyclerView = view.findViewById(R.id.home_recycler_view);
-        recyclerView.setHasFixedSize(true);
+//        recyclerView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -136,7 +138,7 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
 //        //detailJson = DetailDump.getData();
 //        mAdaptor = new PersonAdaptor(detailJson, (MainActivity) getActivity());
 //
-        mAdaptor = new PersonAdaptor((MainActivity) getActivity(), new OnFamilyMemberItemClickedListener());
+        mAdaptor = new FamilyMemberAdaptor((MainActivity) getActivity(), new OnFamilyMemberItemClickedListener());
 
         mFamilyMemberViewModel = ViewModelProviders.of(getActivity()).get(FamilyMemberViewModel.class);
 
@@ -144,14 +146,15 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         mFamilyMemberViewModel.getAllFamilyMembers().observe(getViewLifecycleOwner(), new Observer<List<FamilyMember>>() {
             @Override
             public void onChanged(@Nullable final List<FamilyMember> familyMembers) {
-                List<Person> people = new ArrayList<>();
-                for (FamilyMember familyMember : familyMembers) {
-                    String firstName = familyMember.getFirstName();
-                    String lastName = familyMember.getLastName();
-                    int genderId = familyMember.getGenderId();
-                    people.add(new Person(firstName, lastName, "0", genderId));
-                }
-                mAdaptor.setDataset(people);
+//                List<Person> people = new ArrayList<>();
+//                for (FamilyMember familyMember : familyMembers) {
+//                    String firstName = familyMember.getFirstName();
+//                    String lastName = familyMember.getLastName();
+//                    int genderId = familyMember.getGenderId();
+//                    people.add(new Person(firstName, lastName, "0", genderId));
+//                }
+//                mAdaptor.setDataset(people);
+                mAdaptor.setDataset(familyMembers);
             }
         });
 
@@ -170,7 +173,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         SearchView searchBarView = (SearchView) searchBar.getActionView();
         searchBarView.setQueryHint("Enter a name...");
         searchBarView.setOnQueryTextListener(this);
-
     }
 
     @Override
