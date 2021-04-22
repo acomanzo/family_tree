@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,13 +25,16 @@ import android.widget.TextView;
 
 import com.example.family_tree_temp.Activities.MainActivity;
 import com.example.family_tree_temp.Adaptors.FamilyMemberAdaptor;
+import com.example.family_tree_temp.Adaptors.MedicalHistoryAdapter;
 import com.example.family_tree_temp.Adaptors.Person;
 import com.example.family_tree_temp.Models.ContactInformation;
 import com.example.family_tree_temp.Models.FamilyMember;
+import com.example.family_tree_temp.Models.MedicalHistory;
 import com.example.family_tree_temp.R;
 import com.example.family_tree_temp.ViewModels.ContactInformationViewModel;
 import com.example.family_tree_temp.ViewModels.EmailViewModel;
 import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;
+import com.example.family_tree_temp.ViewModels.MedicalHistoryViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -45,6 +50,7 @@ public class FamilyMemberDetailFragment extends Fragment {
     private FamilyMemberViewModel mFamilyMemberViewModel;
     private ContactInformationViewModel mContactInformationViewModel;
     private EmailViewModel mEmailViewModel;
+    private MedicalHistoryViewModel medicalHistoryViewModel;
 
     private FamilyMember familyMember;
 
@@ -58,6 +64,10 @@ public class FamilyMemberDetailFragment extends Fragment {
     private TextInputEditText gender;
     private TextInputEditText birthDate;
     private TextView descendants;
+
+    private RecyclerView medicalHistoryRecyclerView;
+    private MedicalHistoryAdapter mMedicalHistoryAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -135,6 +145,7 @@ public class FamilyMemberDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_family_member_detail, container, false);
 
@@ -190,6 +201,26 @@ public class FamilyMemberDetailFragment extends Fragment {
 
             }
         });
+
+        medicalHistoryRecyclerView = view.findViewById(R.id.medical_history_recycler_view);
+        layoutManager = new LinearLayoutManager(view.getContext());
+        medicalHistoryRecyclerView.setLayoutManager(layoutManager);
+        mMedicalHistoryAdapter = new MedicalHistoryAdapter((MainActivity) getActivity(), new OnMedicalHistoryItemClickedListener());
+
+        // listen for changes in mAllMedicalHistories in the ViewModel
+        medicalHistoryViewModel = ViewModelProviders.of(getActivity()).get(MedicalHistoryViewModel.class);
+        medicalHistoryViewModel.getAllMedicalHistories().observe(getViewLifecycleOwner(), new Observer<List<MedicalHistory>>() {
+            @Override
+            public void onChanged(List<MedicalHistory> medicalHistories) {
+                List<MedicalHistory> dataSet = new ArrayList<>();
+                for (MedicalHistory medicalHistory : medicalHistories) {
+                    if (medicalHistory.getFamilyMemberId() == familyMember.getFamilyMemberId())
+                        dataSet.add(medicalHistory);
+                }
+                mMedicalHistoryAdapter.setDataset(dataSet);
+            }
+        });
+        medicalHistoryRecyclerView.setAdapter(mMedicalHistoryAdapter);
 
         //recyclerView.setAdapter(mAdaptor);
 
@@ -320,5 +351,15 @@ public class FamilyMemberDetailFragment extends Fragment {
         getParentFragmentManager().setFragmentResult("familyMember", bundle);
 
         ((MainActivity) getActivity()).transitionFromDetailToAddMedicalHistory(bundle);
+    }
+
+    public class OnMedicalHistoryItemClickedListener {
+        public void onClick(int position) {
+            Bundle bundle = new Bundle();
+            bundle.putInt("medicalHistoryPosition", position);
+            getParentFragmentManager().setFragmentResult("medicalHistoryPosition", bundle);
+
+            ((MainActivity) getActivity()).transitionFromFamilyMemberToMedicalHistoryDetail(bundle);
+        }
     }
 }

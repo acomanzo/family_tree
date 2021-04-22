@@ -22,6 +22,7 @@ import com.example.family_tree_temp.Fragments.AddDescendantFragment;
 import com.example.family_tree_temp.Fragments.AddPersonFragment;
 import com.example.family_tree_temp.Fragments.FamilyMemberDetailFragment;
 import com.example.family_tree_temp.Fragments.HomeFragment;
+import com.example.family_tree_temp.Fragments.MedicalHistoryDetailFragment;
 import com.example.family_tree_temp.Fragments.NewAddressFragment;
 import com.example.family_tree_temp.Fragments.NewEmailFragment;
 import com.example.family_tree_temp.Fragments.NewMedicalHistoryFragment;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
     public final String ADD_PHONE_NUMBER_FRAGMENT = "add_phone_number_fragment";
     public final String ADD_ADDRESS_FRAGMENT = "add_address_fragment";
     public final String ADD_MEDICAL_HISTORY_FRAGMENT = "add_medical_history_fragment";
+    public final String MEDICAL_HISTORY_DETAIL_FRAGMENT = "medical_history_detail_fragment";
     
     private String currentFragmentTag;
 
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
                     case FAMILY_MEMBER_DETAIL_FRAGMENT:
                     case ADD_ANCESTOR_FRAGMENT:
                     case ADD_DESCENDANT_FRAGMENT:
+                    case MEDICAL_HISTORY_DETAIL_FRAGMENT:
                         fabBackPressed();
                         break;
                 }
@@ -268,6 +271,25 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
 
         fragmentManager.beginTransaction()
                 .replace(R.id.host_fragment, addMedicalHistoryFragment, newTag)
+                .addToBackStack(newTag)
+                .commit();
+    }
+
+    public void transitionFromFamilyMemberToMedicalHistoryDetail(Bundle bundle) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        String newTag = MEDICAL_HISTORY_DETAIL_FRAGMENT;
+
+        //bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+        //bottomAppBar.performHide();
+        //floatingActionButton.setImageResource(R.drawable.ic_baseline_reply_24);
+        currentFragmentTag = newTag;
+
+        MedicalHistoryDetailFragment nextFragment = new MedicalHistoryDetailFragment();
+        nextFragment.setArguments(bundle);
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.host_fragment, nextFragment, newTag)
                 .addToBackStack(newTag)
                 .commit();
     }

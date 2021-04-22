@@ -57,30 +57,6 @@ public class FamilyMemberAdaptor extends RecyclerView.Adapter<FamilyMemberAdapto
         };
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-        private View itemView;
-        private TextView familyMemberName;
-
-        private MainActivity mainActivity;
-
-        private FamilyMemberAdaptor familyMemberAdaptor;
-
-        public MyViewHolder(@NonNull View itemView, MainActivity mainActivity, FamilyMemberAdaptor familyMemberAdaptor) {
-            super(itemView);
-            this.itemView = itemView;
-            familyMemberName = itemView.findViewById(R.id.person_name);
-
-            this.mainActivity = mainActivity;
-
-            this.familyMemberAdaptor = familyMemberAdaptor;
-        }
-
-        private void bind(FamilyMember familyMember) {
-            String name = familyMember.getFirstName() + " " + familyMember.getLastName();
-            familyMemberName.setText(name);
-        }
-    }
-
     public FamilyMemberAdaptor(MainActivity mainActivity, HomeFragment.OnFamilyMemberItemClickedListener onClickListener) {
         this.mainActivity = mainActivity;
         this.onClickListener = onClickListener;
@@ -119,6 +95,30 @@ public class FamilyMemberAdaptor extends RecyclerView.Adapter<FamilyMemberAdapto
         mDataset = people;
         mDatasetFiltered = people;
         notifyDataSetChanged();
+    }
+
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        private View itemView;
+        private TextView familyMemberName;
+
+        private MainActivity mainActivity;
+
+        private FamilyMemberAdaptor familyMemberAdaptor;
+
+        public MyViewHolder(@NonNull View itemView, MainActivity mainActivity, FamilyMemberAdaptor familyMemberAdaptor) {
+            super(itemView);
+            this.itemView = itemView;
+            familyMemberName = itemView.findViewById(R.id.person_name);
+
+            this.mainActivity = mainActivity;
+
+            this.familyMemberAdaptor = familyMemberAdaptor;
+        }
+
+        private void bind(FamilyMember familyMember) {
+            String name = familyMember.getFirstName() + " " + familyMember.getLastName();
+            familyMemberName.setText(name);
+        }
     }
 }
 

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.family_tree_temp.Models.MedicalHistory;
 import com.example.family_tree_temp.Repository.MedicalHistoryRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.lifecycle.AndroidViewModel;
