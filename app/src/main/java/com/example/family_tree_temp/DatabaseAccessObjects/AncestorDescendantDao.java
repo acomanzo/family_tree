@@ -20,4 +20,18 @@ public interface AncestorDescendantDao {
 
     @Query("SELECT * FROM AncestorDescendant")
     LiveData<List<AncestorDescendant>> getAllAncestorDescendants();
+
+//    @Query("SELECT * FROM AncestorDescendant")
+//    List<AncestorDescendant> getAllAncestorDescendants();
+
+    @Query("SELECT * FROM AncestorDescendant WHERE AncestorId = :ancestorId")
+    LiveData<List<AncestorDescendant>> getAncestorDescendantsByAncestorId(int ancestorId);
+//    @Query("SELECT * FROM AncestorDescendant WHERE AncestorId = :ancestorId")
+//    List<AncestorDescendant> getAncestorDescendantsByAncestorId(int ancestorId);
+
+    @Query("SELECT * FROM AncestorDescendant WHERE AncestorId = :ancestorId")
+    List<AncestorDescendant> test(int ancestorId);
+
+    @Query("SELECT * FROM AncestorDescendant")
+    List<AncestorDescendant> anotherTest();
 }

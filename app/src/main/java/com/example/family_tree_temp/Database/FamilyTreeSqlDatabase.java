@@ -9,7 +9,6 @@ import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Models.MedicalHistory;
 import com.example.family_tree_temp.Models.PhoneNumber;
 import com.example.family_tree_temp.ViewModels.AncestorDescendantBundle;
-import com.google.gson.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;

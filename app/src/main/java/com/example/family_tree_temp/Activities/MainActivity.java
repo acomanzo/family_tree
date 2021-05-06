@@ -27,6 +27,7 @@ import com.example.family_tree_temp.Fragments.NewAddressFragment;
 import com.example.family_tree_temp.Fragments.NewEmailFragment;
 import com.example.family_tree_temp.Fragments.NewMedicalHistoryFragment;
 import com.example.family_tree_temp.Fragments.NewPhoneNumberFragment;
+import com.example.family_tree_temp.Fragments.TreeFragment;
 import com.example.family_tree_temp.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
     public final String ADD_ADDRESS_FRAGMENT = "add_address_fragment";
     public final String ADD_MEDICAL_HISTORY_FRAGMENT = "add_medical_history_fragment";
     public final String MEDICAL_HISTORY_DETAIL_FRAGMENT = "medical_history_detail_fragment";
+    public final String TREE_VIEW = "tree_view";
     
     private String currentFragmentTag;
 
@@ -85,7 +87,8 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
                         return true;
                     case R.id.bottom_bar_overflow:
                         // handle overflow icon press
-                        Toast.makeText(context, "overflow", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "overflow", Toast.LENGTH_SHORT).show();
+                        transitionFromHomeToTreeView();
                         return true;
                     default:
                         return false;
@@ -107,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
                     case ADD_ANCESTOR_FRAGMENT:
                     case ADD_DESCENDANT_FRAGMENT:
                     case MEDICAL_HISTORY_DETAIL_FRAGMENT:
+                    case TREE_VIEW:
                         fabBackPressed();
                         break;
                 }
@@ -287,6 +291,24 @@ public class MainActivity extends AppCompatActivity implements AddPersonFragment
 
         MedicalHistoryDetailFragment nextFragment = new MedicalHistoryDetailFragment();
         nextFragment.setArguments(bundle);
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.host_fragment, nextFragment, newTag)
+                .addToBackStack(newTag)
+                .commit();
+    }
+
+    public void transitionFromHomeToTreeView() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        String newTag = TREE_VIEW;
+
+        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+        bottomAppBar.performHide();
+        floatingActionButton.setImageResource(R.drawable.ic_baseline_reply_24);
+        currentFragmentTag = newTag;
+
+        TreeFragment nextFragment = new TreeFragment();
 
         fragmentManager.beginTransaction()
                 .replace(R.id.host_fragment, nextFragment, newTag)

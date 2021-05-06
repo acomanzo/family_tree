@@ -7,8 +7,6 @@ import android.widget.TextView;
 
 import com.example.family_tree_temp.Activities.MainActivity;
 import com.example.family_tree_temp.Fragments.FamilyMemberDetailFragment;
-import com.example.family_tree_temp.Fragments.HomeFragment;
-import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Models.MedicalHistory;
 import com.example.family_tree_temp.R;
 

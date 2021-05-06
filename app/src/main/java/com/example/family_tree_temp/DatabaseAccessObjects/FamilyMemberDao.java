@@ -23,6 +23,11 @@ public interface FamilyMemberDao {
     @Query("SELECT * FROM FamilyMember")
     LiveData<List<FamilyMember>> getAllFamilyMembers();
 
+//    @Query("SELECT * FROM FamilyMember WHERE FamilyMemberId = :id")
+//    LiveData<List<FamilyMember>> getFamilyMemberById(int id);
+    @Query("SELECT * FROM FamilyMember WHERE FamilyMemberId = :id")
+    List<FamilyMember> getFamilyMemberById(int id);
+
     @Update
     void update(FamilyMember familyMember);
 

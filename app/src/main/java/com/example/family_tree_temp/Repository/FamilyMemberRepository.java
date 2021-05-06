@@ -16,6 +16,7 @@ import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.ViewModels.AncestorDescendantBundle;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,18 +30,77 @@ public class FamilyMemberRepository {
     private ContactInformationDao mContactInformationDao;
 
     private LiveData<List<FamilyMember>> mAllFamilyMembers;
+    private LiveData<List<AncestorDescendant>> mAllAncestorDescendants;
+//    private List<AncestorDescendant> mAllAncestorDescendants;
 
     public FamilyMemberRepository(Application application) {
         FamilyTreeRoomDatabase db = FamilyTreeRoomDatabase.getDatabase(application);
+
         mFamilyMemberDao = db.familyMemberDao();
         mAllFamilyMembers = mFamilyMemberDao.getAllFamilyMembers();
 
         mAncestorDescendantDao = db.ancestorDescendantDao();
+        mAllAncestorDescendants = mAncestorDescendantDao.getAllAncestorDescendants();
+
         mContactInformationDao = db.contactInformationDao();
     }
 
     public LiveData<List<FamilyMember>> getAllFamilyMembers() {
         return mAllFamilyMembers;
+    }
+
+    public LiveData<List<AncestorDescendant>> getAllAncestorDescendants() {
+        return mAllAncestorDescendants;
+    }
+
+//    public List<AncestorDescendant> getAllAncestorDescendants() {
+//        return mAllAncestorDescendants;
+//    }
+
+//    public LiveData<List<FamilyMember>> getFamilyMemberById(int id) {
+//        return mFamilyMemberDao.getFamilyMemberById(id);
+//    }
+
+    public List<FamilyMember> getFamilyMemberById(int id) {
+        try {
+            return new GetFamilyMemberById(mFamilyMemberDao).execute(id).get();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public LiveData<List<AncestorDescendant>> getAncestorDescendantsByAncestorId(int ancestorId) {
+        return mAncestorDescendantDao.getAncestorDescendantsByAncestorId(ancestorId);
+    }
+
+//    public List<AncestorDescendant> getAncestorDescendantsByAncestorId(int ancestorId) {
+//        return mAncestorDescendantDao.getAncestorDescendantsByAncestorId(ancestorId);
+//    }
+
+//    public List<AncestorDescendant> test(int ancestorId) {
+//        return mAncestorDescendantDao.test(ancestorId);
+//    }
+
+    public List<AncestorDescendant> test(int ancestorId) {
+
+        try {
+            return new GetAncestorDescendantByAncestorId(mAncestorDescendantDao).execute(ancestorId).get();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+//    public List<AncestorDescendant> anotherTest() {
+//        return mAncestorDescendantDao.anotherTest();
+//    }
+
+    public List<AncestorDescendant> anotherTest() {
+
+        try {
+            return new GetAncestorDescendants(mAncestorDescendantDao).execute().get();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public void insertFamilyMember(FamilyMember familyMember) {
@@ -245,6 +305,46 @@ public class FamilyMemberRepository {
         protected Void doInBackground(final ContactInformation... params) {
             mAsyncTaskDao.insert(params[0]);
             return null;
+        }
+    }
+
+    private static class GetAncestorDescendants extends AsyncTask<Void, Void, List<AncestorDescendant>> {
+        private AncestorDescendantDao mAsyncTaskDao;
+
+        GetAncestorDescendants(AncestorDescendantDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected List<AncestorDescendant> doInBackground(Void... voids) {
+            return mAsyncTaskDao.anotherTest();
+        }
+    }
+
+    private static class GetAncestorDescendantByAncestorId extends AsyncTask<Integer, Void, List<AncestorDescendant>> {
+        private AncestorDescendantDao mAsyncTaskDao;
+
+        GetAncestorDescendantByAncestorId(AncestorDescendantDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+
+        @Override
+        protected List<AncestorDescendant> doInBackground(Integer... integers) {
+            return mAsyncTaskDao.test(integers[0]);
+        }
+    }
+
+    private static class GetFamilyMemberById extends AsyncTask<Integer, Void, List<FamilyMember>> {
+        private FamilyMemberDao mAsyncTaskDao;
+
+        GetFamilyMemberById(FamilyMemberDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected List<FamilyMember> doInBackground(Integer... integers) {
+            return mAsyncTaskDao.getFamilyMemberById(integers[0]);
         }
     }
 }

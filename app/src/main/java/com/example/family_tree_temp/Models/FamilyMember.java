@@ -1,5 +1,8 @@
 package com.example.family_tree_temp.Models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -33,6 +36,9 @@ public class FamilyMember {
 
     private int serverId;
 
+    @Ignore
+    private List<FamilyMember> children;
+
 //    public FamilyMember(@NonNull String firstName, @NonNull String lastName, int age, int genderId) {
 //        this.firstName = firstName;
 //        this.lastName = lastName;
@@ -44,6 +50,8 @@ public class FamilyMember {
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.gender = gender;
+
+        children = new ArrayList<>();
     }
 
 //    @Ignore
@@ -64,6 +72,8 @@ public class FamilyMember {
         this.birthDate = birthDate;
         this.gender = gender;
         this.serverId = serverId;
+
+        children = new ArrayList<>();
     }
 
     public int getFamilyMemberId() {
@@ -104,5 +114,17 @@ public class FamilyMember {
 
     public void setServerId(int serverId) {
         this.serverId = serverId;
+    }
+
+    public void addChild(FamilyMember child) {
+        children.add(child);
+    }
+
+    public List<FamilyMember> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<FamilyMember> children) {
+        this.children = children;
     }
 }
