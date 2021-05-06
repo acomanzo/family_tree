@@ -17,6 +17,7 @@ import com.example.family_tree_temp.ViewModels.AncestorDescendantBundle;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -117,7 +118,7 @@ public class FamilyMemberRepository {
                 secondExecutor.execute(() -> {
                     ContactInformation contactInformation = new ContactInformation(familyMember.getServerId());
                     String contactInformationId = familyTreeSqlDatabase.insertContactInformation(contactInformation);
-                    contactInformation.setServerId(Integer.valueOf(contactInformationId));
+                    contactInformation.setServerId(Integer.parseInt(contactInformationId));
 
                     secondHandler.post(() -> {
                         new InsertFamilyMemberWithContactInformation(mFamilyMemberDao, mContactInformationDao).execute(familyMember, contactInformation);
@@ -159,19 +160,53 @@ public class FamilyMemberRepository {
     }
 
     public void insertDescendant(AncestorDescendantBundle ancestorDescendantBundle) {
-        new InsertDescendantAsyncTask(mAncestorDescendantDao, mFamilyMemberDao).execute(ancestorDescendantBundle);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executor.execute(() -> {
+            FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
+            FamilyMember descendant = ancestorDescendantBundle.getNewFamilyMember();
+            String descendantId = familyTreeSqlDatabase.insertFamilyMember(descendant);
+            descendant.setServerId(Integer.parseInt(descendantId));
+
+            handler.post(() -> {
+                ExecutorService secondExecutor = Executors.newSingleThreadExecutor();
+                Handler secondHandler = new Handler(Looper.getMainLooper());
+
+                secondExecutor.execute(() -> {
+                    String id = familyTreeSqlDatabase.insertDescendant(ancestorDescendantBundle);
+                    ancestorDescendantBundle.setServerId(Integer.parseInt(id));
+
+                    secondHandler.post(() -> {
+                        new InsertDescendantAsyncTask(mAncestorDescendantDao, mFamilyMemberDao).execute(ancestorDescendantBundle);
+                    });
+                });
+            });
+        });
     }
 
     public void insertAncestor(AncestorDescendantBundle ancestorDescendantBundle) {
-//        ExecutorService executor = Executors.newSingleThreadExecutor();
-//        Handler handler = new Handler(Looper.getMainLooper());
-//        executor.execute(() -> {
-//            FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
-//            familyTreeSqlDatabase.insertAncestor(ancestorDescendantBundle);
-//            handler.post(() -> {
-//                new InsertAncestorAsyncTask(mAncestorDescendantDao, mFamilyMemberDao).execute(ancestorDescendantBundle);           });
-//        });
-                new InsertAncestorAsyncTask(mAncestorDescendantDao, mFamilyMemberDao).execute(ancestorDescendantBundle);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executor.execute(() -> {
+            FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
+            FamilyMember ancestor = ancestorDescendantBundle.getNewFamilyMember();
+            String ancestorId = familyTreeSqlDatabase.insertFamilyMember(ancestor);
+            ancestor.setServerId(Integer.parseInt(ancestorId));
+
+            handler.post(() -> {
+                ExecutorService secondExecutor = Executors.newSingleThreadExecutor();
+                Handler secondHandler = new Handler(Looper.getMainLooper());
+
+                secondExecutor.execute(() -> {
+                    String id = familyTreeSqlDatabase.insertAncestor(ancestorDescendantBundle);
+                    ancestorDescendantBundle.setServerId(Integer.parseInt(id));
+
+                    secondHandler.post(() -> {
+                        new InsertAncestorAsyncTask(mAncestorDescendantDao, mFamilyMemberDao).execute(ancestorDescendantBundle);
+                    });
+                });
+            });
+        });
     }
 
     private static class insertFamilyMemberAsyncTask extends AsyncTask<FamilyMember, Void, Void> {
@@ -259,11 +294,12 @@ public class FamilyMemberRepository {
         protected Void doInBackground(AncestorDescendantBundle... ancestorDescendantBundles) {
             AncestorDescendantBundle ancestorDescendantBundle = ancestorDescendantBundles[0];
             FamilyMember descendant = ancestorDescendantBundle.getNewFamilyMember();
-            int ancestorId = ancestorDescendantBundle.getExistingFamilyMemberId();
+            int ancestorId = ancestorDescendantBundle.getExistingFamilyMember().getFamilyMemberId();
             int depth = ancestorDescendantBundle.getDepth();
+            int serverId = ancestorDescendantBundle.getServerId();
 
             int descendantId = (int) familyMemberDao.insert(descendant);
-            AncestorDescendant ancestorDescendant = new AncestorDescendant(ancestorId, descendantId, depth);
+            AncestorDescendant ancestorDescendant = new AncestorDescendant(ancestorId, descendantId, depth, serverId);
             ancestorDescendantDao.insert(ancestorDescendant);
 
             return null;
@@ -283,11 +319,12 @@ public class FamilyMemberRepository {
         protected Void doInBackground(AncestorDescendantBundle... ancestorDescendantBundles) {
             AncestorDescendantBundle ancestorDescendantBundle = ancestorDescendantBundles[0];
             FamilyMember ancestor = ancestorDescendantBundle.getNewFamilyMember();
-            int descendantId = ancestorDescendantBundle.getExistingFamilyMemberId();
+            int descendantId = ancestorDescendantBundle.getExistingFamilyMember().getFamilyMemberId();
             int depth = ancestorDescendantBundle.getDepth();
+            int serverId = ancestorDescendantBundle.getServerId();
 
             int ancestorId = (int) familyMemberDao.insert(ancestor);
-            AncestorDescendant ancestorDescendant = new AncestorDescendant(ancestorId, descendantId, depth);
+            AncestorDescendant ancestorDescendant = new AncestorDescendant(ancestorId, descendantId, depth, serverId);
             ancestorDescendantDao.insert(ancestorDescendant);
 
             return null;

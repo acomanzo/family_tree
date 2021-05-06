@@ -13,14 +13,21 @@ public class AncestorDescendantBundle implements Parcelable {
 
     private FamilyMember newFamilyMember;
 
-    private int existingFamilyMemberId;
+    private FamilyMember existingFamilyMember;
 
     private int depth;
 
-    public AncestorDescendantBundle(FamilyMember newFamilyMember, int existingFamilyMemberId, int depth) {
+    private int serverId;
+
+    public AncestorDescendantBundle(FamilyMember newFamilyMember, FamilyMember existingFamilyMember, int depth) {
+        this(newFamilyMember, existingFamilyMember, depth, -1);
+    }
+
+    public AncestorDescendantBundle(FamilyMember newFamilyMember, FamilyMember existingFamilyMember, int depth, int serverId) {
         this.newFamilyMember = newFamilyMember;
-        this.existingFamilyMemberId = existingFamilyMemberId;
+        this.existingFamilyMember = existingFamilyMember;
         this.depth = depth;
+        this.serverId = serverId;
     }
 
     protected AncestorDescendantBundle(Parcel in) {
@@ -34,20 +41,27 @@ public class AncestorDescendantBundle implements Parcelable {
         String gender = in.readString();
         FamilyMember newFamilyMember = new FamilyMember(firstName, lastName, birthDate, gender);
 
-        int existingFamilyMemberId = in.readInt();
+        firstName = in.readString();
+        lastName = in.readString();
+        birthDate = in.readString();
+        gender = in.readString();
+        FamilyMember existingFamilyMember = new FamilyMember(firstName, lastName, birthDate, gender);
+
         int depth = in.readInt();
+        int serverId = in.readInt();
 
         this.newFamilyMember = newFamilyMember;
-        this.existingFamilyMemberId = existingFamilyMemberId;
+        this.existingFamilyMember = existingFamilyMember;
         this.depth = depth;
+        this.serverId = serverId;
     }
 
     public FamilyMember getNewFamilyMember() {
         return newFamilyMember;
     }
 
-    public int getExistingFamilyMemberId() {
-        return existingFamilyMemberId;
+    public FamilyMember getExistingFamilyMember() {
+        return existingFamilyMember;
     }
 
     public int getDepth() {
@@ -80,9 +94,20 @@ public class AncestorDescendantBundle implements Parcelable {
         dest.writeString(newFamilyMember.getBirthDate());
         dest.writeString(newFamilyMember.getGender());
 
-        dest.writeInt(existingFamilyMemberId);
+        dest.writeString(existingFamilyMember.getFirstName());
+        dest.writeString(existingFamilyMember.getLastName());
+        dest.writeString(existingFamilyMember.getBirthDate());
+        dest.writeString(existingFamilyMember.getGender());
+
         dest.writeInt(depth);
+        dest.writeInt(serverId);
     }
 
+    public int getServerId() {
+        return serverId;
+    }
 
+    public void setServerId(int serverId) {
+        this.serverId = serverId;
+    }
 }

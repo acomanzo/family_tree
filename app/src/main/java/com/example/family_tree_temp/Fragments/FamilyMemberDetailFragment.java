@@ -52,6 +52,7 @@ public class FamilyMemberDetailFragment extends Fragment {
     private EmailViewModel mEmailViewModel;
     private MedicalHistoryViewModel medicalHistoryViewModel;
 
+    private int position;
     private FamilyMember familyMember;
 
     private TextInputEditText firstName;
@@ -128,7 +129,8 @@ public class FamilyMemberDetailFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            familyMember = mFamilyMemberViewModel.getFamilyMemberAtIndex(getArguments().getInt("familyMemberPosition"));
+            position = getArguments().getInt("familyMemberPosition");
+            familyMember = mFamilyMemberViewModel.getFamilyMemberAtIndex(position);
         }
 
         getParentFragmentManager().setFragmentResultListener("familyMemberPosition", this, new FragmentResultListener() {
@@ -295,14 +297,16 @@ public class FamilyMemberDetailFragment extends Fragment {
 
     private void addAncestor() {
         Bundle bundle = new Bundle();
-        bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
+//        bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
+        bundle.putInt("familyMemberPosition", position);
 
         ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddAncestor(bundle);
     }
 
     private void addDescendant() {
         Bundle bundle = new Bundle();
-        bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
+//        bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
+        bundle.putInt("familyMemberPosition", position);
 
         ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddDescendant(bundle);
     }

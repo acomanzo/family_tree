@@ -3,6 +3,7 @@ package com.example.family_tree_temp.Fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.example.family_tree_temp.Activities.MainActivity;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.R;
 import com.example.family_tree_temp.ViewModels.AncestorDescendantBundle;
+import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -35,7 +37,8 @@ public class AddAncestorFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private int descendantId;
+    private FamilyMemberViewModel mFamilyMemberViewModel;
+    private FamilyMember descendant;
 
     private AddPersonFragment.OnPersonItemAddedListener callback;
 
@@ -68,10 +71,13 @@ public class AddAncestorFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mFamilyMemberViewModel = ViewModelProviders.of(getActivity()).get(FamilyMemberViewModel.class);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            descendantId = getArguments().getInt("familyMemberId");
+            descendant = mFamilyMemberViewModel.getFamilyMemberAtIndex(getArguments().getInt("familyMemberPosition"));
         }
     }
 
@@ -136,7 +142,7 @@ public class AddAncestorFragment extends Fragment {
 
             FamilyMember ancestor = new FamilyMember(firstName, lastName, birthDate, gender);
 
-            AncestorDescendantBundle ancestorDescendantBundle = new AncestorDescendantBundle(ancestor, descendantId, depth);
+            AncestorDescendantBundle ancestorDescendantBundle = new AncestorDescendantBundle(ancestor, descendant, depth);
 
             // if you wanted to communicate to the HomeFragment that we updated the adaptor,
             // who would then add the person to the adaptor, then you should do this.

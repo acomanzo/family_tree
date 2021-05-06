@@ -36,7 +36,8 @@ public class AddDescendantFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private int ancestorId;
+    private FamilyMemberViewModel mFamilyMemberViewModel;
+    private FamilyMember ancestor;
 
     private AddPersonFragment.OnPersonItemAddedListener callback;
 
@@ -69,10 +70,13 @@ public class AddDescendantFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mFamilyMemberViewModel = ViewModelProviders.of(getActivity()).get(FamilyMemberViewModel.class);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            ancestorId = getArguments().getInt("familyMemberId");
+            ancestor = mFamilyMemberViewModel.getFamilyMemberAtIndex(getArguments().getInt("familyMemberPosition"));
         }
     }
 
@@ -136,7 +140,7 @@ public class AddDescendantFragment extends Fragment {
 
             FamilyMember descendant = new FamilyMember(firstName, lastName, birthDate, gender);
 
-            AncestorDescendantBundle ancestorDescendantBundle = new AncestorDescendantBundle(descendant, ancestorId, depth);
+            AncestorDescendantBundle ancestorDescendantBundle = new AncestorDescendantBundle(descendant, ancestor, depth);
 
             // if you wanted to communicate to the HomeFragment that we updated the adaptor,
             // who would then add the person to the adaptor, then you should do this.

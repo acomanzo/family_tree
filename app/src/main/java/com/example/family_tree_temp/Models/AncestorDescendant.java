@@ -31,18 +31,27 @@ public class AncestorDescendant {
     @NonNull
     private int depth;
 
+    private int serverId;
+
     @Ignore
     public AncestorDescendant(@NonNull int ancestorId, @NonNull int descendantId, @NonNull int depth) {
+        this(ancestorId, descendantId, depth, -1);
+    }
+
+    @Ignore
+    public AncestorDescendant(@NonNull int ancestorId, @NonNull int descendantId, @NonNull int depth, int serverId) {
         this.ancestorId = ancestorId;
         this.descendantId = descendantId;
         this.depth = depth;
+        this.serverId = serverId;
     }
 
-    public AncestorDescendant(int ancestorDescendantId, @NonNull int ancestorId, @NonNull int descendantId, @NonNull int depth) {
+    public AncestorDescendant(int ancestorDescendantId, @NonNull int ancestorId, @NonNull int descendantId, @NonNull int depth, int serverId) {
         this.ancestorDescendantId = ancestorDescendantId;
         this.ancestorId = ancestorId;
         this.descendantId = descendantId;
         this.depth = depth;
+        this.serverId = serverId;
     }
 
     public int getAncestorDescendantId() {
@@ -59,5 +68,13 @@ public class AncestorDescendant {
 
     public int getDepth() {
         return depth;
+    }
+
+    public int getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(int serverId) {
+        this.serverId = serverId;
     }
 }

@@ -31,7 +31,13 @@ public class FamilyTreeSqlDatabase {
     }
 
     private enum Model {
-        FAMILY_MEMBER, EMAIL, CONTACT_INFORMATION, PHONE_NUMBER, ADDRESS, MEDICAL_HISTORY
+        FAMILY_MEMBER,
+        EMAIL,
+        CONTACT_INFORMATION,
+        PHONE_NUMBER,
+        ADDRESS,
+        MEDICAL_HISTORY,
+        ANCESTOR_DESCENDANT
     }
 
     private String baseUrl;
@@ -136,6 +142,8 @@ public class FamilyTreeSqlDatabase {
                 return parseAddress(responseBody, status, crudMethod);
             case MEDICAL_HISTORY:
                 return parseMedicalHistory(responseBody, status, crudMethod);
+            case ANCESTOR_DESCENDANT:
+                return parseAncestorDescendant(responseBody, status, crudMethod);
             default:
                 return null;
         }
@@ -291,6 +299,31 @@ public class FamilyTreeSqlDatabase {
         return null;
     }
 
+    public static String parseAncestorDescendant(String responseBody, int status, CrudMethod crudMethod) {
+        try {
+            JSONObject response = new JSONObject(responseBody);
+            if (status > 299) {
+                String message = response.getString("message");
+                Log.i("familyTreeSqlDatabase", message);
+            }
+            else {
+                switch (crudMethod) {
+                    case CREATE:
+                        JSONArray recordSet = response.getJSONArray("recordset");
+                        JSONObject ancestorDescendant = recordSet.getJSONObject(0);
+                        int ancestorDescendantId = ancestorDescendant.getInt("AncestorDescendantId");
+                        return String.valueOf(ancestorDescendantId);
+                    case UPDATE:
+                    case DELETE:
+                        break;
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("familyTreeSqlDatabase", e.getLocalizedMessage());
+        }
+        return null;
+    }
+
     public String insertEmail(Email email) {
 
         String stubs = "/email" +
@@ -343,13 +376,23 @@ public class FamilyTreeSqlDatabase {
         return response;
     }
 
-//    public String insertAncestor(AncestorDescendantBundle ancestorDescendantBundle) {
-//        String stubs = "/ancestordescendant" +
-//                "?ancestorId=" + ancestorDescendantBundle.getNewFamilyMember() +
-//                "&descendantId=" + ancestorDescendantBundle.getExistingFamilyMemberId() +
-//                "&depth=" + ancestorDescendantBundle.getDepth();
-//
-//        String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.ANCESTOR_DESCENDANT);
-//        return response;
-//    }
+    public String insertAncestor(AncestorDescendantBundle ancestorDescendantBundle) {
+        String stubs = "/ancestordescendant" +
+                "?ancestorId=" + ancestorDescendantBundle.getNewFamilyMember().getServerId() +
+                "&descendantId=" + ancestorDescendantBundle.getExistingFamilyMember().getServerId() +
+                "&depth=" + ancestorDescendantBundle.getDepth();
+
+        String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.ANCESTOR_DESCENDANT);
+        return response;
+    }
+
+    public String insertDescendant(AncestorDescendantBundle ancestorDescendantBundle) {
+        String stubs = "/ancestordescendant" +
+                "?ancestorId=" + ancestorDescendantBundle.getExistingFamilyMember().getServerId() +
+                "&descendantId=" + ancestorDescendantBundle.getNewFamilyMember().getServerId() +
+                "&depth=" + ancestorDescendantBundle.getDepth();
+
+        String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.ANCESTOR_DESCENDANT);
+        return response;
+    }
 }
