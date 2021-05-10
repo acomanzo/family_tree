@@ -1,25 +1,17 @@
-package com.example.family_tree_temp.Fragments;
+package com.example.family_tree_temp.Fragments.TreeEditor;
 
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import tellh.com.recyclertreeview_lib.TreeNode;
-import tellh.com.recyclertreeview_lib.TreeViewAdapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.example.family_tree_temp.Activities.MainActivity;
-import com.example.family_tree_temp.Adaptors.FamilyMemberAdaptor;
 import com.example.family_tree_temp.Adaptors.TreeAdapter;
-import com.example.family_tree_temp.Models.AncestorDescendant;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.R;
 import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;

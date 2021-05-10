@@ -1,9 +1,10 @@
-package com.example.family_tree_temp.Fragments;
+package com.example.family_tree_temp.Fragments.TreeEditor;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.Observer;
@@ -18,15 +19,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.example.family_tree_temp.Activities.MainActivity;
-import com.example.family_tree_temp.Adaptors.FamilyMemberAdaptor;
+import com.example.family_tree_temp.Activities.TreeEditorActivity;
 import com.example.family_tree_temp.Adaptors.MedicalHistoryAdapter;
-import com.example.family_tree_temp.Adaptors.Person;
 import com.example.family_tree_temp.Models.ContactInformation;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Models.MedicalHistory;
@@ -207,7 +203,8 @@ public class FamilyMemberDetailFragment extends Fragment {
         medicalHistoryRecyclerView = view.findViewById(R.id.medical_history_recycler_view);
         layoutManager = new LinearLayoutManager(view.getContext());
         medicalHistoryRecyclerView.setLayoutManager(layoutManager);
-        mMedicalHistoryAdapter = new MedicalHistoryAdapter((MainActivity) getActivity(), new OnMedicalHistoryItemClickedListener());
+//        mMedicalHistoryAdapter = new MedicalHistoryAdapter((MainActivity) getActivity(), new OnMedicalHistoryItemClickedListener());
+        mMedicalHistoryAdapter = new MedicalHistoryAdapter((TreeEditorActivity) getActivity(), new OnMedicalHistoryItemClickedListener());
 
         // listen for changes in mAllMedicalHistories in the ViewModel
         medicalHistoryViewModel = ViewModelProviders.of(getActivity()).get(MedicalHistoryViewModel.class);
@@ -284,15 +281,20 @@ public class FamilyMemberDetailFragment extends Fragment {
         int id = familyMember.getFamilyMemberId();
         int serverId = familyMember.getServerId();
 
-        FamilyMember updatedFamilyMember = new FamilyMember(id, updatedFirstName, updatedLastName, updatedBirthDate, updatedGender, serverId);
+        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        int familyTreeId = sharedPreferences.getInt(getString(R.string.family_tree_id), -1);
+
+        FamilyMember updatedFamilyMember = new FamilyMember(id, updatedFirstName, updatedLastName, updatedBirthDate, updatedGender, familyTreeId, serverId);
         mFamilyMemberViewModel.update(updatedFamilyMember);
 
-        ((MainActivity) getActivity()).transitionToHomeFromSomeView();
+//        ((MainActivity) getActivity()).transitionToHomeFromSomeView();
+        ((TreeEditorActivity) getActivity()).transitionToHomeFromSomeView();
     }
 
     private void delete() {
         mFamilyMemberViewModel.delete(familyMember);
-        ((MainActivity) getActivity()).transitionToHomeFromSomeView();
+//        ((MainActivity) getActivity()).transitionToHomeFromSomeView();
+        ((TreeEditorActivity) getActivity()).transitionToHomeFromSomeView();
     }
 
     private void addAncestor() {
@@ -300,7 +302,8 @@ public class FamilyMemberDetailFragment extends Fragment {
 //        bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
         bundle.putInt("familyMemberPosition", position);
 
-        ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddAncestor(bundle);
+//        ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddAncestor(bundle);
+        ((TreeEditorActivity) getActivity()).transitionFromFamilyMemberDetailToAddAncestor(bundle);
     }
 
     private void addDescendant() {
@@ -308,7 +311,8 @@ public class FamilyMemberDetailFragment extends Fragment {
 //        bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
         bundle.putInt("familyMemberPosition", position);
 
-        ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddDescendant(bundle);
+//        ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddDescendant(bundle);
+        ((TreeEditorActivity) getActivity()).transitionFromFamilyMemberDetailToAddDescendant(bundle);
     }
 
     private void addEmail() {
@@ -320,7 +324,8 @@ public class FamilyMemberDetailFragment extends Fragment {
         bundle.putInt("contactInformationId", contactInformation.getContactInformationId());
         getParentFragmentManager().setFragmentResult("contactInformation", bundle);
 
-        ((MainActivity) getActivity()).transitionFromDetailToAddEmail(bundle);
+//        ((MainActivity) getActivity()).transitionFromDetailToAddEmail(bundle);
+        ((TreeEditorActivity) getActivity()).transitionFromDetailToAddEmail(bundle);
     }
 
     private void addPhoneNumber() {
@@ -332,7 +337,8 @@ public class FamilyMemberDetailFragment extends Fragment {
         bundle.putInt("contactInformationId", contactInformation.getContactInformationId());
         getParentFragmentManager().setFragmentResult("contactInformation", bundle);
 
-        ((MainActivity) getActivity()).transitionFromDetailToAddPhoneNumber(bundle);
+//        ((MainActivity) getActivity()).transitionFromDetailToAddPhoneNumber(bundle);
+        ((TreeEditorActivity) getActivity()).transitionFromDetailToAddPhoneNumber(bundle);
     }
 
     public void addAddress() {
@@ -344,7 +350,8 @@ public class FamilyMemberDetailFragment extends Fragment {
         bundle.putInt("contactInformationId", contactInformation.getContactInformationId());
         getParentFragmentManager().setFragmentResult("contactInformation", bundle);
 
-        ((MainActivity) getActivity()).transitionFromDetailToAddAddress(bundle);
+//        ((MainActivity) getActivity()).transitionFromDetailToAddAddress(bundle);
+        ((TreeEditorActivity) getActivity()).transitionFromDetailToAddAddress(bundle);
     }
 
     public void addMedicalHistory() {
@@ -354,7 +361,8 @@ public class FamilyMemberDetailFragment extends Fragment {
         bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
         getParentFragmentManager().setFragmentResult("familyMember", bundle);
 
-        ((MainActivity) getActivity()).transitionFromDetailToAddMedicalHistory(bundle);
+//        ((MainActivity) getActivity()).transitionFromDetailToAddMedicalHistory(bundle);
+        ((TreeEditorActivity) getActivity()).transitionFromDetailToAddMedicalHistory(bundle);
     }
 
     public class OnMedicalHistoryItemClickedListener {
@@ -363,7 +371,8 @@ public class FamilyMemberDetailFragment extends Fragment {
             bundle.putInt("medicalHistoryPosition", position);
             getParentFragmentManager().setFragmentResult("medicalHistoryPosition", bundle);
 
-            ((MainActivity) getActivity()).transitionFromFamilyMemberToMedicalHistoryDetail(bundle);
+//            ((MainActivity) getActivity()).transitionFromFamilyMemberToMedicalHistoryDetail(bundle);
+            ((TreeEditorActivity) getActivity()).transitionFromFamilyMemberToMedicalHistoryDetail(bundle);
         }
     }
 }

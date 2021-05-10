@@ -1,4 +1,4 @@
-package com.example.family_tree_temp.Fragments;
+package com.example.family_tree_temp.Fragments.TreeEditor;
 
 import android.os.Bundle;
 
@@ -10,19 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.family_tree_temp.Models.Address;
-import com.example.family_tree_temp.Models.Email;
+import com.example.family_tree_temp.Models.PhoneNumber;
 import com.example.family_tree_temp.R;
-import com.example.family_tree_temp.ViewModels.AddressViewModel;
-import com.example.family_tree_temp.ViewModels.EmailViewModel;
+import com.example.family_tree_temp.ViewModels.PhoneNumberViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link NewAddressFragment#newInstance} factory method to
+ * Use the {@link NewPhoneNumberFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewAddressFragment extends Fragment {
+public class NewPhoneNumberFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,7 +34,7 @@ public class NewAddressFragment extends Fragment {
     private int contactInformationServerId;
     private int contactInformationId;
 
-    public NewAddressFragment() {
+    public NewPhoneNumberFragment() {
         // Required empty public constructor
     }
 
@@ -46,11 +44,11 @@ public class NewAddressFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment NewAddressFragment.
+     * @return A new instance of fragment NewPhoneNumberFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NewAddressFragment newInstance(String param1, String param2) {
-        NewAddressFragment fragment = new NewAddressFragment();
+    public static NewPhoneNumberFragment newInstance(String param1, String param2) {
+        NewPhoneNumberFragment fragment = new NewPhoneNumberFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -74,19 +72,14 @@ public class NewAddressFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_new_address, container, false);
+        View view = inflater.inflate(R.layout.fragment_new_phone_number, container, false);
 
-        Button addressButton = view.findViewById(R.id.new_address_button);
-        addressButton.setOnClickListener(v -> {
-            String number = ((TextInputEditText) view.findViewById(R.id.new_house_number)).getText().toString();
-            String street = ((TextInputEditText) view.findViewById(R.id.new_street)).getText().toString();
-            String city = ((TextInputEditText) view.findViewById(R.id.new_city)).getText().toString();
-            String state = ((TextInputEditText) view.findViewById(R.id.new_state)).getText().toString();
-            String zipcode = ((TextInputEditText) view.findViewById(R.id.new_zipcode)).getText().toString();
-            Address address = new Address(contactInformationId, Integer.valueOf(number), street, city, state, zipcode, contactInformationServerId);
-
-            AddressViewModel mAddressViewModel = ViewModelProviders.of(getActivity()).get(AddressViewModel.class);
-            mAddressViewModel.insert(address);
+        Button emailButton = view.findViewById(R.id.new_phone_number_button);
+        emailButton.setOnClickListener(v -> {
+            String input = ((TextInputEditText) view.findViewById(R.id.new_family_member_phone_number)).getText().toString();
+            PhoneNumber phoneNumber = new PhoneNumber(contactInformationId, input, contactInformationServerId);
+            PhoneNumberViewModel mPhoneNumberViewModel = ViewModelProviders.of(getActivity()).get(PhoneNumberViewModel.class);
+            mPhoneNumberViewModel.insert(phoneNumber);
 
             getParentFragmentManager().popBackStack();
         });

@@ -1,4 +1,4 @@
-package com.example.family_tree_temp.Fragments;
+package com.example.family_tree_temp.Fragments.TreeEditor;
 
 import android.os.Bundle;
 
@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.example.family_tree_temp.Models.MedicalHistory;
 import com.example.family_tree_temp.R;
-import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;
 import com.example.family_tree_temp.ViewModels.MedicalHistoryViewModel;
 
 /**

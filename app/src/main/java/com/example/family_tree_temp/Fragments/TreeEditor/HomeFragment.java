@@ -1,5 +1,7 @@
-package com.example.family_tree_temp.Fragments;
+package com.example.family_tree_temp.Fragments.TreeEditor;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,7 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
-import com.example.family_tree_temp.Activities.MainActivity;
+import com.example.family_tree_temp.Activities.TreeEditorActivity;
 import com.example.family_tree_temp.Adaptors.FamilyMemberAdaptor;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Adaptors.Person;
@@ -94,7 +96,9 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
                 Person person = (Person) result.get("newPersonKey");
                 //((PersonAdaptor) mAdaptor).add(person);
 //                FamilyMember familyMember = new FamilyMember(person.getFirstName(), person.getLastName(), Integer.valueOf(person.getAge()), person.getGenderId());
-                FamilyMember familyMember = new FamilyMember(person.getFirstName(), person.getLastName(), person.getBirthDate(), person.getGender());
+                SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                int familyTreeId = sharedPreferences.getInt(getString(R.string.family_tree_id), -1);
+                FamilyMember familyMember = new FamilyMember(person.getFirstName(), person.getLastName(), person.getBirthDate(), person.getGender(), familyTreeId);
                 mFamilyMemberViewModel.insert(familyMember);
             }
         });
@@ -138,7 +142,8 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
 //        //detailJson = DetailDump.getData();
 //        mAdaptor = new PersonAdaptor(detailJson, (MainActivity) getActivity());
 //
-        mAdaptor = new FamilyMemberAdaptor((MainActivity) getActivity(), new OnFamilyMemberItemClickedListener());
+//        mAdaptor = new FamilyMemberAdaptor((MainActivity) getActivity(), new OnFamilyMemberItemClickedListener());
+        mAdaptor = new FamilyMemberAdaptor((TreeEditorActivity) getActivity(), new OnFamilyMemberItemClickedListener());
 
         mFamilyMemberViewModel = ViewModelProviders.of(getActivity()).get(FamilyMemberViewModel.class);
 
@@ -207,7 +212,8 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
             bundle.putInt("familyMemberPosition", position);
             getParentFragmentManager().setFragmentResult("familyMemberPosition", bundle);
 
-            ((MainActivity) getActivity()).transitionFromHomeToFamilyMemberDetail(bundle);
+//            ((MainActivity) getActivity()).transitionFromHomeToFamilyMemberDetail(bundle);
+            ((TreeEditorActivity) getActivity()).transitionFromHomeToFamilyMemberDetail(bundle);
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.family_tree_temp.Fragments;
+package com.example.family_tree_temp.Fragments.TreeEditor;
 
 import android.os.Bundle;
 
@@ -10,10 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.family_tree_temp.Models.Email;
 import com.example.family_tree_temp.Models.MedicalHistory;
 import com.example.family_tree_temp.R;
-import com.example.family_tree_temp.ViewModels.EmailViewModel;
 import com.example.family_tree_temp.ViewModels.MedicalHistoryViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 

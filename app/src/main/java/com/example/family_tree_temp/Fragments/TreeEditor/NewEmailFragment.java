@@ -1,4 +1,4 @@
-package com.example.family_tree_temp.Fragments;
+package com.example.family_tree_temp.Fragments.TreeEditor;
 
 import android.os.Bundle;
 

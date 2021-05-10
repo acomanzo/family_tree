@@ -1,5 +1,7 @@
-package com.example.family_tree_temp.Fragments;
+package com.example.family_tree_temp.Fragments.TreeEditor;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,20 +15,18 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.family_tree_temp.Activities.MainActivity;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.R;
 import com.example.family_tree_temp.ViewModels.AncestorDescendantBundle;
 import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AddAncestorFragment#newInstance} factory method to
+ * Use the {@link AddDescendantFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddAncestorFragment extends Fragment {
+public class AddDescendantFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,11 +38,11 @@ public class AddAncestorFragment extends Fragment {
     private String mParam2;
 
     private FamilyMemberViewModel mFamilyMemberViewModel;
-    private FamilyMember descendant;
+    private FamilyMember ancestor;
 
     private AddPersonFragment.OnPersonItemAddedListener callback;
 
-    public AddAncestorFragment() {
+    public AddDescendantFragment() {
         // Required empty public constructor
     }
 
@@ -56,11 +56,11 @@ public class AddAncestorFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AddAncestorFragment.
+     * @return A new instance of fragment AddDescendantFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddAncestorFragment newInstance(String param1, String param2) {
-        AddAncestorFragment fragment = new AddAncestorFragment();
+    public static AddDescendantFragment newInstance(String param1, String param2) {
+        AddDescendantFragment fragment = new AddDescendantFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -77,7 +77,7 @@ public class AddAncestorFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            descendant = mFamilyMemberViewModel.getFamilyMemberAtIndex(getArguments().getInt("familyMemberPosition"));
+            ancestor = mFamilyMemberViewModel.getFamilyMemberAtIndex(getArguments().getInt("familyMemberPosition"));
         }
     }
 
@@ -85,33 +85,33 @@ public class AddAncestorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_ancestor, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_descendant, container, false);
 
-        TextView prompt = view.findViewById(R.id.add_ancestor_relationship_prompt);
-        prompt.setText("What kind of ancestor?");
-        Spinner spinner = view.findViewById(R.id.add_ancestor_relationship_spinner);
-        String[] items = new String[]{"Parent", "Grandparent", "Aunt", "Uncle"};
+        TextView prompt = view.findViewById(R.id.add_descendant_relationship_prompt);
+        prompt.setText("What kind of descendant?");
+        Spinner spinner = view.findViewById(R.id.add_descendant_relationship_spinner);
+        String[] items = new String[]{"Child", "Grandchild", "Niece", "Nephew"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, items);
         spinner.setAdapter(adapter);
 
-        Button finishButton = view.findViewById(R.id.add_ancestor_finish_button);
+        Button finishButton = view.findViewById(R.id.add_descendant_finish_button);
         finishButton.setOnClickListener(v -> {
 
-            String firstName = ((TextInputEditText) view.findViewById(R.id.add_ancestor_first_name)).getText().toString();
-            String lastName = ((TextInputEditText) view.findViewById(R.id.add_ancestor_last_name)).getText().toString();
-//            String age = ((TextInputEditText) view.findViewById(R.id.add_ancestor_age)).getText().toString();
-            String streetNumber = ((TextInputEditText) view.findViewById(R.id.add_ancestor_street_number)).getText().toString();
-            String streetName = ((TextInputEditText) view.findViewById(R.id.add_ancestor_street_name)).getText().toString();
-            String townCity = ((TextInputEditText) view.findViewById(R.id.add_ancestor_town)).getText().toString();
-            String state = ((TextInputEditText) view.findViewById(R.id.add_ancestor_state)).getText().toString();
-            String country = ((TextInputEditText) view.findViewById(R.id.add_ancestor_country)).getText().toString();
-            String zipcode = ((TextInputEditText) view.findViewById(R.id.add_ancestor_zipcode)).getText().toString();
+            String firstName = ((TextInputEditText) view.findViewById(R.id.add_descendant_first_name)).getText().toString();
+            String lastName = ((TextInputEditText) view.findViewById(R.id.add_descendant_last_name)).getText().toString();
+//            String age = ((TextInputEditText) view.findViewById(R.id.add_descendant_age)).getText().toString();
+            String streetNumber = ((TextInputEditText) view.findViewById(R.id.add_descendant_street_number)).getText().toString();
+            String streetName = ((TextInputEditText) view.findViewById(R.id.add_descendant_street_name)).getText().toString();
+            String townCity = ((TextInputEditText) view.findViewById(R.id.add_descendant_town)).getText().toString();
+            String state = ((TextInputEditText) view.findViewById(R.id.add_descendant_state)).getText().toString();
+            String country = ((TextInputEditText) view.findViewById(R.id.add_descendant_country)).getText().toString();
+            String zipcode = ((TextInputEditText) view.findViewById(R.id.add_descendant_zipcode)).getText().toString();
 
             //Address address = new Address(streetNumber, streetName, townCity, state, country, zipcode);
 
-            String birthDate = ((TextInputEditText) view.findViewById(R.id.add_ancestor_birth_date)).getText().toString();
+            String gender = ((TextInputEditText) view.findViewById(R.id.add_descendant_gender)).getText().toString();
+            String birthDate = ((TextInputEditText) view.findViewById(R.id.add_descendant_birth_date)).getText().toString();
 
-            String gender = ((TextInputEditText) view.findViewById(R.id.add_ancestor_gender)).getText().toString();
 //            int genderId;
 //            switch (gender) {
 //                default:
@@ -119,18 +119,19 @@ public class AddAncestorFragment extends Fragment {
 //                    break;
 //            }
 
+
             String relationship = null;
             relationship = spinner.getSelectedItem().toString();
             int depth;
             switch (relationship.toLowerCase()) {
-                case "parent":
-                    depth = 1;
-                case "uncle":
+                case "child":
                     depth = 1;
                 case "niece":
                     depth = 1;
+                case "nephew":
+                    depth = 1;
                     break;
-                case "grandparent":
+                case "grandchild":
                     depth = 2;
                     break;
                 default:
@@ -138,19 +139,20 @@ public class AddAncestorFragment extends Fragment {
                     break;
             }
 
-//            FamilyMember ancestor = new FamilyMember(firstName, lastName, 10, genderId);
+            SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+            int familyTreeId = sharedPreferences.getInt(getString(R.string.family_tree_id), -1);
 
-            FamilyMember ancestor = new FamilyMember(firstName, lastName, birthDate, gender);
+            FamilyMember descendant = new FamilyMember(firstName, lastName, birthDate, gender, familyTreeId);
 
-            AncestorDescendantBundle ancestorDescendantBundle = new AncestorDescendantBundle(ancestor, descendant, depth);
+            AncestorDescendantBundle ancestorDescendantBundle = new AncestorDescendantBundle(descendant, ancestor, depth);
 
             // if you wanted to communicate to the HomeFragment that we updated the adaptor,
             // who would then add the person to the adaptor, then you should do this.
             // But, since DetailDump's data is static, we can just add it here.
             // This is also an example of how to communicate between fragments
             Bundle bundle = new Bundle();
-            bundle.putParcelable("newAncestorKey", ancestorDescendantBundle);
-            getParentFragmentManager().setFragmentResult("newAncestorKey", bundle);
+            bundle.putParcelable("newDescendantKey", ancestorDescendantBundle);
+            getParentFragmentManager().setFragmentResult("newDescendantKey", bundle);
 
             // tell MainActivity to switch to the home fragment
             getParentFragmentManager().popBackStack(); // since we're two away from home
