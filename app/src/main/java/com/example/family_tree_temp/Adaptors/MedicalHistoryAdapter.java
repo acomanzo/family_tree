@@ -5,8 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.family_tree_temp.Activities.MainActivity;
-import com.example.family_tree_temp.Fragments.FamilyMemberDetailFragment;
+import com.example.family_tree_temp.Activities.TreeEditorActivity;
+import com.example.family_tree_temp.Fragments.TreeEditor.FamilyMemberDetailFragment;
 import com.example.family_tree_temp.Models.MedicalHistory;
 import com.example.family_tree_temp.R;
 
@@ -18,11 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MedicalHistoryAdapter extends RecyclerView.Adapter<MedicalHistoryAdapter.MedicalHistoryViewHolder> {
 
     private List<MedicalHistory> mDataset;
-    private MainActivity mainActivity;
+    private TreeEditorActivity treeEditorActivity;
     private FamilyMemberDetailFragment.OnMedicalHistoryItemClickedListener onClickListener;
 
-    public MedicalHistoryAdapter(MainActivity mainActivity, FamilyMemberDetailFragment.OnMedicalHistoryItemClickedListener onClickListener) {
-        this.mainActivity = mainActivity;
+    public MedicalHistoryAdapter(TreeEditorActivity treeEditorActivity, FamilyMemberDetailFragment.OnMedicalHistoryItemClickedListener onClickListener) {
+        this.treeEditorActivity = treeEditorActivity;
         this.onClickListener = onClickListener;
     }
 

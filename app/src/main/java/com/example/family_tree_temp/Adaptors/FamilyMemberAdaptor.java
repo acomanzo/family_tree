@@ -7,8 +7,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.example.family_tree_temp.Activities.MainActivity;
-import com.example.family_tree_temp.Fragments.HomeFragment;
+import com.example.family_tree_temp.Activities.TreeEditorActivity;
+import com.example.family_tree_temp.Fragments.TreeEditor.HomeFragment;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.R;
 
@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class FamilyMemberAdaptor extends RecyclerView.Adapter<FamilyMemberAdaptor.MyViewHolder> implements Filterable {
     private List<FamilyMember> mDataset;
-    private MainActivity mainActivity;
+    private TreeEditorActivity treeEditorActivity;
     private List<FamilyMember> mDatasetFiltered;
     HomeFragment.OnFamilyMemberItemClickedListener onClickListener;
 
@@ -57,8 +57,8 @@ public class FamilyMemberAdaptor extends RecyclerView.Adapter<FamilyMemberAdapto
         };
     }
 
-    public FamilyMemberAdaptor(MainActivity mainActivity, HomeFragment.OnFamilyMemberItemClickedListener onClickListener) {
-        this.mainActivity = mainActivity;
+    public FamilyMemberAdaptor(TreeEditorActivity treeEditorActivity, HomeFragment.OnFamilyMemberItemClickedListener onClickListener) {
+        this.treeEditorActivity = treeEditorActivity;
         this.onClickListener = onClickListener;
     }
 
@@ -66,7 +66,7 @@ public class FamilyMemberAdaptor extends RecyclerView.Adapter<FamilyMemberAdapto
     @Override
     public FamilyMemberAdaptor.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.adaptor_person_item, parent, false);
-        MyViewHolder vh = new MyViewHolder(v, mainActivity, this);
+        MyViewHolder vh = new MyViewHolder(v, treeEditorActivity, this);
         return vh;
     }
 
@@ -101,16 +101,16 @@ public class FamilyMemberAdaptor extends RecyclerView.Adapter<FamilyMemberAdapto
         private View itemView;
         private TextView familyMemberName;
 
-        private MainActivity mainActivity;
+        private TreeEditorActivity treeEditorActivity;
 
         private FamilyMemberAdaptor familyMemberAdaptor;
 
-        public MyViewHolder(@NonNull View itemView, MainActivity mainActivity, FamilyMemberAdaptor familyMemberAdaptor) {
+        public MyViewHolder(@NonNull View itemView, TreeEditorActivity treeEditorActivity, FamilyMemberAdaptor familyMemberAdaptor) {
             super(itemView);
             this.itemView = itemView;
             familyMemberName = itemView.findViewById(R.id.person_name);
 
-            this.mainActivity = mainActivity;
+            this.treeEditorActivity = treeEditorActivity;
 
             this.familyMemberAdaptor = familyMemberAdaptor;
         }
