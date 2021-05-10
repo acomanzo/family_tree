@@ -39,13 +39,15 @@ public class AncestorDescendantBundle implements Parcelable {
 
         String birthDate = in.readString();
         String gender = in.readString();
-        FamilyMember newFamilyMember = new FamilyMember(firstName, lastName, birthDate, gender);
+        int familyTreeId = in.readInt();
+        FamilyMember newFamilyMember = new FamilyMember(firstName, lastName, birthDate, gender, familyTreeId);
 
         firstName = in.readString();
         lastName = in.readString();
         birthDate = in.readString();
         gender = in.readString();
-        FamilyMember existingFamilyMember = new FamilyMember(firstName, lastName, birthDate, gender);
+        familyTreeId = in.readInt();
+        FamilyMember existingFamilyMember = new FamilyMember(firstName, lastName, birthDate, gender, familyTreeId);
 
         int depth = in.readInt();
         int serverId = in.readInt();
@@ -93,11 +95,13 @@ public class AncestorDescendantBundle implements Parcelable {
 //        dest.writeInt(newFamilyMember.getGenderId());
         dest.writeString(newFamilyMember.getBirthDate());
         dest.writeString(newFamilyMember.getGender());
+        dest.writeInt(newFamilyMember.getFamilyTreeId());
 
         dest.writeString(existingFamilyMember.getFirstName());
         dest.writeString(existingFamilyMember.getLastName());
         dest.writeString(existingFamilyMember.getBirthDate());
         dest.writeString(existingFamilyMember.getGender());
+        dest.writeInt(existingFamilyMember.getFamilyTreeId());
 
         dest.writeInt(depth);
         dest.writeInt(serverId);

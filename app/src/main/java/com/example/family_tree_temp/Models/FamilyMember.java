@@ -36,6 +36,8 @@ public class FamilyMember {
 
     private int serverId;
 
+    private int familyTreeId;
+
     @Ignore
     private List<FamilyMember> children;
 
@@ -45,12 +47,12 @@ public class FamilyMember {
 //        this.age = age;
 //        this.genderId = genderId;
 //    }
-    public FamilyMember(@NonNull String firstName, @NonNull String lastName, String birthDate, String gender) {
+    public FamilyMember(@NonNull String firstName, @NonNull String lastName, String birthDate, String gender, int familyTreeId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.gender = gender;
-
+        this.familyTreeId = familyTreeId;
         children = new ArrayList<>();
     }
 
@@ -60,18 +62,19 @@ public class FamilyMember {
 //    }
 
     @Ignore
-    public FamilyMember(@NonNull String firstName, @NonNull String lastName, String birthDate, String gender, int serverId) {
-        this(-1, firstName, lastName, birthDate, gender, serverId);
+    public FamilyMember(@NonNull String firstName, @NonNull String lastName, String birthDate, String gender, int familyTreeId, int serverId) {
+        this(-1, firstName, lastName, birthDate, gender, familyTreeId, serverId);
     }
 
     @Ignore
-    public FamilyMember(int familyMemberId, @NonNull String firstName, @NonNull String lastName, String birthDate, String gender, int serverId) {
+    public FamilyMember(int familyMemberId, @NonNull String firstName, @NonNull String lastName, String birthDate, String gender, int familyTreeId, int serverId) {
         this.familyMemberId = familyMemberId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.gender = gender;
         this.serverId = serverId;
+        this.familyTreeId = familyTreeId;
 
         children = new ArrayList<>();
     }
@@ -126,5 +129,13 @@ public class FamilyMember {
 
     public void setChildren(List<FamilyMember> children) {
         this.children = children;
+    }
+
+    public void setFamilyTreeId(int familyMemberId) {
+        this.familyMemberId = familyMemberId;
+    }
+
+    public int getFamilyTreeId() {
+        return familyTreeId;
     }
 }

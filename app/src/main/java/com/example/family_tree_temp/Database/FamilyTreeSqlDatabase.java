@@ -100,7 +100,8 @@ public class FamilyTreeSqlDatabase {
                 "?firstName=" + familyMember.getFirstName() +
                 "&lastName=" + familyMember.getLastName() +
                 "&birthDate=" + familyMember.getBirthDate() +
-                "&gender=" + familyMember.getGender();
+                "&gender=" + familyMember.getGender() +
+                "&familyTreeId=" + familyMember.getFamilyTreeId();
 
         String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.FAMILY_MEMBER);
         return response;
@@ -117,7 +118,8 @@ public class FamilyTreeSqlDatabase {
                 "?firstName=" + familyMember.getFirstName() +
                 "&lastName=" + familyMember.getLastName() +
                 "&birthDate=" + familyMember.getBirthDate() +
-                "&gender=" + familyMember.getGender();
+                "&gender=" + familyMember.getGender() +
+                "&familyTreeId=" + familyMember.getFamilyTreeId();
         String response = makeHttpUrlRequest(stubs, "PATCH", CrudMethod.UPDATE, Model.FAMILY_MEMBER);
         return response;
     }
