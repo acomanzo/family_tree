@@ -29,6 +29,7 @@ import com.example.family_tree_temp.Fragments.TreeEditor.NewAddressFragment;
 import com.example.family_tree_temp.Fragments.TreeEditor.NewEmailFragment;
 import com.example.family_tree_temp.Fragments.TreeEditor.NewMedicalHistoryFragment;
 import com.example.family_tree_temp.Fragments.TreeEditor.NewPhoneNumberFragment;
+import com.example.family_tree_temp.Fragments.TreeEditor.SelectTreeFragment;
 import com.example.family_tree_temp.Fragments.TreeEditor.TreeFragment;
 import com.example.family_tree_temp.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -53,6 +54,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
     public final String ADD_MEDICAL_HISTORY_FRAGMENT = "add_medical_history_fragment";
     public final String MEDICAL_HISTORY_DETAIL_FRAGMENT = "medical_history_detail_fragment";
     public final String TREE_VIEW = "tree_view";
+    public final String SELECT_TREE_FRAGMENT = "select_tree_fragment";
 
     private String currentFragmentTag;
 
@@ -64,18 +66,6 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tree_editor);
-
-        // commit family tree id
-        Intent intent = getIntent();
-        int familyTreeId = intent.getIntExtra(getString(R.string.family_tree_id), -1);
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(getString(R.string.family_tree_id), familyTreeId);
-        editor.commit();
-
-        // make the home fragment our initial fragment
-        getSupportFragmentManager().beginTransaction().add(R.id.tree_editor_host_fragment, new HomeFragment(), HOME_FRAGMENT).commit();
-        currentFragmentTag = HOME_FRAGMENT;
 
         bottomAppBar = findViewById(R.id.bottomAppBar);
         bottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -121,11 +111,35 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
                     case ADD_DESCENDANT_FRAGMENT:
                     case MEDICAL_HISTORY_DETAIL_FRAGMENT:
                     case TREE_VIEW:
+                    case SELECT_TREE_FRAGMENT:
                         fabBackPressed();
                         break;
                 }
             }
         });
+
+        setupInitialFragment();
+    }
+
+    private void setupInitialFragment() {
+        // commit family tree id
+        Intent intent = getIntent();
+        String appUserId = intent.getStringExtra(getString(R.string.app_user_id));
+//        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString(getString(R.string.app_user_id), appUserId);
+//        editor.commit();
+
+        // make the select tree fragment our initial fragment
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.app_user_id), appUserId);
+        SelectTreeFragment selectTreeFragment = new SelectTreeFragment();
+        selectTreeFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().add(R.id.tree_editor_host_fragment, selectTreeFragment, SELECT_TREE_FRAGMENT).commit();
+        currentFragmentTag = SELECT_TREE_FRAGMENT;
+
+        bottomAppBar.setVisibility(View.GONE);
+        floatingActionButton.setVisibility(View.GONE);
     }
 
     public void transitionFromHomeToAddFamilyMember() {

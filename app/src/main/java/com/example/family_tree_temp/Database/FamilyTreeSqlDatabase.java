@@ -27,7 +27,7 @@ import java.util.Map;
 public class FamilyTreeSqlDatabase {
 
     private enum CrudMethod {
-        CREATE, UPDATE, DELETE, LOGIN
+        CREATE, READ, UPDATE, DELETE, LOGIN
     }
 
     private enum Model {
@@ -38,7 +38,8 @@ public class FamilyTreeSqlDatabase {
         ADDRESS,
         MEDICAL_HISTORY,
         ANCESTOR_DESCENDANT,
-        APP_USER
+        APP_USER,
+        FAMILY_TREE
     }
 
     private String baseUrl;
@@ -130,7 +131,7 @@ public class FamilyTreeSqlDatabase {
         return response;
     }
 
-    public static String parse(String responseBody, int status, CrudMethod crudMethod, Model model) {
+    public String parse(String responseBody, int status, CrudMethod crudMethod, Model model) {
         switch (model) {
             case FAMILY_MEMBER:
                 return parseFamilyMember(responseBody, status, crudMethod);
@@ -148,6 +149,8 @@ public class FamilyTreeSqlDatabase {
                 return parseAncestorDescendant(responseBody, status, crudMethod);
             case APP_USER:
                 return parseAppUser(responseBody, status, crudMethod);
+            case FAMILY_TREE:
+                return parseFamilyTree(responseBody, status, crudMethod);
             default:
                 return null;
         }
@@ -340,13 +343,40 @@ public class FamilyTreeSqlDatabase {
                 if (recordSet.length() > 0) {
                     JSONObject appUser = recordSet.getJSONObject(0);
                     switch (crudMethod) {
+                        case LOGIN:
                         case CREATE:
                             int appUserId = appUser.getInt("AppUserId");
                             return String.valueOf(appUserId);
                         case UPDATE:
                         case DELETE:
-                        case LOGIN:
-                            return appUser.toString();
+                            break;
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("familyTreeSqlDatabase", e.getLocalizedMessage());
+        }
+        return null;
+    }
+
+    public String parseFamilyTree(String responseBody, int status, CrudMethod crudMethod) {
+        try {
+            JSONObject response = new JSONObject(responseBody);
+            if (status > 299) {
+                String message = response.getString("message");
+                Log.i("familyTreeSqlDatabase", message);
+            }
+            else {
+                JSONArray recordSet = response.getJSONArray("recordset");
+                if (recordSet.length() > 0) {
+                    JSONObject familyTree = recordSet.getJSONObject(0);
+                    switch (crudMethod) {
+                        case READ:
+                            return recordSet.toString();
+                        case CREATE:
+                        case UPDATE:
+                        case DELETE:
+                            break;
                     }
                 }
             }
@@ -443,6 +473,20 @@ public class FamilyTreeSqlDatabase {
                 "&userPassword=" + password;
 
         String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.APP_USER);
+        return response;
+    }
+
+    public JSONArray selectAllFamilyTrees() throws JSONException {
+        String stubs = "/familytree";
+
+        JSONArray response = new JSONArray(makeHttpUrlRequest(stubs, "GET", CrudMethod.READ, Model.FAMILY_TREE));
+        return response;
+    }
+
+    public JSONArray selectFamilyTreesByAppUserId(String appUserId) throws JSONException {
+        String stubs = "/familytree?appUserId=" + appUserId;
+
+        JSONArray response = new JSONArray(makeHttpUrlRequest(stubs, "GET", CrudMethod.READ, Model.FAMILY_TREE));
         return response;
     }
 }

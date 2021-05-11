@@ -53,11 +53,13 @@ public class WelcomeActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public void login() {
+    public void login(Bundle bundle) {
         Intent intent = new Intent(WelcomeActivity.this, TreeEditorActivity.class);
 
-        // placeholder id for now, will actually get this from server
-        intent.putExtra(getString(R.string.family_tree_id), 1);
+        // id from server of user that logged in
+        String appUserId = bundle.getString("appUserId");
+
+        intent.putExtra(getString(R.string.app_user_id), appUserId);
         startActivity(intent);
     }
 }

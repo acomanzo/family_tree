@@ -29,7 +29,7 @@ public class TreeViewAdapter extends RecyclerView.Adapter<TreeViewAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapter_tree_item, parent, false);
+                .inflate(R.layout.adapter_tree_view_item, parent, false);
         return new ViewHolder(view);
     }
 

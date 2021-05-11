@@ -111,7 +111,9 @@ public class LoginFragment extends Fragment {
 //                Toast.makeText(context, text, duration).show();
 
                 // login
-                ((WelcomeActivity) getActivity()).login();
+                Bundle bundle = new Bundle();
+                bundle.putString("appUserId", response);
+                ((WelcomeActivity) getActivity()).login(bundle);
             }
 
             handler.post(() -> {
@@ -122,7 +124,4 @@ public class LoginFragment extends Fragment {
 
     }
 
-    private void test() {
-        ((WelcomeActivity) getActivity()).login();
-    }
 }
