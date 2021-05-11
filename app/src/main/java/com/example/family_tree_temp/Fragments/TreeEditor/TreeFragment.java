@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.family_tree_temp.Adaptors.TreeAdapter;
+import com.example.family_tree_temp.Adaptors.TreeViewAdapter;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.R;
 import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;
@@ -27,7 +27,7 @@ import java.util.List;
 public class TreeFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private TreeAdapter mAdaptor;
+    private TreeViewAdapter mAdaptor;
     private RecyclerView.LayoutManager layoutManager;
 
     private FamilyMemberViewModel mFamilyMemberViewModel;
@@ -101,7 +101,7 @@ public class TreeFragment extends Fragment {
 
         List<FamilyMember> rootList = new ArrayList<>();
         rootList.add(root);
-        mAdaptor = new TreeAdapter(rootList);
+        mAdaptor = new TreeViewAdapter(rootList);
 
         recyclerView = view.findViewById(R.id.tree_recycler_view);
         layoutManager = new LinearLayoutManager(view.getContext());

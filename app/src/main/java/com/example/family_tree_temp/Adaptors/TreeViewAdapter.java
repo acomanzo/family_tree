@@ -17,11 +17,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TreeAdapter extends RecyclerView.Adapter<TreeAdapter.ViewHolder> {
+public class TreeViewAdapter extends RecyclerView.Adapter<TreeViewAdapter.ViewHolder> {
 
     private List<FamilyMember> localDataSet;
 
-    public TreeAdapter(List<FamilyMember> dataSet) {
+    public TreeViewAdapter(List<FamilyMember> dataSet) {
         this.localDataSet = dataSet;
     }
 
@@ -52,7 +52,7 @@ public class TreeAdapter extends RecyclerView.Adapter<TreeAdapter.ViewHolder> {
         private final TextView name;
         private final ImageButton imageButton;
 
-        private TreeAdapter treeAdapter;
+        private TreeViewAdapter treeViewAdapter;
         private final RecyclerView recyclerView;
         private List<FamilyMember> children;
 
@@ -75,11 +75,11 @@ public class TreeAdapter extends RecyclerView.Adapter<TreeAdapter.ViewHolder> {
             name.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("TreeAdapter", "Hello from name");
+                    Log.d("TreeViewAdapter", "Hello from name");
                 }
             });
             imageButton.setOnClickListener(v -> {
-                Log.d("TreeAdapter", "Hello from image button");
+                Log.d("TreeViewAdapter", "Hello from image button");
                 switch (recyclerView.getVisibility()) {
                     case View.GONE:
                         recyclerView.setVisibility(View.VISIBLE);
@@ -90,8 +90,8 @@ public class TreeAdapter extends RecyclerView.Adapter<TreeAdapter.ViewHolder> {
             });
 
             children = familyMember.getChildren();
-            treeAdapter = new TreeAdapter(children);
-            recyclerView.setAdapter(treeAdapter);
+            treeViewAdapter = new TreeViewAdapter(children);
+            recyclerView.setAdapter(treeViewAdapter);
         }
     }
 }
