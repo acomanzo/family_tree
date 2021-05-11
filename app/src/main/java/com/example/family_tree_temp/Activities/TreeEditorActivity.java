@@ -74,7 +74,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         editor.commit();
 
         // make the home fragment our initial fragment
-        getSupportFragmentManager().beginTransaction().add(R.id.host_fragment, new HomeFragment(), HOME_FRAGMENT).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.tree_editor_host_fragment, new HomeFragment(), HOME_FRAGMENT).commit();
         currentFragmentTag = HOME_FRAGMENT;
 
         bottomAppBar = findViewById(R.id.bottomAppBar);
@@ -136,7 +136,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
 
             AddPersonFragment addPersonFragment = new AddPersonFragment();
 
-            fragmentTransaction.replace(R.id.host_fragment, addPersonFragment, NEW_FAMILY_MEMBER_FRAGMENT);
+            fragmentTransaction.replace(R.id.tree_editor_host_fragment, addPersonFragment, NEW_FAMILY_MEMBER_FRAGMENT);
             //bottomAppBar.setNavigationIcon(null);
             bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
             //bottomAppBar.replaceMenu(R.menu.app_bottom_bar_menu_secondary);
@@ -156,7 +156,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
 
         HomeFragment homeFragment = new HomeFragment();
 
-        fragmentTransaction.replace(R.id.host_fragment, homeFragment);
+        fragmentTransaction.replace(R.id.tree_editor_host_fragment, homeFragment);
         bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_menu_24);
         bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
         //bottomAppBar.replaceMenu(R.menu.app_bottom_bar_menu);
@@ -175,7 +175,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
 
         HomeFragment homeFragment = new HomeFragment();
 
-        fragmentTransaction.replace(R.id.host_fragment, homeFragment);
+        fragmentTransaction.replace(R.id.tree_editor_host_fragment, homeFragment);
         bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_menu_24);
         bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
         //bottomAppBar.replaceMenu(R.menu.app_bottom_bar_menu);
@@ -200,7 +200,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         nextFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
-                .replace(R.id.host_fragment, nextFragment, newTag)
+                .replace(R.id.tree_editor_host_fragment, nextFragment, newTag)
                 .addToBackStack(newTag)
                 .commit();
     }
@@ -214,7 +214,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         addAncestorFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
-                .replace(R.id.host_fragment, addAncestorFragment, newTag)
+                .replace(R.id.tree_editor_host_fragment, addAncestorFragment, newTag)
                 .addToBackStack(newTag)
                 .commit();
     }
@@ -228,7 +228,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         addDescendantFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
-                .replace(R.id.host_fragment, addDescendantFragment, newTag)
+                .replace(R.id.tree_editor_host_fragment, addDescendantFragment, newTag)
                 .addToBackStack(newTag)
                 .commit();
     }
@@ -242,7 +242,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         addEmailFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
-                .replace(R.id.host_fragment, addEmailFragment, newTag)
+                .replace(R.id.tree_editor_host_fragment, addEmailFragment, newTag)
                 .addToBackStack(newTag)
                 .commit();
     }
@@ -256,7 +256,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         addPhoneNumberFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
-                .replace(R.id.host_fragment, addPhoneNumberFragment, newTag)
+                .replace(R.id.tree_editor_host_fragment, addPhoneNumberFragment, newTag)
                 .addToBackStack(newTag)
                 .commit();
     }
@@ -270,7 +270,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         addAddressFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
-                .replace(R.id.host_fragment, addAddressFragment, newTag)
+                .replace(R.id.tree_editor_host_fragment, addAddressFragment, newTag)
                 .addToBackStack(newTag)
                 .commit();
     }
@@ -284,7 +284,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         addMedicalHistoryFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
-                .replace(R.id.host_fragment, addMedicalHistoryFragment, newTag)
+                .replace(R.id.tree_editor_host_fragment, addMedicalHistoryFragment, newTag)
                 .addToBackStack(newTag)
                 .commit();
     }
@@ -303,7 +303,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         nextFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
-                .replace(R.id.host_fragment, nextFragment, newTag)
+                .replace(R.id.tree_editor_host_fragment, nextFragment, newTag)
                 .addToBackStack(newTag)
                 .commit();
     }
@@ -321,7 +321,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         TreeFragment nextFragment = new TreeFragment();
 
         fragmentManager.beginTransaction()
-                .replace(R.id.host_fragment, nextFragment, newTag)
+                .replace(R.id.tree_editor_host_fragment, nextFragment, newTag)
                 .addToBackStack(newTag)
                 .commit();
     }
@@ -342,7 +342,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
                     transitionToHomeFromSomeView();
                 default:
                     Fragment fragment = fragmentManager.findFragmentByTag(name);
-                    fragmentTransaction.replace(R.id.host_fragment, fragment);
+                    fragmentTransaction.replace(R.id.tree_editor_host_fragment, fragment);
                     currentFragmentTag = fragment.getTag();
                     fragmentManager.popBackStack();
                     fragmentTransaction.commit();
@@ -416,7 +416,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
                     fragmentTransaction.show(fragmentManager.findFragmentByTag(HOME_FRAGMENT));
                 } else {
                     // if the fragment does not exist, add it to the fragment manager
-                    fragmentTransaction.add(R.id.host_fragment, new HomeFragment(), HOME_FRAGMENT);
+                    fragmentTransaction.add(R.id.tree_editor_host_fragment, new HomeFragment(), HOME_FRAGMENT);
                 }
                 if (fragmentManager.findFragmentByTag(NEW_FAMILY_MEMBER_FRAGMENT) != null) {
                     // if the other fragment is visible, hide it
@@ -433,7 +433,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
                 if (fragmentManager.findFragmentByTag(NEW_FAMILY_MEMBER_FRAGMENT) != null) {
                     fragmentTransaction.show(fragmentManager.findFragmentByTag(NEW_FAMILY_MEMBER_FRAGMENT));
                 } else {
-                    fragmentTransaction.add(R.id.host_fragment, new AddPersonFragment(), NEW_FAMILY_MEMBER_FRAGMENT);
+                    fragmentTransaction.add(R.id.tree_editor_host_fragment, new AddPersonFragment(), NEW_FAMILY_MEMBER_FRAGMENT);
                 }
                 if (fragmentManager.findFragmentByTag(HOME_FRAGMENT) != null) {
                     fragmentTransaction.hide(fragmentManager.findFragmentByTag(HOME_FRAGMENT));

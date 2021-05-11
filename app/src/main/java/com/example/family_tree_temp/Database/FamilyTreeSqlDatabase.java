@@ -27,7 +27,7 @@ import java.util.Map;
 public class FamilyTreeSqlDatabase {
 
     private enum CrudMethod {
-        CREATE, UPDATE, DELETE
+        CREATE, UPDATE, DELETE, LOGIN
     }
 
     private enum Model {
@@ -37,7 +37,8 @@ public class FamilyTreeSqlDatabase {
         PHONE_NUMBER,
         ADDRESS,
         MEDICAL_HISTORY,
-        ANCESTOR_DESCENDANT
+        ANCESTOR_DESCENDANT,
+        APP_USER
     }
 
     private String baseUrl;
@@ -56,7 +57,6 @@ public class FamilyTreeSqlDatabase {
         HttpURLConnection connection = null;
         try {
             String insertUrl = baseUrl + stubs;
-
             URL url = new URL(insertUrl);
 
             connection = (HttpURLConnection) url.openConnection();
@@ -146,6 +146,8 @@ public class FamilyTreeSqlDatabase {
                 return parseMedicalHistory(responseBody, status, crudMethod);
             case ANCESTOR_DESCENDANT:
                 return parseAncestorDescendant(responseBody, status, crudMethod);
+            case APP_USER:
+                return parseAppUser(responseBody, status, crudMethod);
             default:
                 return null;
         }
@@ -326,6 +328,34 @@ public class FamilyTreeSqlDatabase {
         return null;
     }
 
+    public static String parseAppUser(String responseBody, int status, CrudMethod crudMethod) {
+        try {
+            JSONObject response = new JSONObject(responseBody);
+            if (status > 299) {
+                String message = response.getString("message");
+                Log.i("familyTreeSqlDatabase", message);
+            }
+            else {
+                JSONArray recordSet = response.getJSONArray("recordset");
+                if (recordSet.length() > 0) {
+                    JSONObject appUser = recordSet.getJSONObject(0);
+                    switch (crudMethod) {
+                        case CREATE:
+                            int appUserId = appUser.getInt("AppUserId");
+                            return String.valueOf(appUserId);
+                        case UPDATE:
+                        case DELETE:
+                        case LOGIN:
+                            return appUser.toString();
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("familyTreeSqlDatabase", e.getLocalizedMessage());
+        }
+        return null;
+    }
+
     public String insertEmail(Email email) {
 
         String stubs = "/email" +
@@ -395,6 +425,24 @@ public class FamilyTreeSqlDatabase {
                 "&depth=" + ancestorDescendantBundle.getDepth();
 
         String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.ANCESTOR_DESCENDANT);
+        return response;
+    }
+
+    public String login(String email, String password) {
+        String stubs = "/appuser/login" +
+                "?email=" + email +
+                "&userPassword=" + password;
+
+        String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.LOGIN, Model.APP_USER);
+        return response;
+    }
+
+    public String insertAppUser(String email, String password) {
+        String stubs = "/appuser" +
+                "?email=" + email +
+                "&userPassword=" + password;
+
+        String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.APP_USER);
         return response;
     }
 }

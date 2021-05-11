@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Family_tree_temp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.TreeEditorActivity"></activity>
+        <activity android:name=".Activities.TreeEditorActivity" />
         <activity android:name=".Activities.WelcomeActivity" />
         <activity android:name=".Activities.MainActivity">
             <intent-filter>

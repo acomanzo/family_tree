@@ -16,17 +16,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button button = findViewById(R.id.go);
-        button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TreeEditorActivity.class);
-
-                // placeholder id for now, will actually get this from server
-                intent.putExtra(getString(R.string.family_tree_id), 1);
-                startActivity(intent);
-            }
-        });
+        Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+        startActivity(intent);
     }
 }
