@@ -38,6 +38,12 @@ public class FamilyMember {
 
     private int familyTreeId;
 
+    @NonNull
+    private String createdAt;
+
+    @NonNull
+    private String updatedAt;
+
     @Ignore
     private List<FamilyMember> children;
 
@@ -47,12 +53,20 @@ public class FamilyMember {
 //        this.age = age;
 //        this.genderId = genderId;
 //    }
-    public FamilyMember(@NonNull String firstName, @NonNull String lastName, String birthDate, String gender, int familyTreeId) {
+
+    @Ignore
+    public FamilyMember(String firstName, String lastName, String birthDate, String gender, int familyTreeId) {
+        this(firstName, lastName, birthDate, gender, familyTreeId, "", "");
+    }
+
+    public FamilyMember(@NonNull String firstName, @NonNull String lastName, String birthDate, String gender, int familyTreeId, @NonNull String createdAt, @NonNull String updatedAt) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.gender = gender;
         this.familyTreeId = familyTreeId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         children = new ArrayList<>();
     }
 
@@ -137,5 +151,21 @@ public class FamilyMember {
 
     public int getFamilyTreeId() {
         return familyTreeId;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

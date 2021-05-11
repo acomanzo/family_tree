@@ -1,5 +1,7 @@
 package com.example.family_tree_temp.Models;
 
+import androidx.annotation.NonNull;
+
 public class FamilyTree {
 
     private int familyTreeId;
@@ -8,14 +10,34 @@ public class FamilyTree {
 
     private String treeName;
 
+    @NonNull
+    private String createdAt;
+
+    @NonNull
+    private String updatedAt;
+
     public FamilyTree(int appUserId, String treeName) {
         this(-1, appUserId, treeName);
     }
 
     public FamilyTree(int familyTreeId, int appUserId, String treeName) {
+        this(familyTreeId, appUserId, treeName, "", "");
+    }
+
+    public FamilyTree(int familyTreeId, int appUserId, String treeName, @NonNull String createdAt, @NonNull String updatedAt) {
         this.familyTreeId = familyTreeId;
         this.appUserId = appUserId;
         this.treeName = treeName;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public int getFamilyTreeId() {
+        return familyTreeId;
+    }
+
+    public void setFamilyTreeId(int familyTreeId) {
+        this.familyTreeId = familyTreeId;
     }
 
     public int getAppUserId() {
@@ -32,5 +54,21 @@ public class FamilyTree {
 
     public void setTreeName(String treeName) {
         this.treeName = treeName;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

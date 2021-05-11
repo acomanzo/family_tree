@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.R;
-import com.example.family_tree_temp.ViewModels.AncestorDescendantBundle;
+import com.example.family_tree_temp.Models.AncestorDescendantBundle;
 import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 

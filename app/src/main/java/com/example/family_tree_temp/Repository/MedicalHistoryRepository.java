@@ -38,9 +38,8 @@ public class MedicalHistoryRepository {
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
             FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
-            String id = familyTreeSqlDatabase.insertMedicalHistory(medicalHistory);
-            medicalHistory.setServerId(Integer.valueOf(id));
-            handler.post(() -> new MedicalHistoryRepository.insertMedicalHistoryAsyncTask(mMedicalHistoryDao).execute(medicalHistory));
+            MedicalHistory newMedicalHistory = familyTreeSqlDatabase.insertMedicalHistory(medicalHistory);
+            handler.post(() -> new MedicalHistoryRepository.insertMedicalHistoryAsyncTask(mMedicalHistoryDao).execute(newMedicalHistory));
         });
     }
 

@@ -29,6 +29,12 @@ public class PhoneNumber {
     @Ignore
     private int contactInformationServerId;
 
+    @NonNull
+    private String createdAt;
+
+    @NonNull
+    private String updatedAt;
+
     @Ignore
     public PhoneNumber(@NonNull int contactInformationId, @NonNull String phoneNumber, int contactInformationServerId) {
         this.contactInformationId = contactInformationId;
@@ -36,10 +42,12 @@ public class PhoneNumber {
         this.contactInformationServerId = contactInformationServerId;
     }
 
-    public PhoneNumber(@NonNull int phoneNumberId, @NonNull int contactInformationId, @NonNull String phoneNumber) {
+    public PhoneNumber(@NonNull int phoneNumberId, @NonNull int contactInformationId, @NonNull String phoneNumber, @NonNull String createdAt, @NonNull String updatedAt) {
         this.phoneNumberId = phoneNumberId;
         this.contactInformationId = contactInformationId;
         this.phoneNumber = phoneNumber;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public int getPhoneNumberId() {
@@ -64,5 +72,21 @@ public class PhoneNumber {
 
     public int getContactInformationServerId() {
         return contactInformationServerId;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

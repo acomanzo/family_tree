@@ -37,9 +37,8 @@ public class AddressRepository {
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
             FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
-            String id = familyTreeSqlDatabase.insertAddress(address);
-            address.setServerId(Integer.valueOf(id));
-            handler.post(() -> new AddressRepository.insertAddressAsyncTask(mAddressDao).execute(address));
+            Address newAddress = familyTreeSqlDatabase.insertAddress(address);
+            handler.post(() -> new AddressRepository.insertAddressAsyncTask(mAddressDao).execute(newAddress));
         });
     }
 

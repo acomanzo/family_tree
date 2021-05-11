@@ -37,9 +37,8 @@ public class EmailRepository {
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
             FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
-            String id = familyTreeSqlDatabase.insertEmail(email);
-            email.setServerId(Integer.valueOf(id));
-            handler.post(() -> new insertEmailAsyncTask(mEmailDao).execute(email));
+            Email newEmail = familyTreeSqlDatabase.insertEmail(email);
+            handler.post(() -> new insertEmailAsyncTask(mEmailDao).execute(newEmail));
         });
     }
 

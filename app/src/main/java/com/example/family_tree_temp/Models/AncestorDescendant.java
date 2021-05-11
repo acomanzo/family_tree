@@ -33,6 +33,12 @@ public class AncestorDescendant {
 
     private int serverId;
 
+    @NonNull
+    private String createdAt;
+
+    @NonNull
+    private String updatedAt;
+
     @Ignore
     public AncestorDescendant(@NonNull int ancestorId, @NonNull int descendantId, @NonNull int depth) {
         this(ancestorId, descendantId, depth, -1);
@@ -46,12 +52,14 @@ public class AncestorDescendant {
         this.serverId = serverId;
     }
 
-    public AncestorDescendant(int ancestorDescendantId, @NonNull int ancestorId, @NonNull int descendantId, @NonNull int depth, int serverId) {
+    public AncestorDescendant(int ancestorDescendantId, @NonNull int ancestorId, @NonNull int descendantId, @NonNull int depth, int serverId, @NonNull String createdAt, @NonNull String updatedAt) {
         this.ancestorDescendantId = ancestorDescendantId;
         this.ancestorId = ancestorId;
         this.descendantId = descendantId;
         this.depth = depth;
         this.serverId = serverId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public int getAncestorDescendantId() {
@@ -76,5 +84,21 @@ public class AncestorDescendant {
 
     public void setServerId(int serverId) {
         this.serverId = serverId;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

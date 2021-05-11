@@ -6,9 +6,10 @@ import com.example.family_tree_temp.Models.Address;
 import com.example.family_tree_temp.Models.ContactInformation;
 import com.example.family_tree_temp.Models.Email;
 import com.example.family_tree_temp.Models.FamilyMember;
+import com.example.family_tree_temp.Models.FamilyTree;
 import com.example.family_tree_temp.Models.MedicalHistory;
 import com.example.family_tree_temp.Models.PhoneNumber;
-import com.example.family_tree_temp.ViewModels.AncestorDescendantBundle;
+import com.example.family_tree_temp.Models.AncestorDescendantBundle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,12 +17,10 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
 
 
 public class FamilyTreeSqlDatabase {
@@ -168,8 +167,8 @@ public class FamilyTreeSqlDatabase {
                     case CREATE:
                         JSONArray recordSet = response.getJSONArray("recordset");
                         JSONObject familyMember = recordSet.getJSONObject(0);
-                        int familyMemberId = familyMember.getInt("FamilyMemberId");
-                        return String.valueOf(familyMemberId);
+//                        int familyMemberId = familyMember.getInt("FamilyMemberId");
+                        return String.valueOf(familyMember);
                     case UPDATE:
                     case DELETE:
                         break;
@@ -193,8 +192,8 @@ public class FamilyTreeSqlDatabase {
                     case CREATE:
                         JSONArray recordSet = response.getJSONArray("recordset");
                         JSONObject email = recordSet.getJSONObject(0);
-                        int emailId = email.getInt("EmailId");
-                        return String.valueOf(emailId);
+//                        int emailId = email.getInt("EmailId");
+                        return String.valueOf(email);
                     case UPDATE:
                     case DELETE:
                         break;
@@ -218,8 +217,8 @@ public class FamilyTreeSqlDatabase {
                     case CREATE:
                         JSONArray recordSet = response.getJSONArray("recordset");
                         JSONObject contactInformation = recordSet.getJSONObject(0);
-                        int emailId = contactInformation.getInt("ContactInformationId");
-                        return String.valueOf(emailId);
+//                        int contactInformationId = contactInformation.getInt("ContactInformationId");
+                        return String.valueOf(contactInformation);
                     case UPDATE:
                     case DELETE:
                         break;
@@ -243,8 +242,8 @@ public class FamilyTreeSqlDatabase {
                     case CREATE:
                         JSONArray recordSet = response.getJSONArray("recordset");
                         JSONObject phoneNumber = recordSet.getJSONObject(0);
-                        int emailId = phoneNumber.getInt("PhoneNumberId");
-                        return String.valueOf(emailId);
+//                        int phoneNumberId = phoneNumber.getInt("PhoneNumberId");
+                        return String.valueOf(phoneNumber);
                     case UPDATE:
                     case DELETE:
                         break;
@@ -268,8 +267,8 @@ public class FamilyTreeSqlDatabase {
                     case CREATE:
                         JSONArray recordSet = response.getJSONArray("recordset");
                         JSONObject address = recordSet.getJSONObject(0);
-                        int emailId = address.getInt("ContactAddressId");
-                        return String.valueOf(emailId);
+//                        int addressId = address.getInt("ContactAddressId");
+                        return String.valueOf(address);
                     case UPDATE:
                     case DELETE:
                         break;
@@ -293,8 +292,8 @@ public class FamilyTreeSqlDatabase {
                     case CREATE:
                         JSONArray recordSet = response.getJSONArray("recordset");
                         JSONObject medicalHistory = recordSet.getJSONObject(0);
-                        int emailId = medicalHistory.getInt("MedicalHistoryId");
-                        return String.valueOf(emailId);
+//                        int medicalHistoryId = medicalHistory.getInt("MedicalHistoryId");
+                        return String.valueOf(medicalHistory);
                     case UPDATE:
                     case DELETE:
                         break;
@@ -318,8 +317,8 @@ public class FamilyTreeSqlDatabase {
                     case CREATE:
                         JSONArray recordSet = response.getJSONArray("recordset");
                         JSONObject ancestorDescendant = recordSet.getJSONObject(0);
-                        int ancestorDescendantId = ancestorDescendant.getInt("AncestorDescendantId");
-                        return String.valueOf(ancestorDescendantId);
+//                        int ancestorDescendantId = ancestorDescendant.getInt("AncestorDescendantId");
+                        return String.valueOf(ancestorDescendant);
                     case UPDATE:
                     case DELETE:
                         break;
@@ -345,8 +344,8 @@ public class FamilyTreeSqlDatabase {
                     switch (crudMethod) {
                         case LOGIN:
                         case CREATE:
-                            int appUserId = appUser.getInt("AppUserId");
-                            return String.valueOf(appUserId);
+//                            int appUserId = appUser.getInt("AppUserId");
+                            return String.valueOf(appUser);
                         case UPDATE:
                         case DELETE:
                             break;
@@ -374,6 +373,8 @@ public class FamilyTreeSqlDatabase {
                         case READ:
                             return recordSet.toString();
                         case CREATE:
+//                            int familyTreeId = familyTree.getInt("FamilyTreeId");
+                            return String.valueOf(familyTree);
                         case UPDATE:
                         case DELETE:
                             break;
@@ -386,34 +387,67 @@ public class FamilyTreeSqlDatabase {
         return null;
     }
 
-    public String insertEmail(Email email) {
+    public Email insertEmail(Email email) {
 
         String stubs = "/email" +
                 "?email=" + email.getEmail() +
                 "&contactInformationId=" + email.getContactInformationServerId();
 
         String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.EMAIL);
-        return response;
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int serverId = jsonObject.getInt("EmailId");
+            String createdAt = jsonObject.getString("CreatedAt");
+            String updatedAt = jsonObject.getString("UpdatedAt");
+            email.setServerId(serverId);
+            email.setCreatedAt(createdAt);
+            email.setUpdatedAt(updatedAt);
+            return email;
+        } catch (JSONException e) {
+            return null;
+        }
     }
 
-    public String insertContactInformation(ContactInformation contactInformation) {
+    public ContactInformation insertContactInformation(ContactInformation contactInformation) {
         String stubs = "/contactinformation" +
                 "?familyMemberId=" + contactInformation.getFamilyMemberId();
 
         String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.CONTACT_INFORMATION);
-        return response;
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int serverId = jsonObject.getInt("ContactInformationId");
+            String createdAt = jsonObject.getString("CreatedAt");
+            String updatedAt = jsonObject.getString("UpdatedAt");
+            contactInformation.setServerId(serverId);
+            contactInformation.setCreatedAt(createdAt);
+            contactInformation.setUpdatedAt(updatedAt);
+            return contactInformation;
+        } catch (JSONException e) {
+            return null;
+        }
     }
 
-    public String insertPhoneNumber(PhoneNumber phoneNumber) {
+    public PhoneNumber insertPhoneNumber(PhoneNumber phoneNumber) {
         String stubs = "/phonenumber" +
                 "?phoneNumber=" + phoneNumber.getPhoneNumber() +
                 "&contactInformationId=" + phoneNumber.getContactInformationServerId();
 
         String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.PHONE_NUMBER);
-        return response;
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int serverId = jsonObject.getInt("PhoneNumberId");
+            String createdAt = jsonObject.getString("CreatedAt");
+            String updatedAt = jsonObject.getString("UpdatedAt");
+            phoneNumber.setServerId(serverId);
+            phoneNumber.setCreatedAt(createdAt);
+            phoneNumber.setUpdatedAt(updatedAt);
+            return phoneNumber;
+        } catch (JSONException e) {
+            return null;
+        }
     }
 
-    public String insertAddress(Address address) {
+    public Address insertAddress(Address address) {
         String stubs = "/contactaddress" +
                 "?streetName=" + address.getStreetName() +
                 "&houseNumber=" + address.getHouseNumber() +
@@ -424,10 +458,21 @@ public class FamilyTreeSqlDatabase {
                 "&contactInformationId=" + address.getContactInformationServerId();
 
         String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.ADDRESS);
-        return response;
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int serverId = jsonObject.getInt("ContactAddressId");
+            String createdAt = jsonObject.getString("CreatedAt");
+            String updatedAt = jsonObject.getString("UpdatedAt");
+            address.setServerId(serverId);
+            address.setCreatedAt(createdAt);
+            address.setUpdatedAt(updatedAt);
+            return address;
+        } catch (JSONException e) {
+            return null;
+        }
     }
 
-    public String insertMedicalHistory(MedicalHistory medicalHistory) {
+    public MedicalHistory insertMedicalHistory(MedicalHistory medicalHistory) {
         String stubs = "/medicalhistory" +
                 "?dateDiagnosed=" + medicalHistory.getDateDiagnosed() +
                 "&note=" + medicalHistory.getNote() +
@@ -435,27 +480,60 @@ public class FamilyTreeSqlDatabase {
                 "&familyMemberId=" + medicalHistory.getFamilyMemberServerId();
 
         String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.MEDICAL_HISTORY);
-        return response;
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int serverId = jsonObject.getInt("MedicalHistoryId");
+            String createdAt = jsonObject.getString("CreatedAt");
+            String updatedAt = jsonObject.getString("UpdatedAt");
+            medicalHistory.setServerId(serverId);
+            medicalHistory.setCreatedAt(createdAt);
+            medicalHistory.setUpdatedAt(updatedAt);
+            return medicalHistory;
+        } catch (JSONException e) {
+            return null;
+        }
     }
 
-    public String insertAncestor(AncestorDescendantBundle ancestorDescendantBundle) {
+    public AncestorDescendantBundle insertAncestor(AncestorDescendantBundle ancestorDescendantBundle) {
         String stubs = "/ancestordescendant" +
                 "?ancestorId=" + ancestorDescendantBundle.getNewFamilyMember().getServerId() +
                 "&descendantId=" + ancestorDescendantBundle.getExistingFamilyMember().getServerId() +
                 "&depth=" + ancestorDescendantBundle.getDepth();
 
         String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.ANCESTOR_DESCENDANT);
-        return response;
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int serverId = jsonObject.getInt("AncestorDescendantId");
+            String createdAt = jsonObject.getString("CreatedAt");
+            String updatedAt = jsonObject.getString("UpdatedAt");
+            ancestorDescendantBundle.setServerId(serverId);
+            ancestorDescendantBundle.setCreatedAt(createdAt);
+            ancestorDescendantBundle.setUpdatedAt(updatedAt);
+            return ancestorDescendantBundle;
+        } catch (JSONException e) {
+            return null;
+        }
     }
 
-    public String insertDescendant(AncestorDescendantBundle ancestorDescendantBundle) {
+    public AncestorDescendantBundle insertDescendant(AncestorDescendantBundle ancestorDescendantBundle) {
         String stubs = "/ancestordescendant" +
                 "?ancestorId=" + ancestorDescendantBundle.getExistingFamilyMember().getServerId() +
                 "&descendantId=" + ancestorDescendantBundle.getNewFamilyMember().getServerId() +
                 "&depth=" + ancestorDescendantBundle.getDepth();
 
         String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.ANCESTOR_DESCENDANT);
-        return response;
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int serverId = jsonObject.getInt("AncestorDescendantId");
+            String createdAt = jsonObject.getString("CreatedAt");
+            String updatedAt = jsonObject.getString("UpdatedAt");
+            ancestorDescendantBundle.setServerId(serverId);
+            ancestorDescendantBundle.setCreatedAt(createdAt);
+            ancestorDescendantBundle.setUpdatedAt(updatedAt);
+            return ancestorDescendantBundle;
+        } catch (JSONException e) {
+            return null;
+        }
     }
 
     public String login(String email, String password) {
@@ -488,5 +566,25 @@ public class FamilyTreeSqlDatabase {
 
         JSONArray response = new JSONArray(makeHttpUrlRequest(stubs, "GET", CrudMethod.READ, Model.FAMILY_TREE));
         return response;
+    }
+
+    public FamilyTree insertFamilyTree(FamilyTree familyTree) {
+        String stubs = "/familytree" +
+                "?appUserId=" + familyTree.getAppUserId() +
+                "&treeName=" + familyTree.getTreeName();
+
+        String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.FAMILY_TREE);
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int serverId = jsonObject.getInt("FamilyTreeId");
+            String createdAt = jsonObject.getString("CreatedAt");
+            String updatedAt = jsonObject.getString("UpdatedAt");
+//            familyTree.setServerId(serverId);
+            familyTree.setCreatedAt(createdAt);
+            familyTree.setUpdatedAt(updatedAt);
+            return familyTree;
+        } catch (JSONException e) {
+            return null;
+        }
     }
 }

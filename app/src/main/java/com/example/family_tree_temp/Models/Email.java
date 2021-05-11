@@ -26,6 +26,12 @@ public class Email {
 
     private int serverId;
 
+    @NonNull
+    private String createdAt;
+
+    @NonNull
+    private String updatedAt;
+
     @Ignore
     private int contactInformationServerId;
 
@@ -36,10 +42,12 @@ public class Email {
         this.contactInformationServerId = contactInformationServerId;
     }
 
-    public Email(@NonNull int emailId, @NonNull int contactInformationId, @NonNull String email) {
+    public Email(@NonNull int emailId, @NonNull int contactInformationId, @NonNull String email, @NonNull String createdAt, @NonNull String updatedAt) {
         this.emailId = emailId;
         this.contactInformationId = contactInformationId;
         this.email = email;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public int getEmailId() {
@@ -64,5 +72,21 @@ public class Email {
 
     public int getContactInformationServerId() {
         return contactInformationServerId;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

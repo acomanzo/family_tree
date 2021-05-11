@@ -69,6 +69,12 @@ public class Address {
 
     private int serverId;
 
+    @NonNull
+    private String createdAt;
+
+    @NonNull
+    private String updatedAt;
+
     @Ignore
     private int contactInformationServerId;
 
@@ -93,7 +99,7 @@ public class Address {
         this.contactInformationServerId = contactInformationServerId;
     }
 
-    public Address(@NonNull int addressId, @NonNull int contactInformationId, @NonNull int houseNumber, @NonNull String streetName, String extra, @NonNull String city, @NonNull String state, @NonNull String zipCode) {
+    public Address(@NonNull int addressId, @NonNull int contactInformationId, @NonNull int houseNumber, @NonNull String streetName, String extra, @NonNull String city, @NonNull String state, @NonNull String zipCode, @NonNull String createdAt, @NonNull String updatedAt) {
         this.addressId = addressId;
         this.contactInformationId = contactInformationId;
         this.houseNumber = houseNumber;
@@ -101,6 +107,8 @@ public class Address {
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public int getAddressId() {
@@ -168,5 +176,21 @@ public class Address {
 
     public void setContactInformationId(int contactInformationId) {
         this.contactInformationId = contactInformationId;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

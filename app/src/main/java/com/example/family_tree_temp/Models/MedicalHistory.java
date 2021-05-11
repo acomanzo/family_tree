@@ -47,6 +47,12 @@ public class MedicalHistory {
     @Ignore
     private int familyMemberServerId;
 
+    @NonNull
+    private String createdAt;
+
+    @NonNull
+    private String updatedAt;
+
     @Ignore
     public MedicalHistory(String dateDiagnosed, String note, String diagnosis, int familyMemberId, int familyMemberServerId) {
         this.dateDiagnosed = dateDiagnosed;
@@ -64,12 +70,14 @@ public class MedicalHistory {
 //        this.note = note;
 //    }
 
-    public MedicalHistory(@NonNull int medicalHistoryNoteId, String dateDiagnosed, @NonNull String diagnosis, @NonNull int familyMemberId, String note) {
+    public MedicalHistory(@NonNull int medicalHistoryNoteId, String dateDiagnosed, @NonNull String diagnosis, @NonNull int familyMemberId, String note, @NonNull String createdAt, @NonNull String updatedAt) {
         this.medicalHistoryNoteId =  medicalHistoryNoteId;
         this.dateDiagnosed = dateDiagnosed;
         this.diagnosis = diagnosis;
         this.familyMemberId = familyMemberId;
         this.note = note;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public int getMedicalHistoryNoteId() {
@@ -106,5 +114,21 @@ public class MedicalHistory {
 
     public int getFamilyMemberServerId() {
         return familyMemberServerId;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

@@ -27,7 +27,7 @@ import com.example.family_tree_temp.Adaptors.FamilyMemberAdaptor;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Adaptors.Person;
 import com.example.family_tree_temp.R;
-import com.example.family_tree_temp.ViewModels.AncestorDescendantBundle;
+import com.example.family_tree_temp.Models.AncestorDescendantBundle;
 import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;
 
 import java.util.ArrayList;

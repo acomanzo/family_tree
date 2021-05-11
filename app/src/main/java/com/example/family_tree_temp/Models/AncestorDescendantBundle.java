@@ -1,13 +1,9 @@
-package com.example.family_tree_temp.ViewModels;
+package com.example.family_tree_temp.Models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.example.family_tree_temp.Adaptors.Person;
-import com.example.family_tree_temp.Models.AncestorDescendant;
-import com.example.family_tree_temp.Models.FamilyMember;
-
-import java.util.ArrayList;
+import androidx.annotation.NonNull;
 
 public class AncestorDescendantBundle implements Parcelable {
 
@@ -18,6 +14,12 @@ public class AncestorDescendantBundle implements Parcelable {
     private int depth;
 
     private int serverId;
+
+    @NonNull
+    private String createdAt;
+
+    @NonNull
+    private String updatedAt;
 
     public AncestorDescendantBundle(FamilyMember newFamilyMember, FamilyMember existingFamilyMember, int depth) {
         this(newFamilyMember, existingFamilyMember, depth, -1);
@@ -40,14 +42,18 @@ public class AncestorDescendantBundle implements Parcelable {
         String birthDate = in.readString();
         String gender = in.readString();
         int familyTreeId = in.readInt();
-        FamilyMember newFamilyMember = new FamilyMember(firstName, lastName, birthDate, gender, familyTreeId);
+        String createdAt = in.readString();
+        String updatedAt = in.readString();
+        FamilyMember newFamilyMember = new FamilyMember(firstName, lastName, birthDate, gender, familyTreeId, createdAt, updatedAt);
 
         firstName = in.readString();
         lastName = in.readString();
         birthDate = in.readString();
         gender = in.readString();
         familyTreeId = in.readInt();
-        FamilyMember existingFamilyMember = new FamilyMember(firstName, lastName, birthDate, gender, familyTreeId);
+        createdAt = in.readString();
+        updatedAt = in.readString();
+        FamilyMember existingFamilyMember = new FamilyMember(firstName, lastName, birthDate, gender, familyTreeId, createdAt, updatedAt);
 
         int depth = in.readInt();
         int serverId = in.readInt();
@@ -89,19 +95,24 @@ public class AncestorDescendantBundle implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+
+        // first family member
         dest.writeString(newFamilyMember.getFirstName());
         dest.writeString(newFamilyMember.getLastName());
-//        dest.writeInt(newFamilyMember.getAge());
-//        dest.writeInt(newFamilyMember.getGenderId());
         dest.writeString(newFamilyMember.getBirthDate());
         dest.writeString(newFamilyMember.getGender());
         dest.writeInt(newFamilyMember.getFamilyTreeId());
+        dest.writeString(newFamilyMember.getCreatedAt());
+        dest.writeString(newFamilyMember.getUpdatedAt());
 
+        // second family member
         dest.writeString(existingFamilyMember.getFirstName());
         dest.writeString(existingFamilyMember.getLastName());
         dest.writeString(existingFamilyMember.getBirthDate());
         dest.writeString(existingFamilyMember.getGender());
         dest.writeInt(existingFamilyMember.getFamilyTreeId());
+        dest.writeString(existingFamilyMember.getCreatedAt());
+        dest.writeString(existingFamilyMember.getUpdatedAt());
 
         dest.writeInt(depth);
         dest.writeInt(serverId);
@@ -113,5 +124,23 @@ public class AncestorDescendantBundle implements Parcelable {
 
     public void setServerId(int serverId) {
         this.serverId = serverId;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+        newFamilyMember.setCreatedAt(createdAt);
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+        newFamilyMember.setUpdatedAt(updatedAt);
     }
 }

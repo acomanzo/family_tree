@@ -13,16 +13,13 @@ import com.example.family_tree_temp.DatabaseAccessObjects.FamilyMemberDao;
 import com.example.family_tree_temp.Models.AncestorDescendant;
 import com.example.family_tree_temp.Models.ContactInformation;
 import com.example.family_tree_temp.Models.FamilyMember;
-import com.example.family_tree_temp.ViewModels.AncestorDescendantBundle;
+import com.example.family_tree_temp.Models.AncestorDescendantBundle;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Entity;
 
 public class FamilyMemberRepository {
 
@@ -117,11 +114,10 @@ public class FamilyMemberRepository {
                 Handler secondHandler = new Handler(Looper.getMainLooper());
                 secondExecutor.execute(() -> {
                     ContactInformation contactInformation = new ContactInformation(familyMember.getServerId());
-                    String contactInformationId = familyTreeSqlDatabase.insertContactInformation(contactInformation);
-                    contactInformation.setServerId(Integer.parseInt(contactInformationId));
+                    ContactInformation newContactInformation = familyTreeSqlDatabase.insertContactInformation(contactInformation);
 
                     secondHandler.post(() -> {
-                        new InsertFamilyMemberWithContactInformation(mFamilyMemberDao, mContactInformationDao).execute(familyMember, contactInformation);
+                        new InsertFamilyMemberWithContactInformation(mFamilyMemberDao, mContactInformationDao).execute(familyMember, newContactInformation);
 
 //                        ExecutorService thirdExecutor = Executors.newSingleThreadExecutor();
 //                        Handler thirdHandler = new Handler(Looper.getMainLooper());
@@ -173,11 +169,10 @@ public class FamilyMemberRepository {
                 Handler secondHandler = new Handler(Looper.getMainLooper());
 
                 secondExecutor.execute(() -> {
-                    String id = familyTreeSqlDatabase.insertDescendant(ancestorDescendantBundle);
-                    ancestorDescendantBundle.setServerId(Integer.parseInt(id));
+                    AncestorDescendantBundle newAncestorDescendantBundle = familyTreeSqlDatabase.insertDescendant(ancestorDescendantBundle);
 
                     secondHandler.post(() -> {
-                        new InsertDescendantAsyncTask(mAncestorDescendantDao, mFamilyMemberDao).execute(ancestorDescendantBundle);
+                        new InsertDescendantAsyncTask(mAncestorDescendantDao, mFamilyMemberDao).execute(newAncestorDescendantBundle);
                     });
                 });
             });
@@ -198,11 +193,10 @@ public class FamilyMemberRepository {
                 Handler secondHandler = new Handler(Looper.getMainLooper());
 
                 secondExecutor.execute(() -> {
-                    String id = familyTreeSqlDatabase.insertAncestor(ancestorDescendantBundle);
-                    ancestorDescendantBundle.setServerId(Integer.parseInt(id));
+                    AncestorDescendantBundle newAncestorDescendantBundle = familyTreeSqlDatabase.insertAncestor(ancestorDescendantBundle);
 
                     secondHandler.post(() -> {
-                        new InsertAncestorAsyncTask(mAncestorDescendantDao, mFamilyMemberDao).execute(ancestorDescendantBundle);
+                        new InsertAncestorAsyncTask(mAncestorDescendantDao, mFamilyMemberDao).execute(newAncestorDescendantBundle);
                     });
                 });
             });

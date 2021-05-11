@@ -24,14 +24,22 @@ public class ContactInformation {
 
     private int serverId;
 
+    @NonNull
+    private String createdAt;
+
+    @NonNull
+    private String updatedAt;
+
     @Ignore
     public ContactInformation(@NonNull int familyMemberId) {
         this.familyMemberId = familyMemberId;
     }
 
-    public ContactInformation(@NonNull int contactInformationId, @NonNull int familyMemberId) {
+    public ContactInformation(@NonNull int contactInformationId, @NonNull int familyMemberId, @NonNull String createdAt, @NonNull String updatedAt) {
         this.contactInformationId = contactInformationId;
         this.familyMemberId = familyMemberId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public int getContactInformationId() {
@@ -52,5 +60,21 @@ public class ContactInformation {
 
     public void setFamilyMemberId(int familyMemberId) {
         this.familyMemberId = familyMemberId;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

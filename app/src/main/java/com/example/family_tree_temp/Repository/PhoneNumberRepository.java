@@ -37,9 +37,8 @@ public class PhoneNumberRepository {
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
             FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
-            String id = familyTreeSqlDatabase.insertPhoneNumber(phoneNumber);
-            phoneNumber.setServerId(Integer.valueOf(id));
-            handler.post(() -> new PhoneNumberRepository.insertPhoneNumberAsyncTask(mPhoneNumberDao).execute(phoneNumber));
+            PhoneNumber newPhoneNumber = familyTreeSqlDatabase.insertPhoneNumber(phoneNumber);
+            handler.post(() -> new PhoneNumberRepository.insertPhoneNumberAsyncTask(mPhoneNumberDao).execute(newPhoneNumber));
         });
     }
 
