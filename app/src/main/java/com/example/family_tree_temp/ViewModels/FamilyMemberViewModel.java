@@ -1,10 +1,10 @@
 package com.example.family_tree_temp.ViewModels;
 
 import android.app.Application;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.family_tree_temp.Models.AncestorDescendant;
+import com.example.family_tree_temp.Models.AncestorDescendantBundle;
 import com.example.family_tree_temp.Repository.FamilyMemberRepository;
 import com.example.family_tree_temp.Models.FamilyMember;
 

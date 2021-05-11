@@ -5,4 +5,5 @@
     <string name="shared_preferences">My Preferences</string>
     <string name="family_tree_id">family tree id</string>
     <string name="app_user_id">app user id</string>
+    <string name="app_user">app user</string>
 </resources>

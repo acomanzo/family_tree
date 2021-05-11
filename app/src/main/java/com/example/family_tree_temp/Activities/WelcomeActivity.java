@@ -57,9 +57,9 @@ public class WelcomeActivity extends AppCompatActivity {
         Intent intent = new Intent(WelcomeActivity.this, TreeEditorActivity.class);
 
         // id from server of user that logged in
-        String appUserId = bundle.getString("appUserId");
+        String appUser = bundle.getString("appUser");
 
-        intent.putExtra(getString(R.string.app_user_id), appUserId);
+        intent.putExtra(getString(R.string.app_user), appUser);
         startActivity(intent);
     }
 }

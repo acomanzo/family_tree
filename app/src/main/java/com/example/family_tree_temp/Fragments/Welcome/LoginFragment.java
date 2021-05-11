@@ -83,9 +83,7 @@ public class LoginFragment extends Fragment {
         emailInput = view.findViewById(R.id.login_email);
         passwordInput = view.findViewById(R.id.login_password);
 
-        view.findViewById(R.id.login_button).setOnClickListener(v -> {
-            login();
-        });
+        view.findViewById(R.id.login_button).setOnClickListener(v -> login());
 
         Button startSignUpButton = view.findViewById(R.id.start_sign_up_button);
         startSignUpButton.setOnClickListener(v -> ((WelcomeActivity) getActivity()).transitionToSignUpScreen());
@@ -112,7 +110,7 @@ public class LoginFragment extends Fragment {
 
                 // login
                 Bundle bundle = new Bundle();
-                bundle.putString("appUserId", response);
+                bundle.putString("appUser", response);
                 ((WelcomeActivity) getActivity()).login(bundle);
             }
 

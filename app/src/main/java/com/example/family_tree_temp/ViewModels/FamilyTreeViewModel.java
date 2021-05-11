@@ -34,6 +34,10 @@ public class FamilyTreeViewModel extends AndroidViewModel {
         familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
         mAllFamilyTrees = new MutableLiveData<>();
 
+        initialize();
+    }
+
+    private void initialize() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             JSONArray response = null;
@@ -69,5 +73,18 @@ public class FamilyTreeViewModel extends AndroidViewModel {
             }
         }
         return familyTrees;
+    }
+
+    public void insert(FamilyTree familyTree) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            FamilyTree response = familyTreeSqlDatabase.insertFamilyTree(familyTree);
+            if (response != null) {
+                familyTree.setFamilyTreeId(response.getFamilyTreeId());
+                List<FamilyTree> familyTrees = mAllFamilyTrees.getValue();
+                familyTrees.add(familyTree);
+                mAllFamilyTrees.postValue(familyTrees);
+            }
+        });
     }
 }

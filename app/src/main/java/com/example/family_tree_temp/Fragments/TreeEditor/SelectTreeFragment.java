@@ -1,15 +1,22 @@
 package com.example.family_tree_temp.Fragments.TreeEditor;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
@@ -24,6 +31,7 @@ import com.example.family_tree_temp.R;
 import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;
 import com.example.family_tree_temp.ViewModels.FamilyTreeViewModel;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -80,8 +88,25 @@ public class SelectTreeFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
 
-            appUserId = Integer.parseInt(getArguments().getString(getString(R.string.app_user_id)));
+
+            SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+            appUserId = preferences.getInt(getString(R.string.app_user_id), -1);
+//            String appUser = getArguments().getString(getString(R.string.app_user));
+//            try {
+//                appUserId = new JSONObject(appUser).getInt("AppUserId");
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//                appUserId = -1;
+//            }
         }
+
+        setHasOptionsMenu(true);
+
+        getParentFragmentManager().setFragmentResultListener("newTreeKey", this, (requestKey, result) -> {
+            String name = result.getString("newTreeName");
+            FamilyTree familyTree = new FamilyTree(appUserId, name);
+            mFamilyTreeViewModel.insert(familyTree);
+        });
     }
 
     @Override
@@ -108,6 +133,28 @@ public class SelectTreeFragment extends Fragment {
         recyclerView.setAdapter(mAdaptor);
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.select_tree_action_bar, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.select_tree_add:
+                createNewTree();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void createNewTree() {
+        ((TreeEditorActivity) getActivity()).transitionFromSelectTreeToCreateTree();
     }
 
     public class OnFamilyTreeItemClickedListener {

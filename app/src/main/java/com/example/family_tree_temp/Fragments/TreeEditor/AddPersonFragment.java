@@ -197,7 +197,7 @@ public class AddPersonFragment extends Fragment {
             bundle.putParcelable("newPersonKey", person);
             getParentFragmentManager().setFragmentResult("newPersonKey", bundle);
 
-            // tell MainActivity to switch to the home fragment
+            // tell TreeEditorActivity to switch to the home fragment
             callback.onPersonItemAdded(0);
         });
 

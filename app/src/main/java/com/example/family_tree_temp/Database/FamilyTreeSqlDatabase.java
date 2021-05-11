@@ -576,10 +576,10 @@ public class FamilyTreeSqlDatabase {
         String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.FAMILY_TREE);
         try {
             JSONObject jsonObject = new JSONObject(response);
-            int serverId = jsonObject.getInt("FamilyTreeId");
+            int familyTreeId = jsonObject.getInt("FamilyTreeId");
             String createdAt = jsonObject.getString("CreatedAt");
             String updatedAt = jsonObject.getString("UpdatedAt");
-//            familyTree.setServerId(serverId);
+            familyTree.setFamilyTreeId(familyTreeId);
             familyTree.setCreatedAt(createdAt);
             familyTree.setUpdatedAt(updatedAt);
             return familyTree;

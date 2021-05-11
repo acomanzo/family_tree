@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.family_tree_temp.Fragments.TreeEditor.AddAncestorFragment;
 import com.example.family_tree_temp.Fragments.TreeEditor.AddDescendantFragment;
 import com.example.family_tree_temp.Fragments.TreeEditor.AddPersonFragment;
+import com.example.family_tree_temp.Fragments.TreeEditor.CreateTreeFragment;
 import com.example.family_tree_temp.Fragments.TreeEditor.FamilyMemberDetailFragment;
 import com.example.family_tree_temp.Fragments.TreeEditor.HomeFragment;
 import com.example.family_tree_temp.Fragments.TreeEditor.MedicalHistoryDetailFragment;
@@ -37,6 +38,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class TreeEditorActivity extends AppCompatActivity implements AddPersonFragment.OnPersonItemAddedListener {
 
@@ -55,6 +59,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
     public final String MEDICAL_HISTORY_DETAIL_FRAGMENT = "medical_history_detail_fragment";
     public final String TREE_VIEW = "tree_view";
     public final String SELECT_TREE_FRAGMENT = "select_tree_fragment";
+    public final String CREATE_TREE_FRAGMENT = "create_tree_fragment";
 
     private String currentFragmentTag;
 
@@ -112,6 +117,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
                     case MEDICAL_HISTORY_DETAIL_FRAGMENT:
                     case TREE_VIEW:
                     case SELECT_TREE_FRAGMENT:
+                    case CREATE_TREE_FRAGMENT:
                         fabBackPressed();
                         break;
                 }
@@ -124,15 +130,20 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
     private void setupInitialFragment() {
         // commit family tree id
         Intent intent = getIntent();
-        String appUserId = intent.getStringExtra(getString(R.string.app_user_id));
-//        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putString(getString(R.string.app_user_id), appUserId);
-//        editor.commit();
+        String appUser = intent.getStringExtra(getString(R.string.app_user));
+        try {
+            int appUserId = new JSONObject(appUser).getInt("AppUserId");
+            SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt(getString(R.string.app_user_id), appUserId);
+            editor.commit();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         // make the select tree fragment our initial fragment
         Bundle bundle = new Bundle();
-        bundle.putString(getString(R.string.app_user_id), appUserId);
+        bundle.putString(getString(R.string.app_user), appUser);
         SelectTreeFragment selectTreeFragment = new SelectTreeFragment();
         selectTreeFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().add(R.id.tree_editor_host_fragment, selectTreeFragment, SELECT_TREE_FRAGMENT).commit();
@@ -333,6 +344,33 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         currentFragmentTag = newTag;
 
         TreeFragment nextFragment = new TreeFragment();
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.tree_editor_host_fragment, nextFragment, newTag)
+                .addToBackStack(newTag)
+                .commit();
+    }
+
+    public void transitionFromSelectTreeToCreateTree() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        String newTag = CREATE_TREE_FRAGMENT;
+
+        CreateTreeFragment nextFragment = new CreateTreeFragment();
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.tree_editor_host_fragment, nextFragment, newTag)
+                .addToBackStack(newTag)
+                .commit();
+    }
+
+    public void transitionFromCreateTreeToSelectTree(Bundle bundle) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        String newTag = SELECT_TREE_FRAGMENT;
+
+        SelectTreeFragment nextFragment = new SelectTreeFragment();
+        nextFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
                 .replace(R.id.tree_editor_host_fragment, nextFragment, newTag)
