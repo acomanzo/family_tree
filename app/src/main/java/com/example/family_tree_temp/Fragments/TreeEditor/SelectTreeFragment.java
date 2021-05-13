@@ -126,6 +126,14 @@ public class SelectTreeFragment extends Fragment {
             }
         });
 
+//        mFamilyTreeViewModel.getFamilyTreesByAppUserId(appUserId).observe(getViewLifecycleOwner(), new Observer<List<FamilyTree>>() {
+//
+//            @Override
+//            public void onChanged(List<FamilyTree> familyTrees) {
+//                mAdaptor.setDataset(familyTrees);
+//            }
+//        });
+
         recyclerView = view.findViewById(R.id.select_tree_recycler_view);
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -159,11 +167,15 @@ public class SelectTreeFragment extends Fragment {
 
     public class OnFamilyTreeItemClickedListener {
         public void onClick(int position) {
-//            Bundle bundle = new Bundle();
-//            bundle.putInt("medicalHistoryPosition", position);
-//            getParentFragmentManager().setFragmentResult("medicalHistoryPosition", bundle);
-//
-//            ((TreeEditorActivity) getActivity()).transitionFromFamilyMemberToMedicalHistoryDetail(bundle);
+
+            FamilyTree familyTree = mFamilyTreeViewModel.getFamilyTreeAtIndex(position, appUserId);
+            int familyTreeId = familyTree.getFamilyTreeId();
+
+            Bundle bundle = new Bundle();
+            bundle.putInt(getString(R.string.family_tree_id), familyTreeId);
+            getParentFragmentManager().setFragmentResult(getString(R.string.family_tree_id), bundle);
+
+            ((TreeEditorActivity) getActivity()).transitionFromSelectTreeToHome(bundle);
         }
     }
 }

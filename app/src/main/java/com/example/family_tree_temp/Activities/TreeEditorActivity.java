@@ -378,6 +378,27 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
                 .commit();
     }
 
+    public void transitionFromSelectTreeToHome(Bundle bundle) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        String newTag = HOME_FRAGMENT;
+
+        HomeFragment nextFragment = new HomeFragment();
+        nextFragment.setArguments(bundle);
+
+        bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_menu_24);
+        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+        bottomAppBar.performShow();
+        bottomAppBar.setVisibility(View.VISIBLE);
+        floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24);
+        floatingActionButton.setVisibility(View.VISIBLE);
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.tree_editor_host_fragment, nextFragment, newTag)
+                .addToBackStack(newTag)
+                .commit();
+    }
+
     public void fabBackPressed() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

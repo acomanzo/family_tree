@@ -21,6 +21,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class FamilyTreeSqlDatabase {
@@ -163,12 +165,14 @@ public class FamilyTreeSqlDatabase {
                 Log.i("familyTreeSqlDatabase", message);
             }
             else {
+                JSONArray recordSet = response.getJSONArray("recordset");
                 switch (crudMethod) {
                     case CREATE:
-                        JSONArray recordSet = response.getJSONArray("recordset");
                         JSONObject familyMember = recordSet.getJSONObject(0);
 //                        int familyMemberId = familyMember.getInt("FamilyMemberId");
                         return String.valueOf(familyMember);
+                    case READ:
+                        return recordSet.toString();
                     case UPDATE:
                     case DELETE:
                         break;
@@ -583,6 +587,32 @@ public class FamilyTreeSqlDatabase {
             familyTree.setCreatedAt(createdAt);
             familyTree.setUpdatedAt(updatedAt);
             return familyTree;
+        } catch (JSONException e) {
+            return null;
+        }
+    }
+
+    public List<FamilyMember> getFamilyMembersBy(int familyTreeId) {
+        String stubs = "/familymember/" + familyTreeId;
+        String response = makeHttpUrlRequest(stubs, "GET", CrudMethod.READ, Model.FAMILY_MEMBER);
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            ArrayList<FamilyMember> familyMembers = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                int serverId = jsonObject.getInt("FamilyMemberId");
+                String firstName = jsonObject.getString("FirstName");
+                String lastName = jsonObject.getString("LastName");
+                String birthDate = jsonObject.getString("BirthDate");
+                String gender = jsonObject.getString("Gender");
+                int treeId = jsonObject.getInt("FamilyTreeId");
+                String createdAt = jsonObject.getString("CreatedAt");
+                String updatedAt = jsonObject.getString("UpdatedAt");
+                FamilyMember familyMember = new FamilyMember(firstName, lastName, birthDate, gender, treeId, createdAt, updatedAt);
+                familyMember.setServerId(serverId);
+                familyMembers.add(familyMember);
+            }
+            return familyMembers;
         } catch (JSONException e) {
             return null;
         }

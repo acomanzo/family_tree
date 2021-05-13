@@ -5,11 +5,14 @@ import android.util.Log;
 
 import com.example.family_tree_temp.Models.AncestorDescendant;
 import com.example.family_tree_temp.Models.AncestorDescendantBundle;
+import com.example.family_tree_temp.Models.FamilyTree;
 import com.example.family_tree_temp.Repository.FamilyMemberRepository;
 import com.example.family_tree_temp.Models.FamilyMember;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -147,4 +150,9 @@ public class FamilyMemberViewModel extends AndroidViewModel {
 //            return
 //        }
 //    }
+
+    public void sync(int familyTreeId) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> mRepository.sync(familyTreeId));
+    }
 }

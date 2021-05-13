@@ -41,14 +41,8 @@ import java.util.List;
 public class HomeFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private RecyclerView recyclerView;
-//    private PersonAdaptor mAdaptor;
     private FamilyMemberAdaptor mAdaptor;
     private RecyclerView.LayoutManager layoutManager;
-
-    private ArrayList<Person> detailJson;
-
-    private SearchView searchView;
-
     private FamilyMemberViewModel mFamilyMemberViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -59,6 +53,8 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private int familyTreeId;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -85,10 +81,19 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
+            familyTreeId = getArguments().getInt(getString(R.string.family_tree_id));
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putInt(getString(R.string.family_tree_id), familyTreeId);
+            editor.commit();
         }
+
+        familyTreeId = preferences.getInt(getString(R.string.family_tree_id), -1);
 
         getParentFragmentManager().setFragmentResultListener("newPersonKey", this, new FragmentResultListener() {
             @Override
@@ -164,6 +169,8 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         });
 
         recyclerView.setAdapter(mAdaptor);
+
+        mFamilyMemberViewModel.sync(familyTreeId);
 
         return view;
     }

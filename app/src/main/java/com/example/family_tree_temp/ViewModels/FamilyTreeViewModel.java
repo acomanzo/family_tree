@@ -87,4 +87,9 @@ public class FamilyTreeViewModel extends AndroidViewModel {
             }
         });
     }
+
+    public FamilyTree getFamilyTreeAtIndex(int index, int appUserId) {
+        List<FamilyTree> usersTrees = getFamilyTreesByAppUserId(appUserId);
+        return usersTrees.get(index);
+    }
 }

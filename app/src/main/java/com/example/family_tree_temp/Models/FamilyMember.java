@@ -93,6 +93,21 @@ public class FamilyMember {
         children = new ArrayList<>();
     }
 
+    @Ignore
+    public FamilyMember(int familyMemberId, @NonNull String firstName, @NonNull String lastName, String birthDate, String gender, int familyTreeId, int serverId, String createdAt, String updatedAt) {
+        this.familyMemberId = familyMemberId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.serverId = serverId;
+        this.familyTreeId = familyTreeId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+
+        children = new ArrayList<>();
+    }
+
     public int getFamilyMemberId() {
         return familyMemberId;
     }

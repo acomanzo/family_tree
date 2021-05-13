@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">family_tree_temp</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="shared_preferences">My Preferences</string>
     <string name="family_tree_id">family tree id</string>
     <string name="app_user_id">app user id</string>

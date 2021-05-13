@@ -15,6 +15,9 @@ import com.example.family_tree_temp.Models.ContactInformation;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Models.AncestorDescendantBundle;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -201,6 +204,54 @@ public class FamilyMemberRepository {
                 });
             });
         });
+    }
+
+    public void sync(int familyTreeId) {
+        FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
+        List<FamilyMember> familyMembers = familyTreeSqlDatabase.getFamilyMembersBy(familyTreeId);
+        for (FamilyMember serverFamilyMember : familyMembers) {
+            boolean familyMemberExistsLocally = false;
+            FamilyMember twin = null;
+            if (mAllFamilyMembers.getValue() != null) {
+                for (FamilyMember localFamilyMember : mAllFamilyMembers.getValue()) {
+                    if (serverFamilyMember.getServerId() == localFamilyMember.getServerId()) {
+                        familyMemberExistsLocally = true;
+                        twin = localFamilyMember;
+                        break;
+                    }
+                }
+            }
+            if (familyMemberExistsLocally) {
+                try {
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
+                    Date twinUpdatedAt = simpleDateFormat.parse(twin.getUpdatedAt());
+                    long twinEpoch = twinUpdatedAt.getTime();
+
+                    Date serverUpdatedAt = simpleDateFormat.parse(serverFamilyMember.getUpdatedAt());
+                    long serverEpoch = serverUpdatedAt.getTime();
+
+                    if (serverEpoch > twinEpoch) {
+                        FamilyMember updatedFamilyMember = new FamilyMember(
+                                twin.getFamilyMemberId(),
+                                serverFamilyMember.getFirstName(),
+                                serverFamilyMember.getLastName(),
+                                serverFamilyMember.getBirthDate(),
+                                serverFamilyMember.getGender(),
+                                serverFamilyMember.getServerId(),
+                                serverFamilyMember.getFamilyTreeId(),
+                                serverFamilyMember.getCreatedAt(),
+                                serverFamilyMember.getUpdatedAt()
+                        );
+                        new UpdateFamilyMemberAsyncTask(mFamilyMemberDao).execute(updatedFamilyMember);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                new insertFamilyMemberAsyncTask(mFamilyMemberDao).execute(serverFamilyMember);
+            }
+        }
     }
 
     private static class insertFamilyMemberAsyncTask extends AsyncTask<FamilyMember, Void, Void> {
