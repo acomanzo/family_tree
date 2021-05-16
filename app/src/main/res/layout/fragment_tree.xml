@@ -8,7 +8,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="horizontal" >
+        android:scrollbars="horizontal"
+        android:padding="20dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tree_recycler_view"
