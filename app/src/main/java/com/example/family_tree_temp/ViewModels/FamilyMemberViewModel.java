@@ -92,6 +92,8 @@ public class FamilyMemberViewModel extends AndroidViewModel {
         return getFamilyMembersByFamilyTreeId(familyTreeId).get(position);
     }
 
+
+
     public List<FamilyMember> getFamilyMembersByFamilyTreeId(int familyTreeId) {
         List<FamilyMember> familyMembers = new ArrayList<>();
         for (FamilyMember familyMember : mAllFamilyMembers.getValue()) {
@@ -112,6 +114,24 @@ public class FamilyMemberViewModel extends AndroidViewModel {
 
     public void getContactInformationId(FamilyMember familyMember) {
 
+    }
+
+    public FamilyMember getFamilyMemberByServerId(int serverId) {
+        for (FamilyMember familyMember : mAllFamilyMembers.getValue()) {
+            if (familyMember.getServerId() == serverId) {
+                return familyMember;
+            }
+        }
+        return null;
+    }
+
+    public FamilyMember getFamilyMemberByLocalId(int id) {
+        for (FamilyMember familyMember : mAllFamilyMembers.getValue()) {
+            if (familyMember.getFamilyMemberId() == id) {
+                return familyMember;
+            }
+        }
+        return null;
     }
 
     public FamilyMember getFamilyMemberById(int id) {
@@ -140,6 +160,19 @@ public class FamilyMemberViewModel extends AndroidViewModel {
 //        List<AncestorDescendant> ancestorDescendants = mAllAncestorDescendants.getValue();
 //        List<AncestorDescendant> ancestorDescendants = mRepository.getAllAncestorDescendants().getValue();
 //        List<AncestorDescendant> ancestorDescendants = mRepository.getAllAncestorDescendants();
+        List<AncestorDescendant> temp = new ArrayList<>();
+        for (AncestorDescendant ancestorDescendant : ancestorDescendants) {
+            int ancestorId = ancestorDescendant.getAncestorId();
+            FamilyMember ancestor = getFamilyMemberByLocalId(ancestorId);
+            if (ancestor != null) {
+                int ancestorFamilyTreeId = ancestor.getFamilyTreeId();
+                if (familyTreeId == ancestorFamilyTreeId) {
+                    temp.add(ancestorDescendant);
+                }
+            }
+        }
+
+        ancestorDescendants = temp;
 
         List<FamilyMember> roots = new ArrayList<>();
         if (ancestorDescendants.size() > 0) {
@@ -152,9 +185,10 @@ public class FamilyMemberViewModel extends AndroidViewModel {
             }
 
             FamilyMember familyMember = getFamilyMemberById(root.getAncestorId());
-            roots.add(familyMember);
+            if (familyMember.getFamilyTreeId() == familyTreeId)
+                roots.add(familyMember);
 
-            List<FamilyMember> familyMembers = mAllFamilyMembers.getValue();
+            List<FamilyMember> familyMembers = getFamilyMembersByFamilyTreeId(familyTreeId);
             for (FamilyMember fm : familyMembers) {
                 boolean familyMemberIsARoot = true;
                 for (AncestorDescendant ancestorDescendant : ancestorDescendants) {

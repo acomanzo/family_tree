@@ -304,16 +304,15 @@ public class FamilyMemberDetailFragment extends Fragment {
     private void addAncestor() {
         Bundle bundle = new Bundle();
 //        bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
-        bundle.putInt("familyMemberPosition", position);
-
+//        bundle.putInt("familyMemberPosition", position);
+        bundle.putInt("familyMemberServerId", familyMember.getServerId());
 //        ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddAncestor(bundle);
         ((TreeEditorActivity) getActivity()).transitionFromFamilyMemberDetailToAddAncestor(bundle);
     }
 
     private void addDescendant() {
         Bundle bundle = new Bundle();
-//        bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
-        bundle.putInt("familyMemberPosition", position);
+        bundle.putInt("familyMemberServerId", familyMember.getServerId());
 
 //        ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddDescendant(bundle);
         ((TreeEditorActivity) getActivity()).transitionFromFamilyMemberDetailToAddDescendant(bundle);

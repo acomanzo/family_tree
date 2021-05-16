@@ -77,7 +77,9 @@ public class AddDescendantFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            ancestor = mFamilyMemberViewModel.getFamilyMemberAtIndex(getArguments().getInt("familyMemberPosition"));
+            int familyMemberServerId = getArguments().getInt("familyMemberServerId", -1);
+            ancestor = mFamilyMemberViewModel.getFamilyMemberByServerId(familyMemberServerId);
+//            ancestor = mFamilyMemberViewModel.getFamilyMemberAtIndex(getArguments().getInt("familyMemberPosition"));
         }
     }
 
