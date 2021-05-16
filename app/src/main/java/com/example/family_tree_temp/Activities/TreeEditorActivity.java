@@ -405,7 +405,9 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
         int size = fragmentManager.getBackStackEntryCount();
-        if (size > 1) {
+
+        // 2 because select tree > home view > x > ....
+        if (size > 2) {
 
             // peek second to last
             FragmentManager.BackStackEntry backStackEntry = fragmentManager.getBackStackEntryAt(size - 2);
@@ -421,7 +423,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
                     fragmentTransaction.commit();
                     break;
             }
-        } else if (size == 1) {
+        } else if (size == 2) {
             transitionToHomeFromSomeView();
         }
     }
@@ -529,7 +531,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
 
         int size = fragmentManager.getBackStackEntryCount();
 
-        if (size == 1) {
+        if (size == 2) {
             bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_menu_24);
             bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
             bottomAppBar.performShow();
