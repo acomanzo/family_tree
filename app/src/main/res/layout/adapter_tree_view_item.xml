@@ -12,7 +12,11 @@
         <TextView
             android:id="@+id/tree_item_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:width="100dp"
+            />
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/tree_item_button"
             android:layout_width="wrap_content"

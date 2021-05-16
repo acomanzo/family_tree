@@ -32,6 +32,8 @@ public class TreeFragment extends Fragment {
 
     private FamilyMemberViewModel mFamilyMemberViewModel;
 
+    private int familyTreeId;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -69,6 +71,8 @@ public class TreeFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
+            familyTreeId = getArguments().getInt(getString(R.string.family_tree_id));
         }
     }
 
@@ -96,7 +100,7 @@ public class TreeFragment extends Fragment {
 
 
         List<FamilyMember> rootList = new ArrayList<>();
-        List<FamilyMember> roots = mFamilyMemberViewModel.getRoots();
+        List<FamilyMember> roots = mFamilyMemberViewModel.getRoots(familyTreeId);
         for (FamilyMember familyMember : roots) {
             mFamilyMemberViewModel.makeFamilyTreeFor(familyMember);
             rootList.add(familyMember);

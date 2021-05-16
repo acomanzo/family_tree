@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.Observer;
@@ -21,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.family_tree_temp.Activities.TreeEditorActivity;
 import com.example.family_tree_temp.Adaptors.FamilyMemberAdaptor;
@@ -29,6 +31,7 @@ import com.example.family_tree_temp.Adaptors.Person;
 import com.example.family_tree_temp.R;
 import com.example.family_tree_temp.Models.AncestorDescendantBundle;
 import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;
+import com.google.android.material.bottomappbar.BottomAppBar;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -126,6 +129,24 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         });
 
         setHasOptionsMenu(true);
+
+        ((BottomAppBar) getActivity().findViewById(R.id.bottomAppBar)).setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch(item.getItemId()) {
+                    case R.id.bottom_bar_profile:
+                        // handle search icon press
+                        return true;
+                    case R.id.bottom_bar_overflow:
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(getString(R.string.family_tree_id), familyTreeId);
+                        ((TreeEditorActivity) getActivity()).transitionFromHomeToTreeView(bundle);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
     }
 
     @Override
@@ -214,7 +235,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         mAdaptor.getFilter().filter(newText);
         return false;
     }
-
 //    /**
 //     * Switches fragment to a detail view when a user clicks on a view holder.
 //     */

@@ -57,13 +57,17 @@ public class FamilyMemberViewModel extends AndroidViewModel {
     }
 
     public FamilyMember getFamilyMemberAtIndex(int position, int familyTreeId) {
+        return getFamilyMembersByFamilyTreeId(familyTreeId).get(position);
+    }
+
+    public List<FamilyMember> getFamilyMembersByFamilyTreeId(int familyTreeId) {
         List<FamilyMember> familyMembers = new ArrayList<>();
         for (FamilyMember familyMember : mAllFamilyMembers.getValue()) {
             if (familyMember.getFamilyTreeId() == familyTreeId) {
                 familyMembers.add(familyMember);
             }
         }
-        return familyMembers.get(position);
+        return familyMembers;
     }
 
     public void insertDescendant(AncestorDescendantBundle ancestorDescendantBundle) {
@@ -83,7 +87,7 @@ public class FamilyMemberViewModel extends AndroidViewModel {
         return mRepository.getFamilyMemberById(id).get(0);
     }
 
-    public List<FamilyMember> getRoots() {
+    public List<FamilyMember> getRoots(int familyTreeId) {
         /*
         TODO: find a way to find all roots in the AncestorDescendant table... rn the function
             assumes that there is only one bloodline modeled in the tree, but there could be
@@ -138,7 +142,7 @@ public class FamilyMemberViewModel extends AndroidViewModel {
             }
         } else {
             // if there are no relationships, then make every family member a root
-            roots.addAll(mAllFamilyMembers.getValue());
+            roots.addAll(getFamilyMembersByFamilyTreeId(familyTreeId));
         }
         return roots;
     }

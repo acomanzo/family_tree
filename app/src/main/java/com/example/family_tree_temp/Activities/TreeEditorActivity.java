@@ -93,7 +93,8 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
                     case R.id.bottom_bar_overflow:
                         // handle overflow icon press
                         //Toast.makeText(context, "overflow", Toast.LENGTH_SHORT).show();
-                        transitionFromHomeToTreeView();
+                        Bundle bundle = new Bundle();
+//                        transitionFromHomeToTreeView();
                         return true;
                     default:
                         return false;
@@ -334,7 +335,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
                 .commit();
     }
 
-    public void transitionFromHomeToTreeView() {
+    public void transitionFromHomeToTreeView(Bundle bundle) {
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         String newTag = TREE_VIEW;
@@ -345,6 +346,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         currentFragmentTag = newTag;
 
         TreeFragment nextFragment = new TreeFragment();
+        nextFragment.setArguments(bundle);
 
         fragmentManager.beginTransaction()
                 .replace(R.id.tree_editor_host_fragment, nextFragment, newTag)
