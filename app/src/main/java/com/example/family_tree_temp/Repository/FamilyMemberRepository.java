@@ -346,6 +346,8 @@ public class FamilyMemberRepository {
 
             int descendantId = (int) familyMemberDao.insert(descendant);
             AncestorDescendant ancestorDescendant = new AncestorDescendant(ancestorId, descendantId, depth, serverId);
+            ancestorDescendant.setCreatedAt(descendant.getCreatedAt());
+            ancestorDescendant.setUpdatedAt(descendant.getUpdatedAt());
             ancestorDescendantDao.insert(ancestorDescendant);
 
             return null;
@@ -371,6 +373,8 @@ public class FamilyMemberRepository {
 
             int ancestorId = (int) familyMemberDao.insert(ancestor);
             AncestorDescendant ancestorDescendant = new AncestorDescendant(ancestorId, descendantId, depth, serverId);
+            ancestorDescendant.setCreatedAt(ancestor.getCreatedAt());
+            ancestorDescendant.setUpdatedAt(ancestor.getUpdatedAt());
             ancestorDescendantDao.insert(ancestorDescendant);
 
             return null;
