@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,7 +44,7 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TreeEditorActivity extends AppCompatActivity implements AddPersonFragment.OnPersonItemAddedListener {
+public class TreeEditorActivity extends AppCompatActivity implements AddPersonFragment.OnPersonItemAddedListener, ReturnToSelectTreesDelegate {
 
     private BottomAppBar bottomAppBar;
     private FloatingActionButton floatingActionButton;
@@ -75,13 +76,18 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         setContentView(R.layout.activity_tree_editor);
 
         bottomAppBar = findViewById(R.id.bottomAppBar);
-        bottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BottomNavigationDrawerFragment bottomSheetDialogFragment = new BottomNavigationDrawerFragment();
-                bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
-            }
+        bottomAppBar.setNavigationOnClickListener(v -> {
+            BottomDrawerFragment bottomDrawerFragment = new BottomDrawerFragment(this);
+            bottomDrawerFragment.show(getSupportFragmentManager(), bottomDrawerFragment.getTag());
         });
+//        bottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                BottomDrawerFragment bottomDrawerFragment = new BottomDrawerFragment(this);
+////                BottomNavigationDrawerFragment bottomSheetDialogFragment = new BottomNavigationDrawerFragment();
+////                bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+//            }
+//        });
 
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -121,6 +127,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
                     case TREE_VIEW:
                     case SELECT_TREE_FRAGMENT:
                     case CREATE_TREE_FRAGMENT:
+                    case SHARE_TREE_FRAGMENT:
                         fabBackPressed();
                         break;
                 }
@@ -410,8 +417,32 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
 
         String newTag = SHARE_TREE_FRAGMENT;
 
+        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+        bottomAppBar.performHide();
+        floatingActionButton.setImageResource(R.drawable.ic_baseline_reply_24);
+        currentFragmentTag = newTag;
+
         ShareTreeFragment nextFragment = new ShareTreeFragment();
         nextFragment.setArguments(bundle);
+        currentFragmentTag = newTag;
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.tree_editor_host_fragment, nextFragment, newTag)
+                .addToBackStack(newTag)
+                .commit();
+    }
+
+    private void transitionFromHomeToSelectTrees() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        String newTag = SELECT_TREE_FRAGMENT;
+
+        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+        bottomAppBar.performHide();
+        floatingActionButton.setImageResource(R.drawable.ic_baseline_reply_24);
+        currentFragmentTag = newTag;
+
+        SelectTreeFragment nextFragment = new SelectTreeFragment();
         currentFragmentTag = newTag;
 
         fragmentManager.beginTransaction()
@@ -475,7 +506,29 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         transitionToHomeFromSomeView();
     }
 
-    public static class BottomNavigationDrawerFragment extends BottomSheetDialogFragment {
+    @Override
+    public void executeReturnToSelectTrees() {
+        transitionFromHomeToSelectTrees();
+    }
+
+    public static class BottomDrawerFragment extends BottomSheetDialogFragment {
+        public Context context;
+        private ReturnToSelectTreesDelegate delegate;
+
+        public BottomDrawerFragment(ReturnToSelectTreesDelegate delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public void onAttach(@NonNull Context context) {
+            super.onAttach(context);
+            this.context = context;
+        }
+
+        @Override
+        public void onDetach() {
+            super.onDetach();
+        }
 
         @Nullable
         @Override
@@ -492,8 +545,9 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
                         case R.id.nav_about:
 //                            Toast.makeText(context, "about", Toast.LENGTH_SHORT).show();
                             return true;
-                        case R.id.nav_share:
-//                            transitionFromHomeToShareTree();
+                        case R.id.nav_back_to_trees:
+                            delegate.executeReturnToSelectTrees();
+                            dismiss();
                             return true;
                         default:
                             return false;
