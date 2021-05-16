@@ -17,6 +17,9 @@ import com.example.family_tree_temp.Database.FamilyTreeSqlDatabase;
 import com.example.family_tree_temp.R;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -94,18 +97,16 @@ public class SignUpFragment extends Fragment {
         executor.execute(() -> {
             FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
             String response = familyTreeSqlDatabase.insertAppUser(email, password);
-            if (Integer.parseInt(response) > 0) {
-
-                // show success
-//                Context context = getContext();
-//                CharSequence text = "Successfully created account!";
-//                int duration = Toast.LENGTH_SHORT;
-//                Toast.makeText(context, text, duration).show();
-
-                // switch to login
-                ((WelcomeActivity) getActivity()).transitionToLoginScreen();
+            try {
+                if (response != null) {
+                    // switch to login
+                    JSONObject object = new JSONObject(response);
+                    int appUserId = object.getInt("AppUserId");
+                    ((WelcomeActivity) getActivity()).transitionToLoginScreen();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-
             handler.post(() -> {
 
             });

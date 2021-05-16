@@ -603,11 +603,20 @@ public class FamilyTreeSqlDatabase {
         return response;
     }
 
-    public JSONArray selectFamilyTreesByAppUserId(String appUserId) throws JSONException {
+    public JSONArray selectFamilyTreesByAppUserId(String appUserId) {
         String stubs = "/familytree?appUserId=" + appUserId;
 
-        JSONArray response = new JSONArray(makeHttpUrlRequest(stubs, "GET", CrudMethod.READ, Model.FAMILY_TREE));
-        return response;
+        try {
+            String response = makeHttpUrlRequest(stubs, "GET", CrudMethod.READ, Model.FAMILY_TREE);
+            JSONArray jsonArray = new JSONArray(response);
+            return jsonArray;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return new JSONArray();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return new JSONArray();
+        }
     }
 
     public FamilyTree insertFamilyTree(FamilyTree familyTree) {
