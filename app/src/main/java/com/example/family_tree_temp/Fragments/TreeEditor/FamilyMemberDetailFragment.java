@@ -131,13 +131,15 @@ public class FamilyMemberDetailFragment extends Fragment {
             familyMember = mFamilyMemberViewModel.getFamilyMemberAtIndex(position, familyTreeId);
         }
 
-        getParentFragmentManager().setFragmentResultListener("familyMemberPosition", this, new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-                int position = (Integer) result.get("familyMemberPosition");
-                familyMember = mFamilyMemberViewModel.getFamilyMemberAtIndex(position);
-            }
-        });
+//        getParentFragmentManager().setFragmentResultListener("familyMemberPosition", this, new FragmentResultListener() {
+//            @Override
+//            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
+//                int position = (Integer) result.get("familyMemberPosition");
+//                SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+//                int familyTreeId = sharedPreferences.getInt(getString(R.string.family_tree_id), -1);
+//                familyMember = mFamilyMemberViewModel.getFamilyMemberAtIndex(position, familyTreeId);
+//            }
+//        });
 
         setHasOptionsMenu(true);
     }

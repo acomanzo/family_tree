@@ -3,11 +3,16 @@ package com.example.family_tree_temp.ViewModels;
 import android.app.Application;
 import android.util.Log;
 
+import com.example.family_tree_temp.Database.FamilyTreeSqlDatabase;
 import com.example.family_tree_temp.Models.AncestorDescendant;
 import com.example.family_tree_temp.Models.AncestorDescendantBundle;
 import com.example.family_tree_temp.Models.FamilyTree;
 import com.example.family_tree_temp.Repository.FamilyMemberRepository;
 import com.example.family_tree_temp.Models.FamilyMember;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +29,39 @@ public class FamilyMemberViewModel extends AndroidViewModel {
     private LiveData<List<FamilyMember>> mAllFamilyMembers;
     private LiveData<List<AncestorDescendant>> mAllAncestorDescendants;
 
+    private FamilyTreeSqlDatabase familyTreeSqlDatabase;
+
     public FamilyMemberViewModel (Application application) {
         super(application);
         mRepository = new FamilyMemberRepository(application);
         mAllFamilyMembers = mRepository.getAllFamilyMembers();
         mAllAncestorDescendants = mRepository.getAllAncestorDescendants();
+        familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
         Log.i("FamilyMemberViewModel", "Created FamilyMemberViewModel");
+    }
+
+    private void initialize() {
+//        ExecutorService executor = Executors.newSingleThreadExecutor();
+//        executor.execute(() -> {
+//            JSONArray response = null;
+//            try {
+//                response = familyTreeSqlDatabase.selectFamilyTreesByAppUserId(String.valueOf(appUserId));
+//                ArrayList<FamilyTree> familyTrees = new ArrayList<>();
+//                if (response != null) {
+//                    for (int i = 0; i < response.length(); i++) {
+//                        JSONObject object = response.getJSONObject(i);
+//                        int familyTreeId = object.getInt("FamilyTreeId");
+//                        int appUserId = object.getInt("AppUserId");
+//                        String treeName = object.getString("TreeName");
+//                        FamilyTree familyTree = new FamilyTree(familyTreeId, appUserId, treeName);
+//                        familyTrees.add(familyTree);
+//                    }
+//                }
+//                mAllFamilyTrees.postValue(familyTrees);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        });
     }
 
     public LiveData<List<FamilyMember>> getAllFamilyMembers() {
