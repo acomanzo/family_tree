@@ -153,6 +153,20 @@ public class FamilyMemberViewModel extends AndroidViewModel {
 
     public void sync(int familyTreeId) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> mRepository.sync(familyTreeId));
+        executor.execute(() -> {
+            List<FamilyMember> familyMembers = mAllFamilyMembers.getValue();
+            if (familyMembers == null) {
+                try {
+                    // if the value is null, then it will be null in sync(), and
+                    // a new family member will be inserted when it shouldn't be
+                    Thread.sleep(3000);
+                    mRepository.sync(familyTreeId);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                mRepository.sync(familyTreeId);
+            }
+        });
     }
 }

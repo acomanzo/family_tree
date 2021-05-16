@@ -208,12 +208,13 @@ public class FamilyMemberRepository {
 
     public void sync(int familyTreeId) {
         FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
-        List<FamilyMember> familyMembers = familyTreeSqlDatabase.getFamilyMembersBy(familyTreeId);
-        for (FamilyMember serverFamilyMember : familyMembers) {
+        List<FamilyMember> serverFamilyMembers = familyTreeSqlDatabase.getFamilyMembersBy(familyTreeId);
+        for (FamilyMember serverFamilyMember : serverFamilyMembers) {
             boolean familyMemberExistsLocally = false;
             FamilyMember twin = null;
             if (mAllFamilyMembers.getValue() != null) {
-                for (FamilyMember localFamilyMember : mAllFamilyMembers.getValue()) {
+                List<FamilyMember> localFamilyMembers = mAllFamilyMembers.getValue();
+                for (FamilyMember localFamilyMember : localFamilyMembers) {
                     if (serverFamilyMember.getServerId() == localFamilyMember.getServerId()) {
                         familyMemberExistsLocally = true;
                         twin = localFamilyMember;
@@ -223,7 +224,7 @@ public class FamilyMemberRepository {
             }
             if (familyMemberExistsLocally) {
                 try {
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
                     Date twinUpdatedAt = simpleDateFormat.parse(twin.getUpdatedAt());
                     long twinEpoch = twinUpdatedAt.getTime();

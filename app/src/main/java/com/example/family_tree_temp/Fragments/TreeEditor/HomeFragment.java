@@ -30,6 +30,7 @@ import com.example.family_tree_temp.R;
 import com.example.family_tree_temp.Models.AncestorDescendantBundle;
 import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +103,7 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
                 //((PersonAdaptor) mAdaptor).add(person);
 //                FamilyMember familyMember = new FamilyMember(person.getFirstName(), person.getLastName(), Integer.valueOf(person.getAge()), person.getGenderId());
                 SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-                int familyTreeId = sharedPreferences.getInt(getString(R.string.family_tree_id), -1);
+                //int familyTreeId = sharedPreferences.getInt(getString(R.string.family_tree_id), -1);
                 FamilyMember familyMember = new FamilyMember(person.getFirstName(), person.getLastName(), person.getBirthDate(), person.getGender(), familyTreeId);
                 mFamilyMemberViewModel.insert(familyMember);
             }
@@ -164,7 +165,13 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
 //                    people.add(new Person(firstName, lastName, "0", genderId));
 //                }
 //                mAdaptor.setDataset(people);
-                mAdaptor.setDataset(familyMembers);
+                List<FamilyMember> dataSet = new ArrayList<>();
+                for (FamilyMember familyMember : familyMembers) {
+                    if (familyMember.getFamilyTreeId() == familyTreeId) {
+                        dataSet.add(familyMember);
+                    }
+                }
+                mAdaptor.setDataset(dataSet);
             }
         });
 
