@@ -1,4 +1,4 @@
-package com.example.family_tree_temp.ViewModels;
+package com.example.family_tree_temp.ViewModels.FamilyTree;
 
 import android.app.Application;
 import android.os.Bundle;
@@ -25,12 +25,15 @@ import androidx.lifecycle.MutableLiveData;
 
 public class FamilyTreeViewModel extends AndroidViewModel {
 
+    private int appUserId;
+
     private MutableLiveData<List<FamilyTree>> mAllFamilyTrees;
     private FamilyTreeSqlDatabase familyTreeSqlDatabase;
 
-    public FamilyTreeViewModel(@NonNull Application application) {
+    public FamilyTreeViewModel(@NonNull Application application, int appUserId) {
         super(application);
 
+        this.appUserId = appUserId;
         familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
         mAllFamilyTrees = new MutableLiveData<>();
 
@@ -42,7 +45,7 @@ public class FamilyTreeViewModel extends AndroidViewModel {
         executor.execute(() -> {
             JSONArray response = null;
             try {
-                response = familyTreeSqlDatabase.selectAllFamilyTrees();
+                response = familyTreeSqlDatabase.selectFamilyTreesByAppUserId(String.valueOf(appUserId));
                 ArrayList<FamilyTree> familyTrees = new ArrayList<>();
                 if (response != null) {
                     for (int i = 0; i < response.length(); i++) {
@@ -91,5 +94,14 @@ public class FamilyTreeViewModel extends AndroidViewModel {
     public FamilyTree getFamilyTreeAtIndex(int index, int appUserId) {
         List<FamilyTree> usersTrees = getFamilyTreesByAppUserId(appUserId);
         return usersTrees.get(index);
+
+    }
+
+    public FamilyTree getFamilyTreeAtIndex(int index) {
+        return mAllFamilyTrees.getValue().get(index);
+    }
+
+    public void shareFamilyTree(int appUserId, int familyTreeId, String email) {
+
     }
 }

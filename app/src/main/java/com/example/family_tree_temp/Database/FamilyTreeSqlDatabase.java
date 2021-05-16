@@ -40,7 +40,8 @@ public class FamilyTreeSqlDatabase {
         MEDICAL_HISTORY,
         ANCESTOR_DESCENDANT,
         APP_USER,
-        FAMILY_TREE
+        FAMILY_TREE,
+        SHARE
     }
 
     private String baseUrl;
@@ -159,6 +160,8 @@ public class FamilyTreeSqlDatabase {
                 return parseAppUser(responseBody, status, crudMethod);
             case FAMILY_TREE:
                 return parseFamilyTree(responseBody, status, crudMethod);
+            case SHARE:
+                return parseShare(responseBody, status, crudMethod);
             default:
                 return null;
         }
@@ -397,6 +400,35 @@ public class FamilyTreeSqlDatabase {
         return null;
     }
 
+    public String parseShare(String responseBody, int status, CrudMethod crudMethod) {
+        try {
+            JSONObject response = new JSONObject(responseBody);
+            if (status > 299) {
+                String message = response.getString("message");
+                Log.i("familyTreeSqlDatabase", message);
+            }
+            else {
+                JSONArray recordSet = response.getJSONArray("recordset");
+                if (recordSet.length() > 0) {
+                    JSONObject share = recordSet.getJSONObject(0);
+                    switch (crudMethod) {
+                        case READ:
+                            return recordSet.toString();
+                        case CREATE:
+                            int shareId = share.getInt("ShareId");
+                            return String.valueOf(shareId);
+                        case UPDATE:
+                        case DELETE:
+                            break;
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            Log.e("familyTreeSqlDatabase", e.getLocalizedMessage());
+        }
+        return null;
+    }
+
     public Email insertEmail(Email email) {
 
         String stubs = "/email" +
@@ -623,4 +655,14 @@ public class FamilyTreeSqlDatabase {
             return null;
         }
     }
+
+    public String shareFamilyTree(int appUserId, int familyTreeId, String email) {
+        String stubs = "/familytree/share?" +
+                "appUserId=" + appUserId +
+                "&familyTreeId=" + familyTreeId +
+                "&email=" + email;
+        String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.SHARE);
+        return response;
+    }
+
 }

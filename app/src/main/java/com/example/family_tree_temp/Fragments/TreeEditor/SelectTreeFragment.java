@@ -5,10 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,22 +18,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 
 import com.example.family_tree_temp.Activities.TreeEditorActivity;
-import com.example.family_tree_temp.Adaptors.FamilyMemberAdaptor;
-import com.example.family_tree_temp.Adaptors.Person;
 import com.example.family_tree_temp.Adaptors.TreeListAdapter;
-import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Models.FamilyTree;
 import com.example.family_tree_temp.R;
-import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;
-import com.example.family_tree_temp.ViewModels.FamilyTreeViewModel;
+import com.example.family_tree_temp.ViewModels.FamilyTree.FamilyTreeViewModel;
+import com.example.family_tree_temp.ViewModels.FamilyTree.FamilyTreeViewModelFactory;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -116,13 +107,17 @@ public class SelectTreeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_select_tree, container, false);
 
         // listen for changes in mAllFamilyMembers in the ViewModel
-        mFamilyTreeViewModel = ViewModelProviders.of(getActivity()).get(FamilyTreeViewModel.class);
+//        mFamilyTreeViewModel = ViewModelProviders.of(getActivity()).get(FamilyTreeViewModel.class);
+
+//        mFamilyTreeViewModel = new ViewModelProvider(this, new FamilyTreeViewModelFactory(getActivity().getApplication(), appUserId)).get(FamilyTreeViewModel.class);
+        mFamilyTreeViewModel = ViewModelProviders.of(getActivity(), new FamilyTreeViewModelFactory(getActivity().getApplication(), appUserId)).get(FamilyTreeViewModel.class);
         mFamilyTreeViewModel.getmAllFamilyTrees().observe(getViewLifecycleOwner(), new Observer<List<FamilyTree>>() {
 
             @Override
             public void onChanged(List<FamilyTree> familyTrees) {
-                List<FamilyTree> ft = mFamilyTreeViewModel.getFamilyTreesByAppUserId(appUserId);
-                mAdaptor.setDataset(ft);
+//                List<FamilyTree> ft = mFamilyTreeViewModel.getFamilyTreesByAppUserId(appUserId);
+//                mAdaptor.setDataset(ft);
+                mAdaptor.setDataset(familyTrees);
             }
         });
 
@@ -168,7 +163,8 @@ public class SelectTreeFragment extends Fragment {
     public class OnFamilyTreeItemClickedListener {
         public void onClick(int position) {
 
-            FamilyTree familyTree = mFamilyTreeViewModel.getFamilyTreeAtIndex(position, appUserId);
+//            FamilyTree familyTree = mFamilyTreeViewModel.getFamilyTreeAtIndex(position, appUserId);
+            FamilyTree familyTree = mFamilyTreeViewModel.getFamilyTreeAtIndex(position);
             int familyTreeId = familyTree.getFamilyTreeId();
 
             Bundle bundle = new Bundle();
