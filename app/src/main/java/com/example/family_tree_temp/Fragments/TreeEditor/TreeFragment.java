@@ -95,12 +95,17 @@ public class TreeFragment extends Fragment {
 //        familyMembers.add(sophie);
 
 
-        FamilyMember root = mFamilyMemberViewModel.getRoot();
-        List<FamilyMember> familyMembers = mFamilyMemberViewModel.makeFamilyTree(root);
-        root.setChildren(familyMembers);
-
         List<FamilyMember> rootList = new ArrayList<>();
-        rootList.add(root);
+        List<FamilyMember> roots = mFamilyMemberViewModel.getRoots();
+        for (FamilyMember familyMember : roots) {
+            mFamilyMemberViewModel.makeFamilyTreeFor(familyMember);
+            rootList.add(familyMember);
+        }
+//        List<FamilyMember> familyMembers = mFamilyMemberViewModel.makeFamilyTree(root);
+//        root.setChildren(familyMembers);
+
+
+//        rootList.add(root);
         mAdaptor = new TreeViewAdapter(rootList);
 
         recyclerView = view.findViewById(R.id.tree_recycler_view);

@@ -73,7 +73,13 @@ public class FamilyMemberViewModel extends AndroidViewModel {
         return mRepository.getFamilyMemberById(id).get(0);
     }
 
-    public FamilyMember getRoot() {
+    public List<FamilyMember> getRoots() {
+        /*
+        TODO: find a way to find all roots in the AncestorDescendant table... rn the function
+            assumes that there is only one bloodline modeled in the tree, but there could be
+            more than one that do not have a common ancestor
+         */
+
         List<AncestorDescendant> test = mRepository.test(1);
         List<AncestorDescendant> ancestorDescendants = mRepository.anotherTest();
 //        new Thread() {
@@ -89,17 +95,42 @@ public class FamilyMemberViewModel extends AndroidViewModel {
 //        List<AncestorDescendant> ancestorDescendants = mRepository.getAllAncestorDescendants().getValue();
 //        List<AncestorDescendant> ancestorDescendants = mRepository.getAllAncestorDescendants();
 
-        AncestorDescendant root = ancestorDescendants.get(0);
-        for (AncestorDescendant ancestorDescendant : ancestorDescendants) {
-            if (ancestorDescendant.getDescendantId() == root.getAncestorId()) {
-                root = ancestorDescendant;
-                root = reiterateAncestorDescendants(root, ancestorDescendants);
+        List<FamilyMember> roots = new ArrayList<>();
+        if (ancestorDescendants.size() > 0) {
+            AncestorDescendant root = ancestorDescendants.get(0);
+            for (AncestorDescendant ancestorDescendant : ancestorDescendants) {
+                if (ancestorDescendant.getDescendantId() == root.getAncestorId()) {
+                    root = ancestorDescendant;
+                    root = reiterateAncestorDescendants(root, ancestorDescendants);
+                }
             }
-        }
 
-        FamilyMember familyMember = getFamilyMemberById(root.getAncestorId());
-        return familyMember;
-//        return new FamilyMember("test", "test", "test", "test");
+            FamilyMember familyMember = getFamilyMemberById(root.getAncestorId());
+            roots.add(familyMember);
+
+            List<FamilyMember> familyMembers = mAllFamilyMembers.getValue();
+            for (FamilyMember fm : familyMembers) {
+                boolean familyMemberIsARoot = true;
+                for (AncestorDescendant ancestorDescendant : ancestorDescendants) {
+                    int familyMemberId = fm.getFamilyMemberId();
+                    int ancestorId = ancestorDescendant.getAncestorId();
+                    int descendantId = ancestorDescendant.getDescendantId();
+                    if (familyMemberId == ancestorId || familyMemberId == descendantId) {
+                        familyMemberIsARoot = false;
+                        break;
+                    }
+                }
+
+                // if the family member has no relationships, then make them a root
+                if (familyMemberIsARoot) {
+                    roots.add(fm);
+                }
+            }
+        } else {
+            // if there are no relationships, then make every family member a root
+            roots.addAll(mAllFamilyMembers.getValue());
+        }
+        return roots;
     }
 
     private AncestorDescendant reiterateAncestorDescendants(AncestorDescendant root, List<AncestorDescendant> ancestorDescendants) {
@@ -117,7 +148,12 @@ public class FamilyMemberViewModel extends AndroidViewModel {
 //
 //    }
 
-    public List<FamilyMember> makeFamilyTree(FamilyMember root) {
+    public void makeFamilyTreeFor(FamilyMember familyMember) {
+        List<FamilyMember> familyMembers = makeFamilyTree(familyMember);
+        familyMember.setChildren(familyMembers);
+    }
+
+    private List<FamilyMember> makeFamilyTree(FamilyMember root) {
         List<AncestorDescendant> ancestorDescendants = mRepository.test(root.getFamilyMemberId());
 //        List<AncestorDescendant> ancestorDescendants = mRepository.getAncestorDescendantsByAncestorId(root.getFamilyMemberId()).getValue();
 //        List<AncestorDescendant> ancestorDescendants = mRepository.getAncestorDescendantsByAncestorId(root.getFamilyMemberId());
