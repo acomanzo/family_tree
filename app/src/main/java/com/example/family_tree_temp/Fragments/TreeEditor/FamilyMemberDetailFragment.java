@@ -126,7 +126,9 @@ public class FamilyMemberDetailFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
             position = getArguments().getInt("familyMemberPosition");
-            familyMember = mFamilyMemberViewModel.getFamilyMemberAtIndex(position);
+            SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+            int familyTreeId = sharedPreferences.getInt(getString(R.string.family_tree_id), -1);
+            familyMember = mFamilyMemberViewModel.getFamilyMemberAtIndex(position, familyTreeId);
         }
 
         getParentFragmentManager().setFragmentResultListener("familyMemberPosition", this, new FragmentResultListener() {

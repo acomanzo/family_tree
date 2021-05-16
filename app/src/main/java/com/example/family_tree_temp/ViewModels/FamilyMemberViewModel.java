@@ -56,6 +56,16 @@ public class FamilyMemberViewModel extends AndroidViewModel {
         return mAllFamilyMembers.getValue().get(position);
     }
 
+    public FamilyMember getFamilyMemberAtIndex(int position, int familyTreeId) {
+        List<FamilyMember> familyMembers = new ArrayList<>();
+        for (FamilyMember familyMember : mAllFamilyMembers.getValue()) {
+            if (familyMember.getFamilyTreeId() == familyTreeId) {
+                familyMembers.add(familyMember);
+            }
+        }
+        return familyMembers.get(position);
+    }
+
     public void insertDescendant(AncestorDescendantBundle ancestorDescendantBundle) {
         mRepository.insertDescendant(ancestorDescendantBundle);
     }
