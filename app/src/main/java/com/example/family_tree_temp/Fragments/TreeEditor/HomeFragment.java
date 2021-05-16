@@ -46,6 +46,8 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     private RecyclerView.LayoutManager layoutManager;
     private FamilyMemberViewModel mFamilyMemberViewModel;
 
+    private int familyTreeId;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -54,8 +56,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private int familyTreeId;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -157,14 +157,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         mFamilyMemberViewModel.getAllFamilyMembers().observe(getViewLifecycleOwner(), new Observer<List<FamilyMember>>() {
             @Override
             public void onChanged(@Nullable final List<FamilyMember> familyMembers) {
-//                List<Person> people = new ArrayList<>();
-//                for (FamilyMember familyMember : familyMembers) {
-//                    String firstName = familyMember.getFirstName();
-//                    String lastName = familyMember.getLastName();
-//                    int genderId = familyMember.getGenderId();
-//                    people.add(new Person(firstName, lastName, "0", genderId));
-//                }
-//                mAdaptor.setDataset(people);
                 List<FamilyMember> dataSet = new ArrayList<>();
                 for (FamilyMember familyMember : familyMembers) {
                     if (familyMember.getFamilyTreeId() == familyTreeId) {
@@ -175,9 +167,26 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
             }
         });
 
+
+
         recyclerView.setAdapter(mAdaptor);
 
-        mFamilyMemberViewModel.sync(familyTreeId);
+        /*
+        TODO: this is a kinda scuffed solution to prevent something being inserted into the
+            local db more than once. It would probably be better to instead have it sync every time
+            it comes back to home fragment.
+            Source of problem was trying to make a new family member. New members were inserted
+            twice for some reason; I think it was because mAllFamilyMembers in the repo was
+            null, so sync was performing before the value wasn't null
+         */
+        SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        boolean shouldSyncWithServer = preferences.getBoolean(getString(R.string.should_sync), false);
+        if (shouldSyncWithServer) {
+            mFamilyMemberViewModel.sync(familyTreeId);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(getString(R.string.should_sync), false);
+            editor.commit();
+        }
 
         return view;
     }

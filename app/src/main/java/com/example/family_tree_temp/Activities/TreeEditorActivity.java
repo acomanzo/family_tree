@@ -136,6 +136,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
             SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt(getString(R.string.app_user_id), appUserId);
+            editor.putBoolean(getString(R.string.should_sync), true);
             editor.commit();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -385,6 +386,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
 
         HomeFragment nextFragment = new HomeFragment();
         nextFragment.setArguments(bundle);
+        currentFragmentTag = newTag;
 
         bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_menu_24);
         bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
