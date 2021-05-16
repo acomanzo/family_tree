@@ -31,6 +31,7 @@ import com.example.family_tree_temp.Fragments.TreeEditor.NewEmailFragment;
 import com.example.family_tree_temp.Fragments.TreeEditor.NewMedicalHistoryFragment;
 import com.example.family_tree_temp.Fragments.TreeEditor.NewPhoneNumberFragment;
 import com.example.family_tree_temp.Fragments.TreeEditor.SelectTreeFragment;
+import com.example.family_tree_temp.Fragments.TreeEditor.ShareTreeFragment;
 import com.example.family_tree_temp.Fragments.TreeEditor.TreeFragment;
 import com.example.family_tree_temp.R;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -60,6 +61,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
     public final String TREE_VIEW = "tree_view";
     public final String SELECT_TREE_FRAGMENT = "select_tree_fragment";
     public final String CREATE_TREE_FRAGMENT = "create_tree_fragment";
+    public final String SHARE_TREE_FRAGMENT = "share_tree_fragment";
 
     private String currentFragmentTag;
 
@@ -403,6 +405,21 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
                 .commit();
     }
 
+    public void transitionFromHomeToShareTree(Bundle bundle) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        String newTag = SHARE_TREE_FRAGMENT;
+
+        ShareTreeFragment nextFragment = new ShareTreeFragment();
+        nextFragment.setArguments(bundle);
+        currentFragmentTag = newTag;
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.tree_editor_host_fragment, nextFragment, newTag)
+                .addToBackStack(newTag)
+                .commit();
+    }
+
     public void fabBackPressed() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -473,7 +490,10 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
                             //Toast.makeText(context, "settings", Toast.LENGTH_SHORT).show();
                             return true;
                         case R.id.nav_about:
-                            //Toast.makeText(context, "about", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(context, "about", Toast.LENGTH_SHORT).show();
+                            return true;
+                        case R.id.nav_share:
+//                            transitionFromHomeToShareTree();
                             return true;
                         default:
                             return false;

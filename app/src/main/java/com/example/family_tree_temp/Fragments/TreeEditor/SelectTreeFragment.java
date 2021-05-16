@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.family_tree_temp.Activities.TreeEditorActivity;
 import com.example.family_tree_temp.Adaptors.TreeListAdapter;
@@ -134,6 +135,13 @@ public class SelectTreeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         mAdaptor = new TreeListAdapter(new OnFamilyTreeItemClickedListener());
         recyclerView.setAdapter(mAdaptor);
+
+//        ImageButton shareButton = view.findViewById(R.id.tree_list__share_button);
+//        shareButton.setOnClickListener(v -> {
+//            Bundle bundle = new Bundle();
+//            bundle.putInt(getString(R.string.family_tree_id), )
+//            ((TreeEditorActivity) getActivity()).transitionFromSelectTreeToShareTree(bundle);
+//        });
 
         return view;
     }

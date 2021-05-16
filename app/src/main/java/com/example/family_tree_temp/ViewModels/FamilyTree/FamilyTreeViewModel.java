@@ -102,6 +102,11 @@ public class FamilyTreeViewModel extends AndroidViewModel {
     }
 
     public void shareFamilyTree(int appUserId, int familyTreeId, String email) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            String response = familyTreeSqlDatabase.shareFamilyTree(appUserId, familyTreeId, email);
+
+        });
 
     }
 }

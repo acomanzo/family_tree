@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.family_tree_temp.Activities.TreeEditorActivity;
 import com.example.family_tree_temp.R;
 import com.example.family_tree_temp.ViewModels.FamilyTree.FamilyTreeViewModel;
 import com.google.android.material.textfield.TextInputEditText;
@@ -77,10 +78,11 @@ public class ShareTreeFragment extends Fragment {
 
         mFamilyTreeViewModel = ViewModelProviders.of(getActivity()).get(FamilyTreeViewModel.class);
 
-        shareButton = view.findViewById(R.id.tree_share_button);
+        shareButton = view.findViewById(R.id.share_tree_share_button);
         shareButton.setOnClickListener(v -> {
             String email = ((TextInputEditText) view.findViewById(R.id.share_tree_email)).getText().toString();
             mFamilyTreeViewModel.shareFamilyTree(appUserId, familyTreeId, email);
+            ((TreeEditorActivity) getActivity()).transitionToHomeFromSomeView();
         });
 
         return view;

@@ -225,6 +225,26 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.top_bar_share:
+                shareTree();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void shareTree() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(getString(R.string.family_tree_id), familyTreeId);
+        SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        int appUserId = preferences.getInt(getString(R.string.app_user_id), -1);
+        bundle.putInt(getString(R.string.app_user_id), appUserId);
+        ((TreeEditorActivity) getActivity()).transitionFromHomeToShareTree(bundle);
+    }
+
+    @Override
     public boolean onQueryTextSubmit(String query) {
         mAdaptor.getFilter().filter(query);
         return false;
