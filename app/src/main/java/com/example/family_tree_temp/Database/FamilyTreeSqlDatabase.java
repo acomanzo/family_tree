@@ -106,7 +106,14 @@ public class FamilyTreeSqlDatabase {
                 "&familyTreeId=" + familyMember.getFamilyTreeId();
 
         String response = makeHttpUrlRequest(stubs, "POST", CrudMethod.CREATE, Model.FAMILY_MEMBER);
-        return response;
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            int familyMemberId = jsonObject.getInt("FamilyMemberId");
+            return String.valueOf(familyMemberId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "-1";
+        }
     }
 
     public String updateFamilyMember(FamilyMember familyMember) {
@@ -169,7 +176,6 @@ public class FamilyTreeSqlDatabase {
                 switch (crudMethod) {
                     case CREATE:
                         JSONObject familyMember = recordSet.getJSONObject(0);
-//                        int familyMemberId = familyMember.getInt("FamilyMemberId");
                         return String.valueOf(familyMember);
                     case READ:
                         return recordSet.toString();
