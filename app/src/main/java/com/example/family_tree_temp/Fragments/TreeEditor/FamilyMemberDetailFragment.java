@@ -289,6 +289,7 @@ public class FamilyMemberDetailFragment extends Fragment {
         int familyTreeId = sharedPreferences.getInt(getString(R.string.family_tree_id), -1);
 
         FamilyMember updatedFamilyMember = new FamilyMember(id, updatedFirstName, updatedLastName, updatedBirthDate, updatedGender, familyTreeId, serverId);
+        updatedFamilyMember.setCreatedAt(familyMember.getCreatedAt());
         mFamilyMemberViewModel.update(updatedFamilyMember);
 
 //        ((MainActivity) getActivity()).transitionToHomeFromSomeView();

@@ -15,8 +15,12 @@ import com.example.family_tree_temp.Models.ContactInformation;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Models.AncestorDescendantBundle;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -109,8 +113,21 @@ public class FamilyMemberRepository {
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
             FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
-            String id = familyTreeSqlDatabase.insertFamilyMember(familyMember);
-            familyMember.setServerId(Integer.valueOf(id));
+            String response = familyTreeSqlDatabase.insertFamilyMember(familyMember);
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                familyMember.setCreatedAt(jsonObject.getString("CreatedAt"));
+                familyMember.setUpdatedAt(jsonObject.getString("UpdatedAt"));
+                familyMember.setServerId(Integer.valueOf(jsonObject.getString("FamilyMemberId")));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                Date date = new Date();
+                String currentDate = formatter.format(date);
+                familyMember.setCreatedAt(currentDate);
+                familyMember.setUpdatedAt(currentDate);
+                familyMember.setServerId(-1);
+            }
 
             handler.post(() -> {
                 ExecutorService secondExecutor = Executors.newSingleThreadExecutor();
@@ -141,9 +158,14 @@ public class FamilyMemberRepository {
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(() -> {
             FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
-            familyTreeSqlDatabase.updateFamilyMember(familyMember);
-            handler.post(() -> {
-                new UpdateFamilyMemberAsyncTask(mFamilyMemberDao).execute(familyMember);            });
+            String response = familyTreeSqlDatabase.updateFamilyMember(familyMember);
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                familyMember.setUpdatedAt(jsonObject.getString("UpdatedAt"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            handler.post(() -> new UpdateFamilyMemberAsyncTask(mFamilyMemberDao).execute(familyMember));
         });
     }
 
@@ -153,8 +175,7 @@ public class FamilyMemberRepository {
         executor.execute(() -> {
             FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
             familyTreeSqlDatabase.deleteFamilyMember(familyMember);
-            handler.post(() -> {
-                new DeleteFamilyMemberAsyncTask(mFamilyMemberDao).execute(familyMember);            });
+            handler.post(() -> new DeleteFamilyMemberAsyncTask(mFamilyMemberDao).execute(familyMember));
         });
     }
 
