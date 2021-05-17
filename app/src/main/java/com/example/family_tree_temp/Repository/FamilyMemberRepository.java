@@ -185,8 +185,21 @@ public class FamilyMemberRepository {
         executor.execute(() -> {
             FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
             FamilyMember descendant = ancestorDescendantBundle.getNewFamilyMember();
-            String descendantId = familyTreeSqlDatabase.insertFamilyMember(descendant);
-            descendant.setServerId(Integer.parseInt(descendantId));
+            String response = familyTreeSqlDatabase.insertFamilyMember(descendant);
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                descendant.setCreatedAt(jsonObject.getString("CreatedAt"));
+                descendant.setUpdatedAt(jsonObject.getString("UpdatedAt"));
+                descendant.setServerId(Integer.valueOf(jsonObject.getString("FamilyMemberId")));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                Date date = new Date();
+                String currentDate = formatter.format(date);
+                descendant.setCreatedAt(currentDate);
+                descendant.setUpdatedAt(currentDate);
+                descendant.setServerId(-1);
+            }
 
             handler.post(() -> {
                 ExecutorService secondExecutor = Executors.newSingleThreadExecutor();
@@ -209,8 +222,21 @@ public class FamilyMemberRepository {
         executor.execute(() -> {
             FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
             FamilyMember ancestor = ancestorDescendantBundle.getNewFamilyMember();
-            String ancestorId = familyTreeSqlDatabase.insertFamilyMember(ancestor);
-            ancestor.setServerId(Integer.parseInt(ancestorId));
+            String response = familyTreeSqlDatabase.insertFamilyMember(ancestor);
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                ancestor.setCreatedAt(jsonObject.getString("CreatedAt"));
+                ancestor.setUpdatedAt(jsonObject.getString("UpdatedAt"));
+                ancestor.setServerId(Integer.valueOf(jsonObject.getString("FamilyMemberId")));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                Date date = new Date();
+                String currentDate = formatter.format(date);
+                ancestor.setCreatedAt(currentDate);
+                ancestor.setUpdatedAt(currentDate);
+                ancestor.setServerId(-1);
+            }
 
             handler.post(() -> {
                 ExecutorService secondExecutor = Executors.newSingleThreadExecutor();
