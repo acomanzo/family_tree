@@ -1,4 +1,4 @@
-package com.example.family_tree_temp.Adaptors;
+package com.example.family_tree_temp.Adapters;
 
 import android.util.Log;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package com.example.family_tree_temp.Adaptors;
+package com.example.family_tree_temp.Adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +18,11 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class FamilyMemberAdaptor extends RecyclerView.Adapter<FamilyMemberAdaptor.MyViewHolder> implements Filterable {
+public class FamilyMemberAdapter extends RecyclerView.Adapter<FamilyMemberAdapter.MyViewHolder> implements Filterable {
     private List<FamilyMember> mDataset;
     private TreeEditorActivity treeEditorActivity;
     private List<FamilyMember> mDatasetFiltered;
-    HomeFragment.OnFamilyMemberItemClickedListener onClickListener;
+    private HomeFragment.OnFamilyMemberItemClickedListener onClickListener;
 
     @Override
     public Filter getFilter() {
@@ -57,21 +57,21 @@ public class FamilyMemberAdaptor extends RecyclerView.Adapter<FamilyMemberAdapto
         };
     }
 
-    public FamilyMemberAdaptor(TreeEditorActivity treeEditorActivity, HomeFragment.OnFamilyMemberItemClickedListener onClickListener) {
+    public FamilyMemberAdapter(TreeEditorActivity treeEditorActivity, HomeFragment.OnFamilyMemberItemClickedListener onClickListener) {
         this.treeEditorActivity = treeEditorActivity;
         this.onClickListener = onClickListener;
     }
 
     @NonNull
     @Override
-    public FamilyMemberAdaptor.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FamilyMemberAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.adaptor_person_item, parent, false);
         MyViewHolder vh = new MyViewHolder(v, treeEditorActivity, this);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FamilyMemberAdaptor.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FamilyMemberAdapter.MyViewHolder holder, int position) {
         FamilyMember familyMember = mDatasetFiltered.get(position);
         holder.bind(familyMember);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +84,6 @@ public class FamilyMemberAdaptor extends RecyclerView.Adapter<FamilyMemberAdapto
 
     @Override
     public int getItemCount() {
-        //return mDataset.size();
         if (mDataset != null) {
             return mDatasetFiltered.size();
         }
@@ -103,16 +102,16 @@ public class FamilyMemberAdaptor extends RecyclerView.Adapter<FamilyMemberAdapto
 
         private TreeEditorActivity treeEditorActivity;
 
-        private FamilyMemberAdaptor familyMemberAdaptor;
+        private FamilyMemberAdapter familyMemberAdapter;
 
-        public MyViewHolder(@NonNull View itemView, TreeEditorActivity treeEditorActivity, FamilyMemberAdaptor familyMemberAdaptor) {
+        public MyViewHolder(@NonNull View itemView, TreeEditorActivity treeEditorActivity, FamilyMemberAdapter familyMemberAdapter) {
             super(itemView);
             this.itemView = itemView;
             familyMemberName = itemView.findViewById(R.id.person_name);
 
             this.treeEditorActivity = treeEditorActivity;
 
-            this.familyMemberAdaptor = familyMemberAdaptor;
+            this.familyMemberAdapter = familyMemberAdapter;
         }
 
         private void bind(FamilyMember familyMember) {

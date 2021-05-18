@@ -22,18 +22,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.example.family_tree_temp.Activities.TreeEditorActivity;
-import com.example.family_tree_temp.Adaptors.FamilyMemberAdaptor;
+import com.example.family_tree_temp.Adapters.FamilyMemberAdapter;
 import com.example.family_tree_temp.Models.FamilyMember;
-import com.example.family_tree_temp.Adaptors.Person;
+import com.example.family_tree_temp.Adapters.Person;
 import com.example.family_tree_temp.R;
 import com.example.family_tree_temp.Models.AncestorDescendantBundle;
 import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +43,7 @@ import java.util.List;
 public class HomeFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private RecyclerView recyclerView;
-    private FamilyMemberAdaptor mAdaptor;
+    private FamilyMemberAdapter mAdaptor;
     private RecyclerView.LayoutManager layoutManager;
     private FamilyMemberViewModel mFamilyMemberViewModel;
 
@@ -169,8 +167,8 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
 //        //detailJson = DetailDump.getData();
 //        mAdaptor = new PersonAdaptor(detailJson, (MainActivity) getActivity());
 //
-//        mAdaptor = new FamilyMemberAdaptor((MainActivity) getActivity(), new OnFamilyMemberItemClickedListener());
-        mAdaptor = new FamilyMemberAdaptor((TreeEditorActivity) getActivity(), new OnFamilyMemberItemClickedListener());
+//        mAdaptor = new FamilyMemberAdapter((MainActivity) getActivity(), new OnFamilyMemberItemClickedListener());
+        mAdaptor = new FamilyMemberAdapter((TreeEditorActivity) getActivity(), new OnFamilyMemberItemClickedListener());
 
         mFamilyMemberViewModel = ViewModelProviders.of(getActivity()).get(FamilyMemberViewModel.class);
 

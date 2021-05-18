@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.family_tree_temp.Adaptors.TreeViewAdapter;
+import com.example.family_tree_temp.Adapters.TreeViewAdapter;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.R;
 import com.example.family_tree_temp.ViewModels.FamilyMemberViewModel;

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.family_tree_temp.Activities.TreeEditorActivity;
-import com.example.family_tree_temp.Adaptors.Person;
 import com.example.family_tree_temp.R;
 import com.google.android.material.textfield.TextInputEditText;
 

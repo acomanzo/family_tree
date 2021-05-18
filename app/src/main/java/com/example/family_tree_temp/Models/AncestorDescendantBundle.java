@@ -21,6 +21,18 @@ public class AncestorDescendantBundle implements Parcelable {
     @NonNull
     private String updatedAt;
 
+    public static final Creator<AncestorDescendantBundle> CREATOR = new Creator<AncestorDescendantBundle>() {
+        @Override
+        public AncestorDescendantBundle createFromParcel(Parcel source) {
+            return new AncestorDescendantBundle(source);
+        }
+
+        @Override
+        public AncestorDescendantBundle[] newArray(int size) {
+            return new AncestorDescendantBundle[size];
+        }
+    };
+
     public AncestorDescendantBundle(FamilyMember newFamilyMember, FamilyMember existingFamilyMember, int depth) {
         this(newFamilyMember, existingFamilyMember, depth, -1);
     }
@@ -75,18 +87,6 @@ public class AncestorDescendantBundle implements Parcelable {
     public int getDepth() {
         return depth;
     }
-
-    public static final Creator<AncestorDescendantBundle> CREATOR = new Creator<AncestorDescendantBundle>() {
-        @Override
-        public AncestorDescendantBundle createFromParcel(Parcel source) {
-            return new AncestorDescendantBundle(source);
-        }
-
-        @Override
-        public AncestorDescendantBundle[] newArray(int size) {
-            return new AncestorDescendantBundle[size];
-        }
-    };
 
     @Override
     public int describeContents() {

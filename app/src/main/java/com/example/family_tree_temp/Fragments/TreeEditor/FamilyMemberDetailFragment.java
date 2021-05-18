@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +21,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.family_tree_temp.Activities.TreeEditorActivity;
-import com.example.family_tree_temp.Adaptors.MedicalHistoryAdapter;
+import com.example.family_tree_temp.Adapters.MedicalHistoryAdapter;
 import com.example.family_tree_temp.Models.ContactInformation;
 import com.example.family_tree_temp.Models.FamilyMember;
 import com.example.family_tree_temp.Models.MedicalHistory;
@@ -191,7 +190,7 @@ public class FamilyMemberDetailFragment extends Fragment {
 //            descendants.setText("No children.");
 //        }
 
-//        mAdaptor = new FamilyMemberAdaptor((MainActivity) getActivity(), new HomeFragment.OnFamilyMemberItemClickedListener());
+//        mAdaptor = new FamilyMemberAdapter((MainActivity) getActivity(), new HomeFragment.OnFamilyMemberItemClickedListener());
 
         mContactInformationViewModel = ViewModelProviders.of(getActivity()).get(ContactInformationViewModel.class);
 

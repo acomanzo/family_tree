@@ -36,6 +36,7 @@ public class FamilyMember {
 
     private int serverId;
 
+    @NonNull
     private int familyTreeId;
 
     @NonNull
