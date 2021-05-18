@@ -93,12 +93,6 @@ public class FamilyTreeSqlDatabase {
 
     public String insertFamilyMember(FamilyMember familyMember) {
 
-//        String stubs = "/familymember" +
-//                "?firstName=" + familyMember.getFirstName() +
-//                "&lastName=" + familyMember.getLastName() +
-//                "&age=" + familyMember.getAge() +
-//                "&genderId=" + familyMember.getGenderId();
-
         String stubs = "/familymember" +
                 "?firstName=" + familyMember.getFirstName() +
                 "&lastName=" + familyMember.getLastName() +
@@ -111,12 +105,6 @@ public class FamilyTreeSqlDatabase {
     }
 
     public String updateFamilyMember(FamilyMember familyMember) {
-
-//        String stubs = "/familymember/" + familyMember.getServerId() +
-//                "?firstName=" + familyMember.getFirstName() +
-//                "&lastName=" + familyMember.getLastName() +
-//                "&age=" + familyMember.getAge() +
-//                "&genderId=" + familyMember.getGenderId();
         String stubs = "/familymember/" + familyMember.getServerId() +
                 "?firstName=" + familyMember.getFirstName() +
                 "&lastName=" + familyMember.getLastName() +
@@ -197,7 +185,6 @@ public class FamilyTreeSqlDatabase {
                     case CREATE:
                         JSONArray recordSet = response.getJSONArray("recordset");
                         JSONObject email = recordSet.getJSONObject(0);
-//                        int emailId = email.getInt("EmailId");
                         return String.valueOf(email);
                     case UPDATE:
                     case DELETE:
@@ -222,7 +209,6 @@ public class FamilyTreeSqlDatabase {
                     case CREATE:
                         JSONArray recordSet = response.getJSONArray("recordset");
                         JSONObject contactInformation = recordSet.getJSONObject(0);
-//                        int contactInformationId = contactInformation.getInt("ContactInformationId");
                         return String.valueOf(contactInformation);
                     case UPDATE:
                     case DELETE:
@@ -247,7 +233,6 @@ public class FamilyTreeSqlDatabase {
                     case CREATE:
                         JSONArray recordSet = response.getJSONArray("recordset");
                         JSONObject phoneNumber = recordSet.getJSONObject(0);
-//                        int phoneNumberId = phoneNumber.getInt("PhoneNumberId");
                         return String.valueOf(phoneNumber);
                     case UPDATE:
                     case DELETE:
@@ -272,7 +257,6 @@ public class FamilyTreeSqlDatabase {
                     case CREATE:
                         JSONArray recordSet = response.getJSONArray("recordset");
                         JSONObject address = recordSet.getJSONObject(0);
-//                        int addressId = address.getInt("ContactAddressId");
                         return String.valueOf(address);
                     case UPDATE:
                     case DELETE:
@@ -297,7 +281,6 @@ public class FamilyTreeSqlDatabase {
                     case CREATE:
                         JSONArray recordSet = response.getJSONArray("recordset");
                         JSONObject medicalHistory = recordSet.getJSONObject(0);
-//                        int medicalHistoryId = medicalHistory.getInt("MedicalHistoryId");
                         return String.valueOf(medicalHistory);
                     case UPDATE:
                     case DELETE:
@@ -322,7 +305,6 @@ public class FamilyTreeSqlDatabase {
                     case CREATE:
                         JSONArray recordSet = response.getJSONArray("recordset");
                         JSONObject ancestorDescendant = recordSet.getJSONObject(0);
-//                        int ancestorDescendantId = ancestorDescendant.getInt("AncestorDescendantId");
                         return String.valueOf(ancestorDescendant);
                     case UPDATE:
                     case DELETE:
@@ -349,7 +331,6 @@ public class FamilyTreeSqlDatabase {
                     switch (crudMethod) {
                         case LOGIN:
                         case CREATE:
-//                            int appUserId = appUser.getInt("AppUserId");
                             return String.valueOf(appUser);
                         case UPDATE:
                         case DELETE:
@@ -378,7 +359,6 @@ public class FamilyTreeSqlDatabase {
                         case READ:
                             return recordSet.toString();
                         case CREATE:
-//                            int familyTreeId = familyTree.getInt("FamilyTreeId");
                             return String.valueOf(familyTree);
                         case UPDATE:
                         case DELETE:

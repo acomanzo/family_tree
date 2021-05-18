@@ -1,7 +1,6 @@
 package com.example.family_tree_temp.Database;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.family_tree_temp.DatabaseAccessObjects.AddressDao;
@@ -79,25 +78,6 @@ public abstract class FamilyTreeRoomDatabase extends RoomDatabase {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
-//            new PopulateDbAsync(INSTANCE).execute();
         }
     };
-
-//    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
-//        private final GenderDao mDao;
-//        String[] genders = {"Agender", "Androgyne", "Androgynous", "Bigender", "Cis", "Cisgender", "Cis Female", "Cis Male", "Cis Man", "Cis Woman", "Cisgender Female", "Cisgender Male", "Cisgender Man", "Cisgender Woman", "Male", "Female"};
-//
-//        PopulateDbAsync(FamilyTreeRoomDatabase db) {
-//            mDao = db.genderDao();
-//        }
-//
-//        @Override
-//        protected Void doInBackground(Void... voids) {
-//            for (String genderLabel : genders) {
-//                Gender gender = new Gender(genderLabel);
-//                mDao.insert(gender);
-//            }
-//            return null;
-//        }
-//    }
 }
