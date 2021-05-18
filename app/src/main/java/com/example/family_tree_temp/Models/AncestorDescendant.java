@@ -23,14 +23,15 @@ public class AncestorDescendant {
     private int ancestorDescendantId;
 
     @NonNull
-    private int ancestorId;
+    private final int ancestorId;
 
     @NonNull
-    private int descendantId;
+    private final int descendantId;
 
     @NonNull
-    private int depth;
+    private final int depth;
 
+    @NonNull
     private int serverId;
 
     @NonNull
@@ -40,19 +41,21 @@ public class AncestorDescendant {
     private String updatedAt;
 
     @Ignore
-    public AncestorDescendant(@NonNull int ancestorId, @NonNull int descendantId, @NonNull int depth) {
-        this(ancestorId, descendantId, depth, -1);
+    public AncestorDescendant(int ancestorId, int descendantId, int depth) {
+        this(ancestorId, descendantId, depth, -1, "", "");
     }
 
     @Ignore
-    public AncestorDescendant(@NonNull int ancestorId, @NonNull int descendantId, @NonNull int depth, int serverId) {
+    public AncestorDescendant(int ancestorId, int descendantId, int depth, int serverId, @NonNull String createdAt, @NonNull String updatedAt) {
         this.ancestorId = ancestorId;
         this.descendantId = descendantId;
         this.depth = depth;
         this.serverId = serverId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public AncestorDescendant(int ancestorDescendantId, @NonNull int ancestorId, @NonNull int descendantId, @NonNull int depth, int serverId, @NonNull String createdAt, @NonNull String updatedAt) {
+    public AncestorDescendant(int ancestorDescendantId, int ancestorId, int descendantId, int depth, int serverId, @NonNull String createdAt, @NonNull String updatedAt) {
         this.ancestorDescendantId = ancestorDescendantId;
         this.ancestorId = ancestorId;
         this.descendantId = descendantId;
@@ -86,6 +89,7 @@ public class AncestorDescendant {
         this.serverId = serverId;
     }
 
+    @NonNull
     public String getCreatedAt() {
         return createdAt;
     }
@@ -94,6 +98,7 @@ public class AncestorDescendant {
         this.createdAt = createdAt;
     }
 
+    @NonNull
     public String getUpdatedAt() {
         return updatedAt;
     }

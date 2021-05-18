@@ -56,19 +56,21 @@ public class FamilyTree {
         this.treeName = treeName;
     }
 
+    @NonNull
     public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(@NonNull String createdAt) {
         this.createdAt = createdAt;
     }
 
+    @NonNull
     public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(@NonNull String updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

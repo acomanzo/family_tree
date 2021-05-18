@@ -31,11 +31,11 @@ public class ContactInformation {
     private String updatedAt;
 
     @Ignore
-    public ContactInformation(@NonNull int familyMemberId) {
+    public ContactInformation(int familyMemberId) {
         this.familyMemberId = familyMemberId;
     }
 
-    public ContactInformation(@NonNull int contactInformationId, @NonNull int familyMemberId, @NonNull String createdAt, @NonNull String updatedAt) {
+    public ContactInformation(int contactInformationId, int familyMemberId, @NonNull String createdAt, @NonNull String updatedAt) {
         this.contactInformationId = contactInformationId;
         this.familyMemberId = familyMemberId;
         this.createdAt = createdAt;
@@ -62,6 +62,7 @@ public class ContactInformation {
         this.familyMemberId = familyMemberId;
     }
 
+    @NonNull
     public String getCreatedAt() {
         return createdAt;
     }
@@ -70,6 +71,7 @@ public class ContactInformation {
         this.createdAt = createdAt;
     }
 
+    @NonNull
     public String getUpdatedAt() {
         return updatedAt;
     }

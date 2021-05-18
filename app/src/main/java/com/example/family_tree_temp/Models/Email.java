@@ -19,10 +19,10 @@ public class Email {
     private int emailId;
 
     @NonNull
-    private int contactInformationId;
+    private final int contactInformationId;
 
     @NonNull
-    private String email;
+    private final String email;
 
     private int serverId;
 
@@ -74,6 +74,7 @@ public class Email {
         return contactInformationServerId;
     }
 
+    @NonNull
     public String getCreatedAt() {
         return createdAt;
     }
@@ -82,6 +83,7 @@ public class Email {
         this.createdAt = createdAt;
     }
 
+    @NonNull
     public String getUpdatedAt() {
         return updatedAt;
     }

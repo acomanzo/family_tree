@@ -19,7 +19,7 @@ public class PhoneNumber {
     private int phoneNumberId;
 
     @NonNull
-    private int contactInformationId;
+    private final int contactInformationId;
 
     @NonNull
     private String phoneNumber;
@@ -36,13 +36,13 @@ public class PhoneNumber {
     private String updatedAt;
 
     @Ignore
-    public PhoneNumber(@NonNull int contactInformationId, @NonNull String phoneNumber, int contactInformationServerId) {
+    public PhoneNumber(int contactInformationId, @NonNull String phoneNumber, int contactInformationServerId) {
         this.contactInformationId = contactInformationId;
         this.phoneNumber = phoneNumber;
         this.contactInformationServerId = contactInformationServerId;
     }
 
-    public PhoneNumber(@NonNull int phoneNumberId, @NonNull int contactInformationId, @NonNull String phoneNumber, @NonNull String createdAt, @NonNull String updatedAt) {
+    public PhoneNumber(int phoneNumberId, int contactInformationId, @NonNull String phoneNumber, @NonNull String createdAt, @NonNull String updatedAt) {
         this.phoneNumberId = phoneNumberId;
         this.contactInformationId = contactInformationId;
         this.phoneNumber = phoneNumber;
@@ -58,6 +58,7 @@ public class PhoneNumber {
         return contactInformationId;
     }
 
+    @NonNull
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -74,19 +75,21 @@ public class PhoneNumber {
         return contactInformationServerId;
     }
 
+    @NonNull
     public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(@NonNull String createdAt) {
         this.createdAt = createdAt;
     }
 
+    @NonNull
     public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(@NonNull String updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

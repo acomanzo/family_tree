@@ -4,18 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-//@Entity(tableName = "FamilyMember", foreignKeys = {@ForeignKey(
-//        entity = Gender.class,
-//        parentColumns = "genderId",
-//        childColumns = "genderId",
-//        onDelete = ForeignKey.CASCADE
-//)})
 @Entity(tableName = "FamilyMember")
 public class FamilyMember {
 
@@ -28,16 +20,14 @@ public class FamilyMember {
     @NonNull
     private String lastName;
 
-    //private int age;
     private String birthDate;
 
-    //private int genderId;
     private String gender;
 
     private int serverId;
 
     @NonNull
-    private int familyTreeId;
+    private final int familyTreeId;
 
     @NonNull
     private String createdAt;
@@ -47,13 +37,6 @@ public class FamilyMember {
 
     @Ignore
     private List<FamilyMember> children;
-
-//    public FamilyMember(@NonNull String firstName, @NonNull String lastName, int age, int genderId) {
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.age = age;
-//        this.genderId = genderId;
-//    }
 
     @Ignore
     public FamilyMember(String firstName, String lastName, String birthDate, String gender, int familyTreeId) {
@@ -70,11 +53,6 @@ public class FamilyMember {
         this.updatedAt = updatedAt;
         children = new ArrayList<>();
     }
-
-//    @Ignore
-//    public FamilyMember(@NonNull String firstName, @NonNull String lastName, int age, int genderId, int serverId) {
-//        this(-1, firstName, lastName, age, genderId, serverId);
-//    }
 
     @Ignore
     public FamilyMember(@NonNull String firstName, @NonNull String lastName, String birthDate, String gender, int familyTreeId, int serverId) {
@@ -113,25 +91,23 @@ public class FamilyMember {
         return familyMemberId;
     }
 
+    public void setFamilyMemberId(int familyMemberId) {
+        this.familyMemberId = familyMemberId;
+    }
+
+    @NonNull
     public String getFirstName() {
         return firstName;
     }
 
+    @NonNull
     public String getLastName() {
         return lastName;
     }
 
-//    public int getAge() {
-//        return age;
-//    }
-
     public String getBirthDate() {
         return birthDate;
     }
-
-//    public int getGenderId() {
-//        return genderId;
-//    }
 
     public String getGender() {
         return gender;
@@ -139,10 +115,6 @@ public class FamilyMember {
 
     public int getServerId() {
         return serverId;
-    }
-
-    public void setFamilyMemberId(int familyMemberId) {
-        this.familyMemberId = familyMemberId;
     }
 
     public void setServerId(int serverId) {
@@ -169,19 +141,21 @@ public class FamilyMember {
         return familyTreeId;
     }
 
+    @NonNull
     public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(@NonNull String createdAt) {
         this.createdAt = createdAt;
     }
 
+    @NonNull
     public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(@NonNull String updatedAt) {
         this.updatedAt = updatedAt;
     }
 }
