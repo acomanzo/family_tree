@@ -30,13 +30,12 @@ import androidx.lifecycle.LiveData;
 
 public class FamilyMemberRepository {
 
-    private FamilyMemberDao mFamilyMemberDao;
-    private AncestorDescendantDao mAncestorDescendantDao;
-    private ContactInformationDao mContactInformationDao;
+    private final FamilyMemberDao mFamilyMemberDao;
+    private final AncestorDescendantDao mAncestorDescendantDao;
+    private final ContactInformationDao mContactInformationDao;
 
-    private LiveData<List<FamilyMember>> mAllFamilyMembers;
-    private LiveData<List<AncestorDescendant>> mAllAncestorDescendants;
-//    private List<AncestorDescendant> mAllAncestorDescendants;
+    private final LiveData<List<FamilyMember>> mAllFamilyMembers;
+    private final LiveData<List<AncestorDescendant>> mAllAncestorDescendants;
 
     public FamilyMemberRepository(Application application) {
         FamilyTreeRoomDatabase db = FamilyTreeRoomDatabase.getDatabase(application);
@@ -58,14 +57,6 @@ public class FamilyMemberRepository {
         return mAllAncestorDescendants;
     }
 
-//    public List<AncestorDescendant> getAllAncestorDescendants() {
-//        return mAllAncestorDescendants;
-//    }
-
-//    public LiveData<List<FamilyMember>> getFamilyMemberById(int id) {
-//        return mFamilyMemberDao.getFamilyMemberById(id);
-//    }
-
     public List<FamilyMember> getFamilyMemberById(int id) {
         try {
             return new GetFamilyMemberById(mFamilyMemberDao).execute(id).get();
@@ -74,19 +65,7 @@ public class FamilyMemberRepository {
         }
     }
 
-    public LiveData<List<AncestorDescendant>> getAncestorDescendantsByAncestorId(int ancestorId) {
-        return mAncestorDescendantDao.getAncestorDescendantsByAncestorId(ancestorId);
-    }
-
-//    public List<AncestorDescendant> getAncestorDescendantsByAncestorId(int ancestorId) {
-//        return mAncestorDescendantDao.getAncestorDescendantsByAncestorId(ancestorId);
-//    }
-
-//    public List<AncestorDescendant> test(int ancestorId) {
-//        return mAncestorDescendantDao.test(ancestorId);
-//    }
-
-    public List<AncestorDescendant> test(int ancestorId) {
+    public List<AncestorDescendant> getAncestorDescendantsByAncestorId(int ancestorId) {
 
         try {
             return new GetAncestorDescendantByAncestorId(mAncestorDescendantDao).execute(ancestorId).get();
@@ -95,11 +74,7 @@ public class FamilyMemberRepository {
         }
     }
 
-//    public List<AncestorDescendant> anotherTest() {
-//        return mAncestorDescendantDao.anotherTest();
-//    }
-
-    public List<AncestorDescendant> anotherTest() {
+    public List<AncestorDescendant> getAllAncestorDescendantsNotLive() {
 
         try {
             return new GetAncestorDescendants(mAncestorDescendantDao).execute().get();
@@ -118,7 +93,7 @@ public class FamilyMemberRepository {
                 JSONObject jsonObject = new JSONObject(response);
                 familyMember.setCreatedAt(jsonObject.getString("CreatedAt"));
                 familyMember.setUpdatedAt(jsonObject.getString("UpdatedAt"));
-                familyMember.setServerId(Integer.valueOf(jsonObject.getString("FamilyMemberId")));
+                familyMember.setServerId(Integer.parseInt(jsonObject.getString("FamilyMemberId")));
             } catch (JSONException e) {
                 e.printStackTrace();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -138,15 +113,6 @@ public class FamilyMemberRepository {
 
                     secondHandler.post(() -> {
                         new InsertFamilyMemberWithContactInformation(mFamilyMemberDao, mContactInformationDao).execute(familyMember, newContactInformation);
-
-//                        ExecutorService thirdExecutor = Executors.newSingleThreadExecutor();
-//                        Handler thirdHandler = new Handler(Looper.getMainLooper());
-//                        thirdExecutor.execute(() -> {
-//                            new insertFamilyMemberAsyncTask(mFamilyMemberDao).execute(familyMember);
-//                            thirdHandler.post(() -> {
-//                                new InsertContactInformationAsyncTask(mContactInformationDao).execute(contactInformation);
-//                            });
-//                        });
                     });
                 });
             });
@@ -190,7 +156,7 @@ public class FamilyMemberRepository {
                 JSONObject jsonObject = new JSONObject(response);
                 descendant.setCreatedAt(jsonObject.getString("CreatedAt"));
                 descendant.setUpdatedAt(jsonObject.getString("UpdatedAt"));
-                descendant.setServerId(Integer.valueOf(jsonObject.getString("FamilyMemberId")));
+                descendant.setServerId(Integer.parseInt(jsonObject.getString("FamilyMemberId")));
             } catch (JSONException e) {
                 e.printStackTrace();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -227,7 +193,7 @@ public class FamilyMemberRepository {
                 JSONObject jsonObject = new JSONObject(response);
                 ancestor.setCreatedAt(jsonObject.getString("CreatedAt"));
                 ancestor.setUpdatedAt(jsonObject.getString("UpdatedAt"));
-                ancestor.setServerId(Integer.valueOf(jsonObject.getString("FamilyMemberId")));
+                ancestor.setServerId(Integer.parseInt(jsonObject.getString("FamilyMemberId")));
             } catch (JSONException e) {
                 e.printStackTrace();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -304,7 +270,7 @@ public class FamilyMemberRepository {
 
     private static class insertFamilyMemberAsyncTask extends AsyncTask<FamilyMember, Void, Void> {
 
-        private FamilyMemberDao mAsyncTaskDao;
+        private final FamilyMemberDao mAsyncTaskDao;
 
         insertFamilyMemberAsyncTask(FamilyMemberDao dao) {
             mAsyncTaskDao = dao;
@@ -323,8 +289,8 @@ public class FamilyMemberRepository {
     }
 
     private static class InsertFamilyMemberWithContactInformation extends AsyncTask<Object, Void, Void> {
-        private FamilyMemberDao mFamilyMemberDao;
-        private ContactInformationDao mContactInformationDao;
+        private final FamilyMemberDao mFamilyMemberDao;
+        private final ContactInformationDao mContactInformationDao;
         InsertFamilyMemberWithContactInformation(FamilyMemberDao mFamilyMemberDao, ContactInformationDao mContactInformationDao) {
             this.mFamilyMemberDao = mFamilyMemberDao;
             this.mContactInformationDao = mContactInformationDao;
@@ -347,7 +313,7 @@ public class FamilyMemberRepository {
     }
 
     private static class UpdateFamilyMemberAsyncTask extends AsyncTask<FamilyMember, Void, Void> {
-        private FamilyMemberDao mAsyncTaskDao;
+        private final FamilyMemberDao mAsyncTaskDao;
 
         UpdateFamilyMemberAsyncTask(FamilyMemberDao dao) {
             mAsyncTaskDao = dao;
@@ -361,7 +327,7 @@ public class FamilyMemberRepository {
     }
 
     private static class DeleteFamilyMemberAsyncTask extends AsyncTask<FamilyMember, Void, Void> {
-        private FamilyMemberDao mAsyncTaskDao;
+        private final FamilyMemberDao mAsyncTaskDao;
 
         DeleteFamilyMemberAsyncTask(FamilyMemberDao dao) {
             mAsyncTaskDao = dao;
@@ -375,8 +341,8 @@ public class FamilyMemberRepository {
     }
 
     private static class InsertDescendantAsyncTask extends AsyncTask<AncestorDescendantBundle, Void, Void> {
-        private AncestorDescendantDao ancestorDescendantDao;
-        private FamilyMemberDao familyMemberDao;
+        private final AncestorDescendantDao ancestorDescendantDao;
+        private final FamilyMemberDao familyMemberDao;
 
         InsertDescendantAsyncTask(AncestorDescendantDao ancestorDescendantDao, FamilyMemberDao familyMemberDao) {
             this.ancestorDescendantDao = ancestorDescendantDao;
@@ -402,8 +368,8 @@ public class FamilyMemberRepository {
     }
 
     private static class InsertAncestorAsyncTask extends AsyncTask<AncestorDescendantBundle, Void, Void> {
-        private AncestorDescendantDao ancestorDescendantDao;
-        private FamilyMemberDao familyMemberDao;
+        private final AncestorDescendantDao ancestorDescendantDao;
+        private final FamilyMemberDao familyMemberDao;
 
         InsertAncestorAsyncTask(AncestorDescendantDao ancestorDescendantDao, FamilyMemberDao familyMemberDao) {
             this.ancestorDescendantDao = ancestorDescendantDao;
@@ -429,7 +395,7 @@ public class FamilyMemberRepository {
     }
 
     private static class InsertContactInformationAsyncTask extends AsyncTask<ContactInformation, Void, Void> {
-        private ContactInformationDao mAsyncTaskDao;
+        private final ContactInformationDao mAsyncTaskDao;
 
         InsertContactInformationAsyncTask(ContactInformationDao dao) {
             mAsyncTaskDao = dao;
@@ -443,7 +409,7 @@ public class FamilyMemberRepository {
     }
 
     private static class GetAncestorDescendants extends AsyncTask<Void, Void, List<AncestorDescendant>> {
-        private AncestorDescendantDao mAsyncTaskDao;
+        private final AncestorDescendantDao mAsyncTaskDao;
 
         GetAncestorDescendants(AncestorDescendantDao dao) {
             mAsyncTaskDao = dao;
@@ -451,12 +417,12 @@ public class FamilyMemberRepository {
 
         @Override
         protected List<AncestorDescendant> doInBackground(Void... voids) {
-            return mAsyncTaskDao.anotherTest();
+            return mAsyncTaskDao.getAllAncestorDescendantRecordsNotLive();
         }
     }
 
     private static class GetAncestorDescendantByAncestorId extends AsyncTask<Integer, Void, List<AncestorDescendant>> {
-        private AncestorDescendantDao mAsyncTaskDao;
+        private final AncestorDescendantDao mAsyncTaskDao;
 
         GetAncestorDescendantByAncestorId(AncestorDescendantDao dao) {
             mAsyncTaskDao = dao;
@@ -465,12 +431,12 @@ public class FamilyMemberRepository {
 
         @Override
         protected List<AncestorDescendant> doInBackground(Integer... integers) {
-            return mAsyncTaskDao.test(integers[0]);
+            return mAsyncTaskDao.getAllAncestorDescendantRecordsByAncestorIdNotLive(integers[0]);
         }
     }
 
     private static class GetFamilyMemberById extends AsyncTask<Integer, Void, List<FamilyMember>> {
-        private FamilyMemberDao mAsyncTaskDao;
+        private final FamilyMemberDao mAsyncTaskDao;
 
         GetFamilyMemberById(FamilyMemberDao dao) {
             mAsyncTaskDao = dao;

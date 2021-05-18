@@ -9,7 +9,6 @@ import com.example.family_tree_temp.Database.FamilyTreeRoomDatabase;
 import com.example.family_tree_temp.Database.FamilyTreeSqlDatabase;
 import com.example.family_tree_temp.DatabaseAccessObjects.MedicalHistoryNoteDao;
 import com.example.family_tree_temp.Models.MedicalHistory;
-import com.example.family_tree_temp.Models.MedicalHistory;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -19,8 +18,8 @@ import androidx.lifecycle.LiveData;
 
 public class MedicalHistoryRepository {
 
-    private MedicalHistoryNoteDao mMedicalHistoryDao;
-    private LiveData<List<MedicalHistory>> mAllMedicalHistoryNotes;
+    private final MedicalHistoryNoteDao mMedicalHistoryDao;
+    private final LiveData<List<MedicalHistory>> mAllMedicalHistoryNotes;
 
     public MedicalHistoryRepository(Application application) {
         FamilyTreeRoomDatabase db = FamilyTreeRoomDatabase.getDatabase(application);
@@ -44,15 +43,15 @@ public class MedicalHistoryRepository {
     }
 
     public void updateMedicalHistory(MedicalHistory medicalHistory) {
-
+        // TODO
     }
 
     public void deleteMedicalHistory(MedicalHistory medicalHistory) {
-
+        // TODO
     }
 
     private static class insertMedicalHistoryAsyncTask extends AsyncTask<MedicalHistory, Void, Void> {
-        private MedicalHistoryNoteDao mAsyncTaskDao;
+        private final MedicalHistoryNoteDao mAsyncTaskDao;
 
         insertMedicalHistoryAsyncTask(MedicalHistoryNoteDao dao) {
             mAsyncTaskDao = dao;

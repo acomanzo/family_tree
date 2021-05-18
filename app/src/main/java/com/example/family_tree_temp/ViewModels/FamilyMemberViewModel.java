@@ -146,8 +146,8 @@ public class FamilyMemberViewModel extends AndroidViewModel {
             more than one that do not have a common ancestor
          */
 
-        List<AncestorDescendant> test = mRepository.test(1);
-        List<AncestorDescendant> ancestorDescendants = mRepository.anotherTest();
+        List<AncestorDescendant> test = mRepository.getAncestorDescendantsByAncestorId(1);
+        List<AncestorDescendant> ancestorDescendants = mRepository.getAllAncestorDescendantsNotLive();
 //        new Thread() {
 //            public void run() {
 //                List<AncestorDescendant> ancestorDescendants = mRepository.test(1);
@@ -234,7 +234,7 @@ public class FamilyMemberViewModel extends AndroidViewModel {
     }
 
     private List<FamilyMember> makeFamilyTree(FamilyMember root) {
-        List<AncestorDescendant> ancestorDescendants = mRepository.test(root.getFamilyMemberId());
+        List<AncestorDescendant> ancestorDescendants = mRepository.getAncestorDescendantsByAncestorId(root.getFamilyMemberId());
 //        List<AncestorDescendant> ancestorDescendants = mRepository.getAncestorDescendantsByAncestorId(root.getFamilyMemberId()).getValue();
 //        List<AncestorDescendant> ancestorDescendants = mRepository.getAncestorDescendantsByAncestorId(root.getFamilyMemberId());
 

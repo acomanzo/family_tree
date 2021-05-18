@@ -8,7 +8,6 @@ import android.os.Looper;
 import com.example.family_tree_temp.Database.FamilyTreeRoomDatabase;
 import com.example.family_tree_temp.Database.FamilyTreeSqlDatabase;
 import com.example.family_tree_temp.DatabaseAccessObjects.PhoneNumberDao;
-import com.example.family_tree_temp.Models.Email;
 import com.example.family_tree_temp.Models.PhoneNumber;
 
 import java.util.List;
@@ -19,8 +18,8 @@ import androidx.lifecycle.LiveData;
 
 public class PhoneNumberRepository {
 
-    private PhoneNumberDao mPhoneNumberDao;
-    private LiveData<List<PhoneNumber>> mAllPhoneNumbers;
+    private final PhoneNumberDao mPhoneNumberDao;
+    private final LiveData<List<PhoneNumber>> mAllPhoneNumbers;
 
     public PhoneNumberRepository(Application application) {
         FamilyTreeRoomDatabase db = FamilyTreeRoomDatabase.getDatabase(application);
@@ -43,15 +42,15 @@ public class PhoneNumberRepository {
     }
 
     public void updatePhoneNumber(PhoneNumber phoneNumber) {
-
+        // TODO
     }
 
     public void deletePhoneNumber(PhoneNumber phoneNumber) {
-
+        // TODO
     }
 
     private static class insertPhoneNumberAsyncTask extends AsyncTask<PhoneNumber, Void, Void> {
-        private PhoneNumberDao mAsyncTaskDao;
+        private final PhoneNumberDao mAsyncTaskDao;
 
         insertPhoneNumberAsyncTask(PhoneNumberDao dao) {
             mAsyncTaskDao = dao;

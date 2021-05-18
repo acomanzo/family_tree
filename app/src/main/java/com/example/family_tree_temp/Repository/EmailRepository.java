@@ -18,8 +18,8 @@ import androidx.lifecycle.LiveData;
 
 public class EmailRepository {
 
-    private EmailDao mEmailDao;
-    private LiveData<List<Email>> mAllEmails;
+    private final EmailDao mEmailDao;
+    private final LiveData<List<Email>> mAllEmails;
 
     public EmailRepository(Application application) {
         FamilyTreeRoomDatabase db = FamilyTreeRoomDatabase.getDatabase(application);
@@ -38,7 +38,7 @@ public class EmailRepository {
         executor.execute(() -> {
             FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
             Email newEmail = familyTreeSqlDatabase.insertEmail(email);
-            handler.post(() -> new insertEmailAsyncTask(mEmailDao).execute(newEmail));
+            handler.post(() -> new InsertEmailAsyncTask(mEmailDao).execute(newEmail));
         });
     }
 
@@ -50,10 +50,10 @@ public class EmailRepository {
 
     }
 
-    private static class insertEmailAsyncTask extends AsyncTask<Email, Void, Void> {
-        private EmailDao mAsyncTaskDao;
+    private static class InsertEmailAsyncTask extends AsyncTask<Email, Void, Void> {
+        private final EmailDao mAsyncTaskDao;
 
-        insertEmailAsyncTask(EmailDao dao) {
+        InsertEmailAsyncTask(EmailDao dao) {
             mAsyncTaskDao = dao;
         }
 

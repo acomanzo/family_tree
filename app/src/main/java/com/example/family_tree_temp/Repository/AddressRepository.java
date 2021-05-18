@@ -9,7 +9,6 @@ import com.example.family_tree_temp.Database.FamilyTreeRoomDatabase;
 import com.example.family_tree_temp.Database.FamilyTreeSqlDatabase;
 import com.example.family_tree_temp.DatabaseAccessObjects.AddressDao;
 import com.example.family_tree_temp.Models.Address;
-import com.example.family_tree_temp.Models.Address;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -19,8 +18,8 @@ import androidx.lifecycle.LiveData;
 
 public class AddressRepository {
 
-    private AddressDao mAddressDao;
-    private LiveData<List<Address>> mAllAddresses;
+    private final AddressDao mAddressDao;
+    private final LiveData<List<Address>> mAllAddresses;
 
     public AddressRepository(Application application) {
         FamilyTreeRoomDatabase db = FamilyTreeRoomDatabase.getDatabase(application);
@@ -38,22 +37,22 @@ public class AddressRepository {
         executor.execute(() -> {
             FamilyTreeSqlDatabase familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
             Address newAddress = familyTreeSqlDatabase.insertAddress(address);
-            handler.post(() -> new AddressRepository.insertAddressAsyncTask(mAddressDao).execute(newAddress));
+            handler.post(() -> new AddressRepository.InsertAddressAsyncTask(mAddressDao).execute(newAddress));
         });
     }
 
     public void updateAddress(Address address) {
-
+        // TODO
     }
 
     public void deleteAddress(Address address) {
-
+        // TODO
     }
 
-    private static class insertAddressAsyncTask extends AsyncTask<Address, Void, Void> {
-        private AddressDao mAsyncTaskDao;
+    private static class InsertAddressAsyncTask extends AsyncTask<Address, Void, Void> {
+        private final AddressDao mAsyncTaskDao;
 
-        insertAddressAsyncTask(AddressDao dao) {
+        InsertAddressAsyncTask(AddressDao dao) {
             mAsyncTaskDao = dao;
         }
 
@@ -63,5 +62,4 @@ public class AddressRepository {
             return null;
         }
     }
-
 }

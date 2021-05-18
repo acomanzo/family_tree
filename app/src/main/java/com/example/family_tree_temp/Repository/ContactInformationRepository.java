@@ -14,8 +14,8 @@ import androidx.lifecycle.LiveData;
 
 public class ContactInformationRepository {
 
-    private ContactInformationDao mContactInformationDao;
-    private LiveData<List<ContactInformation>> mAllContactInformation;
+    private final ContactInformationDao mContactInformationDao;
+    private final LiveData<List<ContactInformation>> mAllContactInformation;
 
     public ContactInformationRepository(Application application) {
         FamilyTreeRoomDatabase db = FamilyTreeRoomDatabase.getDatabase(application);
@@ -29,21 +29,21 @@ public class ContactInformationRepository {
     }
 
     public void insertContactInformation(ContactInformation contactInformation) {
-
+        // TODO
     }
 
     public void updateContactInformation(ContactInformation contactInformation) {
-
+        // TODO
     }
 
     public void deleteContactInformation(ContactInformation contactInformation) {
-
+        // TODO
     }
 
-    private static class insertContactInformationAsyncTask extends AsyncTask<ContactInformation, Void, Void> {
-        private ContactInformationDao mAsyncTaskDao;
+    private static class InsertContactInformationAsyncTask extends AsyncTask<ContactInformation, Void, Void> {
+        private final ContactInformationDao mAsyncTaskDao;
 
-        insertContactInformationAsyncTask(ContactInformationDao dao) {
+        InsertContactInformationAsyncTask(ContactInformationDao dao) {
             mAsyncTaskDao = dao;
         }
 

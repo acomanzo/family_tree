@@ -42,7 +42,13 @@ public class AncestorDescendant {
 
     @Ignore
     public AncestorDescendant(int ancestorId, int descendantId, int depth) {
+        this(ancestorId, descendantId, depth, -1);
+    }
+
+    @Ignore
+    public AncestorDescendant(int ancestorId, int descendantId, int depth, int serverId) {
         this(ancestorId, descendantId, depth, -1, "", "");
+
     }
 
     @Ignore
