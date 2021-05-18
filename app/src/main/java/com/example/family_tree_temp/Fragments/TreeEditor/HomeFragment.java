@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-//import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,15 +48,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
 
     private int familyTreeId;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -66,16 +56,12 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -86,8 +72,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
 
         SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
 
             familyTreeId = getArguments().getInt(getString(R.string.family_tree_id));
             SharedPreferences.Editor editor = preferences.edit();
@@ -101,10 +85,7 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
             @Override
             public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
                 Person person = (Person) result.get("newPersonKey");
-                //((PersonAdaptor) mAdaptor).add(person);
-//                FamilyMember familyMember = new FamilyMember(person.getFirstName(), person.getLastName(), Integer.valueOf(person.getAge()), person.getGenderId());
                 SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-                //int familyTreeId = sharedPreferences.getInt(getString(R.string.family_tree_id), -1);
                 FamilyMember familyMember = new FamilyMember(person.getFirstName(), person.getLastName(), person.getBirthDate(), person.getGender(), familyTreeId);
                 mFamilyMemberViewModel.insert(familyMember);
             }
@@ -154,20 +135,10 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         recyclerView = view.findViewById(R.id.home_recycler_view);
-//        recyclerView.setHasFixedSize(true);
 
         layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
-//
-//        // removes blinks
-//        //((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
-//
-//        //DetailDump.make();
-//
-//        //detailJson = DetailDump.getData();
-//        mAdaptor = new PersonAdaptor(detailJson, (MainActivity) getActivity());
-//
-//        mAdaptor = new FamilyMemberAdapter((MainActivity) getActivity(), new OnFamilyMemberItemClickedListener());
+
         mAdaptor = new FamilyMemberAdapter((TreeEditorActivity) getActivity(), new OnFamilyMemberItemClickedListener());
 
         mFamilyMemberViewModel = ViewModelProviders.of(getActivity()).get(FamilyMemberViewModel.class);
@@ -185,8 +156,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
                 mAdaptor.setDataset(dataSet);
             }
         });
-
-
 
         recyclerView.setAdapter(mAdaptor);
 
@@ -253,19 +222,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         mAdaptor.getFilter().filter(newText);
         return false;
     }
-//    /**
-//     * Switches fragment to a detail view when a user clicks on a view holder.
-//     */
-//    private class FamilyMemberItemOnClickListener implements View.OnClickListener {
-//
-//        @Override
-//        public void onClick(View v) {
-//            FamilyMemberDetailFragment nextFragment = new FamilyMemberDetailFragment();
-//            getActivity().getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.host_fragment, nextFragment, "familyMemberDetailViewStart")
-//                    .commit();
-//        }
-//    }
 
     public class OnFamilyMemberItemClickedListener {
         public void onClick(int position) {
@@ -273,7 +229,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
             bundle.putInt("familyMemberPosition", position);
             getParentFragmentManager().setFragmentResult("familyMemberPosition", bundle);
 
-//            ((MainActivity) getActivity()).transitionFromHomeToFamilyMemberDetail(bundle);
             ((TreeEditorActivity) getActivity()).transitionFromHomeToFamilyMemberDetail(bundle);
         }
     }

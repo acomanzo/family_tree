@@ -65,34 +65,6 @@ public class FamilyMemberDetailFragment extends Fragment {
     private MedicalHistoryAdapter mMedicalHistoryAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnUpdateListener updateCallback;
-    private OnDeleteListener deleteCallback;
-
-    public void setOnUpdateListener(OnUpdateListener updateCallback) {
-        this.updateCallback = updateCallback;
-    }
-
-    public interface OnUpdateListener {
-        void onFamilyMemberUpdated();
-    }
-
-    public void setOnDeleteListener(OnDeleteListener deleteCallback) {
-        this.deleteCallback = deleteCallback;
-    }
-
-    public interface OnDeleteListener {
-        void onFamilyMemberDeleted();
-    }
-
     public FamilyMemberDetailFragment() {
         // Required empty public constructor
     }
@@ -101,16 +73,12 @@ public class FamilyMemberDetailFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment FamilyMemberDetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static FamilyMemberDetailFragment newInstance(String param1, String param2) {
+    public static FamilyMemberDetailFragment newInstance() {
         FamilyMemberDetailFragment fragment = new FamilyMemberDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -122,23 +90,12 @@ public class FamilyMemberDetailFragment extends Fragment {
         mFamilyMemberViewModel = ViewModelProviders.of(getActivity()).get(FamilyMemberViewModel.class);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            // TODO: add params to newInstance and set them here (alternative to what i'm doing)
             position = getArguments().getInt("familyMemberPosition");
             SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
             int familyTreeId = sharedPreferences.getInt(getString(R.string.family_tree_id), -1);
             familyMember = mFamilyMemberViewModel.getFamilyMemberAtIndex(position, familyTreeId);
         }
-
-//        getParentFragmentManager().setFragmentResultListener("familyMemberPosition", this, new FragmentResultListener() {
-//            @Override
-//            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle result) {
-//                int position = (Integer) result.get("familyMemberPosition");
-//                SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-//                int familyTreeId = sharedPreferences.getInt(getString(R.string.family_tree_id), -1);
-//                familyMember = mFamilyMemberViewModel.getFamilyMemberAtIndex(position, familyTreeId);
-//            }
-//        });
 
         setHasOptionsMenu(true);
     }
@@ -169,28 +126,9 @@ public class FamilyMemberDetailFragment extends Fragment {
         firstName.setText(familyMember.getFirstName());
         lastName.setText(familyMember.getLastName());
         //Address address = person.getAddress();
-//        houseNumber.setText(address.getStreetNumber());
-//        streetName.setText(address.getStreetName());
-//        town.setText(address.getTownCity());
-//        state.setText(address.getState());
-//        zipcode.setText(address.getZipcode());
-//        gender.setText(String.valueOf(familyMember.getGenderId()));
         gender.setText(familyMember.getGender());
 
         birthDate.setText(familyMember.getBirthDate());
-//        ArrayList<Person> children = person.getChildren();
-//        if (children.size() > 0) {
-//            String descendantsStr = "";
-//            for (Person p : children) {
-//                descendantsStr = descendantsStr + p.toString() + ", ";
-//            }
-//            descendantsStr = descendantsStr.substring(0, descendantsStr.length() - 1);
-//            descendants.setText(descendantsStr);
-//        } else {
-//            descendants.setText("No children.");
-//        }
-
-//        mAdaptor = new FamilyMemberAdapter((MainActivity) getActivity(), new HomeFragment.OnFamilyMemberItemClickedListener());
 
         mContactInformationViewModel = ViewModelProviders.of(getActivity()).get(ContactInformationViewModel.class);
 
@@ -206,7 +144,6 @@ public class FamilyMemberDetailFragment extends Fragment {
         medicalHistoryRecyclerView = view.findViewById(R.id.medical_history_recycler_view);
         layoutManager = new LinearLayoutManager(view.getContext());
         medicalHistoryRecyclerView.setLayoutManager(layoutManager);
-//        mMedicalHistoryAdapter = new MedicalHistoryAdapter((MainActivity) getActivity(), new OnMedicalHistoryItemClickedListener());
         mMedicalHistoryAdapter = new MedicalHistoryAdapter((TreeEditorActivity) getActivity(), new OnMedicalHistoryItemClickedListener());
 
         // listen for changes in mAllMedicalHistories in the ViewModel
@@ -223,8 +160,6 @@ public class FamilyMemberDetailFragment extends Fragment {
             }
         });
         medicalHistoryRecyclerView.setAdapter(mMedicalHistoryAdapter);
-
-        //recyclerView.setAdapter(mAdaptor);
 
         return view;
     }
@@ -291,22 +226,17 @@ public class FamilyMemberDetailFragment extends Fragment {
         updatedFamilyMember.setCreatedAt(familyMember.getCreatedAt());
         mFamilyMemberViewModel.update(updatedFamilyMember);
 
-//        ((MainActivity) getActivity()).transitionToHomeFromSomeView();
         ((TreeEditorActivity) getActivity()).transitionToHomeFromSomeView();
     }
 
     private void delete() {
         mFamilyMemberViewModel.delete(familyMember);
-//        ((MainActivity) getActivity()).transitionToHomeFromSomeView();
         ((TreeEditorActivity) getActivity()).transitionToHomeFromSomeView();
     }
 
     private void addAncestor() {
         Bundle bundle = new Bundle();
-//        bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
-//        bundle.putInt("familyMemberPosition", position);
         bundle.putInt("familyMemberServerId", familyMember.getServerId());
-//        ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddAncestor(bundle);
         ((TreeEditorActivity) getActivity()).transitionFromFamilyMemberDetailToAddAncestor(bundle);
     }
 
@@ -314,7 +244,6 @@ public class FamilyMemberDetailFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putInt("familyMemberServerId", familyMember.getServerId());
 
-//        ((MainActivity) getActivity()).transitionFromFamilyMemberDetailToAddDescendant(bundle);
         ((TreeEditorActivity) getActivity()).transitionFromFamilyMemberDetailToAddDescendant(bundle);
     }
 
@@ -327,7 +256,6 @@ public class FamilyMemberDetailFragment extends Fragment {
         bundle.putInt("contactInformationId", contactInformation.getContactInformationId());
         getParentFragmentManager().setFragmentResult("contactInformation", bundle);
 
-//        ((MainActivity) getActivity()).transitionFromDetailToAddEmail(bundle);
         ((TreeEditorActivity) getActivity()).transitionFromDetailToAddEmail(bundle);
     }
 
@@ -340,7 +268,6 @@ public class FamilyMemberDetailFragment extends Fragment {
         bundle.putInt("contactInformationId", contactInformation.getContactInformationId());
         getParentFragmentManager().setFragmentResult("contactInformation", bundle);
 
-//        ((MainActivity) getActivity()).transitionFromDetailToAddPhoneNumber(bundle);
         ((TreeEditorActivity) getActivity()).transitionFromDetailToAddPhoneNumber(bundle);
     }
 
@@ -353,7 +280,6 @@ public class FamilyMemberDetailFragment extends Fragment {
         bundle.putInt("contactInformationId", contactInformation.getContactInformationId());
         getParentFragmentManager().setFragmentResult("contactInformation", bundle);
 
-//        ((MainActivity) getActivity()).transitionFromDetailToAddAddress(bundle);
         ((TreeEditorActivity) getActivity()).transitionFromDetailToAddAddress(bundle);
     }
 
@@ -364,7 +290,6 @@ public class FamilyMemberDetailFragment extends Fragment {
         bundle.putInt("familyMemberId", familyMember.getFamilyMemberId());
         getParentFragmentManager().setFragmentResult("familyMember", bundle);
 
-//        ((MainActivity) getActivity()).transitionFromDetailToAddMedicalHistory(bundle);
         ((TreeEditorActivity) getActivity()).transitionFromDetailToAddMedicalHistory(bundle);
     }
 
@@ -374,7 +299,6 @@ public class FamilyMemberDetailFragment extends Fragment {
             bundle.putInt("medicalHistoryPosition", position);
             getParentFragmentManager().setFragmentResult("medicalHistoryPosition", bundle);
 
-//            ((MainActivity) getActivity()).transitionFromFamilyMemberToMedicalHistoryDetail(bundle);
             ((TreeEditorActivity) getActivity()).transitionFromFamilyMemberToMedicalHistoryDetail(bundle);
         }
     }
