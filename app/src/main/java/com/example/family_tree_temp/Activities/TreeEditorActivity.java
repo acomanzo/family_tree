@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -80,35 +79,27 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
             BottomDrawerFragment bottomDrawerFragment = new BottomDrawerFragment(this);
             bottomDrawerFragment.show(getSupportFragmentManager(), bottomDrawerFragment.getTag());
         });
-//        bottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+
+//        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 //            @Override
-//            public void onClick(View v) {
-//                BottomDrawerFragment bottomDrawerFragment = new BottomDrawerFragment(this);
-////                BottomNavigationDrawerFragment bottomSheetDialogFragment = new BottomNavigationDrawerFragment();
-////                bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+//            public boolean onMenuItemClick(MenuItem item) {
+//                Context context = getApplicationContext();
+//                switch(item.getItemId()) {
+//                    case R.id.bottom_bar_profile:
+//                        // handle search icon press
+//                        Toast.makeText(context, "profile", Toast.LENGTH_SHORT).show();
+//                        return true;
+//                    case R.id.bottom_bar_overflow:
+//                        // handle overflow icon press
+//                        //Toast.makeText(context, "overflow", Toast.LENGTH_SHORT).show();
+//                        Bundle bundle = new Bundle();
+////                        transitionFromHomeToTreeView();
+//                        return true;
+//                    default:
+//                        return false;
+//                }
 //            }
 //        });
-
-        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Context context = getApplicationContext();
-                switch(item.getItemId()) {
-                    case R.id.bottom_bar_profile:
-                        // handle search icon press
-                        Toast.makeText(context, "profile", Toast.LENGTH_SHORT).show();
-                        return true;
-                    case R.id.bottom_bar_overflow:
-                        // handle overflow icon press
-                        //Toast.makeText(context, "overflow", Toast.LENGTH_SHORT).show();
-                        Bundle bundle = new Bundle();
-//                        transitionFromHomeToTreeView();
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
 
         floatingActionButton = findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -173,9 +164,7 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
             AddPersonFragment addPersonFragment = new AddPersonFragment();
 
             fragmentTransaction.replace(R.id.tree_editor_host_fragment, addPersonFragment, NEW_FAMILY_MEMBER_FRAGMENT);
-            //bottomAppBar.setNavigationIcon(null);
             bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-            //bottomAppBar.replaceMenu(R.menu.app_bottom_bar_menu_secondary);
             bottomAppBar.performHide();
             bottomAppBar.setVisibility(View.GONE);
             floatingActionButton.setImageResource(R.drawable.ic_baseline_reply_24);
@@ -195,7 +184,6 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
         fragmentTransaction.replace(R.id.tree_editor_host_fragment, homeFragment);
         bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_menu_24);
         bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-        //bottomAppBar.replaceMenu(R.menu.app_bottom_bar_menu);
         bottomAppBar.performShow();
         bottomAppBar.setVisibility(View.VISIBLE);
         floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24);
@@ -330,9 +318,6 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
 
         String newTag = MEDICAL_HISTORY_DETAIL_FRAGMENT;
 
-        //bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-        //bottomAppBar.performHide();
-        //floatingActionButton.setImageResource(R.drawable.ic_baseline_reply_24);
         currentFragmentTag = newTag;
 
         MedicalHistoryDetailFragment nextFragment = new MedicalHistoryDetailFragment();
@@ -555,49 +540,6 @@ public class TreeEditorActivity extends AppCompatActivity implements AddPersonFr
                 }
             });
             return view;
-        }
-    }
-
-    private void manageFragmentTransaction(String selectedFrag) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        switch(selectedFrag) {
-            case HOME_FRAGMENT:
-                if (fragmentManager.findFragmentByTag(HOME_FRAGMENT) != null) {
-                    // if the fragment exists, show it
-                    fragmentTransaction.show(fragmentManager.findFragmentByTag(HOME_FRAGMENT));
-                } else {
-                    // if the fragment does not exist, add it to the fragment manager
-                    fragmentTransaction.add(R.id.tree_editor_host_fragment, new HomeFragment(), HOME_FRAGMENT);
-                }
-                if (fragmentManager.findFragmentByTag(NEW_FAMILY_MEMBER_FRAGMENT) != null) {
-                    // if the other fragment is visible, hide it
-                    fragmentTransaction.hide(fragmentManager.findFragmentByTag(NEW_FAMILY_MEMBER_FRAGMENT));
-                }
-                fragmentTransaction.commit();
-                bottomAppBar.setNavigationIcon(R.drawable.ic_baseline_menu_24);
-                bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-                floatingActionButton.setImageResource(R.drawable.ic_baseline_add_24);
-                currentFragmentTag = HOME_FRAGMENT;
-                fragmentManager.popBackStack();
-                break;
-            case NEW_FAMILY_MEMBER_FRAGMENT:
-                if (fragmentManager.findFragmentByTag(NEW_FAMILY_MEMBER_FRAGMENT) != null) {
-                    fragmentTransaction.show(fragmentManager.findFragmentByTag(NEW_FAMILY_MEMBER_FRAGMENT));
-                } else {
-                    fragmentTransaction.add(R.id.tree_editor_host_fragment, new AddPersonFragment(), NEW_FAMILY_MEMBER_FRAGMENT);
-                }
-                if (fragmentManager.findFragmentByTag(HOME_FRAGMENT) != null) {
-                    fragmentTransaction.hide(fragmentManager.findFragmentByTag(HOME_FRAGMENT));
-                }
-                fragmentTransaction.commit();
-                bottomAppBar.setNavigationIcon(null);
-                bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-                floatingActionButton.setImageResource(R.drawable.ic_baseline_reply_24);
-                currentFragmentTag = NEW_FAMILY_MEMBER_FRAGMENT;
-                fragmentTransaction.addToBackStack(null);
-                break;
         }
     }
 
