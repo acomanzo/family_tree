@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.example.family_tree_temp.Models.PhoneNumber;
 import com.example.family_tree_temp.Repository.PhoneNumberRepository;
-import com.example.family_tree_temp.Repository.PhoneNumberRepository;
 
 import java.util.List;
 
@@ -14,9 +13,9 @@ import androidx.lifecycle.LiveData;
 
 public class PhoneNumberViewModel extends AndroidViewModel {
 
-    private PhoneNumberRepository mRepository;
+    private final PhoneNumberRepository mRepository;
 
-    private LiveData<List<PhoneNumber>> mAllPhoneNumbers;
+    private final LiveData<List<PhoneNumber>> mAllPhoneNumbers;
 
     public PhoneNumberViewModel (Application application) {
         super(application);

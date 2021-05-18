@@ -12,9 +12,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 public class AddressViewModel extends AndroidViewModel {
-    private AddressRepository mRepository;
+    private final AddressRepository mRepository;
 
-    private LiveData<List<Address>> mAllAddresses;
+    private final LiveData<List<Address>> mAllAddresses;
 
     public AddressViewModel (Application application) {
         super(application);

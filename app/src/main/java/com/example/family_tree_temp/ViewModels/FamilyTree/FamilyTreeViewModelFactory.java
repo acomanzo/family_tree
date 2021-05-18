@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 public class FamilyTreeViewModelFactory implements ViewModelProvider.Factory {
-    private Application mApplication;
-    private int mAppUserId;
+    private final Application mApplication;
+    private final int mAppUserId;
 
     public FamilyTreeViewModelFactory(Application application, int appUserId) {
         mApplication = application;

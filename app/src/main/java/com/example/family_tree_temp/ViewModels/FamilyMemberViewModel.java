@@ -24,12 +24,12 @@ import androidx.lifecycle.LiveData;
 
 public class FamilyMemberViewModel extends AndroidViewModel {
 
-    private FamilyMemberRepository mRepository;
+    private final FamilyMemberRepository mRepository;
 
-    private LiveData<List<FamilyMember>> mAllFamilyMembers;
+    private final LiveData<List<FamilyMember>> mAllFamilyMembers;
     private LiveData<List<AncestorDescendant>> mAllAncestorDescendants;
 
-    private FamilyTreeSqlDatabase familyTreeSqlDatabase;
+    private final FamilyTreeSqlDatabase familyTreeSqlDatabase;
 
     public FamilyMemberViewModel (Application application) {
         super(application);
@@ -38,30 +38,6 @@ public class FamilyMemberViewModel extends AndroidViewModel {
         mAllAncestorDescendants = mRepository.getAllAncestorDescendants();
         familyTreeSqlDatabase = new FamilyTreeSqlDatabase();
         Log.i("FamilyMemberViewModel", "Created FamilyMemberViewModel");
-    }
-
-    private void initialize() {
-//        ExecutorService executor = Executors.newSingleThreadExecutor();
-//        executor.execute(() -> {
-//            JSONArray response = null;
-//            try {
-//                response = familyTreeSqlDatabase.selectFamilyTreesByAppUserId(String.valueOf(appUserId));
-//                ArrayList<FamilyTree> familyTrees = new ArrayList<>();
-//                if (response != null) {
-//                    for (int i = 0; i < response.length(); i++) {
-//                        JSONObject object = response.getJSONObject(i);
-//                        int familyTreeId = object.getInt("FamilyTreeId");
-//                        int appUserId = object.getInt("AppUserId");
-//                        String treeName = object.getString("TreeName");
-//                        FamilyTree familyTree = new FamilyTree(familyTreeId, appUserId, treeName);
-//                        familyTrees.add(familyTree);
-//                    }
-//                }
-//                mAllFamilyTrees.postValue(familyTrees);
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        });
     }
 
     public LiveData<List<FamilyMember>> getAllFamilyMembers() {
@@ -92,8 +68,6 @@ public class FamilyMemberViewModel extends AndroidViewModel {
         return getFamilyMembersByFamilyTreeId(familyTreeId).get(position);
     }
 
-
-
     public List<FamilyMember> getFamilyMembersByFamilyTreeId(int familyTreeId) {
         List<FamilyMember> familyMembers = new ArrayList<>();
         for (FamilyMember familyMember : mAllFamilyMembers.getValue()) {
@@ -110,10 +84,6 @@ public class FamilyMemberViewModel extends AndroidViewModel {
 
     public void insertAncestor(AncestorDescendantBundle ancestorDescendantBundle) {
         mRepository.insertAncestor(ancestorDescendantBundle);
-    }
-
-    public void getContactInformationId(FamilyMember familyMember) {
-
     }
 
     public FamilyMember getFamilyMemberByServerId(int serverId) {
@@ -135,7 +105,6 @@ public class FamilyMemberViewModel extends AndroidViewModel {
     }
 
     public FamilyMember getFamilyMemberById(int id) {
-//        return mRepository.getFamilyMemberById(id).getValue().get(0);
         return mRepository.getFamilyMemberById(id).get(0);
     }
 
@@ -146,20 +115,7 @@ public class FamilyMemberViewModel extends AndroidViewModel {
             more than one that do not have a common ancestor
          */
 
-        List<AncestorDescendant> test = mRepository.getAncestorDescendantsByAncestorId(1);
         List<AncestorDescendant> ancestorDescendants = mRepository.getAllAncestorDescendantsNotLive();
-//        new Thread() {
-//            public void run() {
-//                List<AncestorDescendant> ancestorDescendants = mRepository.test(1);
-//                List<AncestorDescendant> anotherTest = mRepository.anotherTest();
-//            }
-//        }.start();
-
-//        List<AncestorDescendant> ancestorDescendants = mRepository.test(1);
-//        List<AncestorDescendant> anotherTest = mRepository.anotherTest();
-//        List<AncestorDescendant> ancestorDescendants = mAllAncestorDescendants.getValue();
-//        List<AncestorDescendant> ancestorDescendants = mRepository.getAllAncestorDescendants().getValue();
-//        List<AncestorDescendant> ancestorDescendants = mRepository.getAllAncestorDescendants();
         List<AncestorDescendant> temp = new ArrayList<>();
         for (AncestorDescendant ancestorDescendant : ancestorDescendants) {
             int ancestorId = ancestorDescendant.getAncestorId();
@@ -222,12 +178,6 @@ public class FamilyMemberViewModel extends AndroidViewModel {
         return root;
     }
 
-//    public List<FamilyMember> makeFamilyTree() {
-//        FamilyMember root = getRoot();
-//        List<AncestorDescendant> ancestorDescendants = mRepository.getAllAncestorDescendants().getValue();
-//
-//    }
-
     public void makeFamilyTreeFor(FamilyMember familyMember) {
         List<FamilyMember> familyMembers = makeFamilyTree(familyMember);
         familyMember.setChildren(familyMembers);
@@ -235,15 +185,11 @@ public class FamilyMemberViewModel extends AndroidViewModel {
 
     private List<FamilyMember> makeFamilyTree(FamilyMember root) {
         List<AncestorDescendant> ancestorDescendants = mRepository.getAncestorDescendantsByAncestorId(root.getFamilyMemberId());
-//        List<AncestorDescendant> ancestorDescendants = mRepository.getAncestorDescendantsByAncestorId(root.getFamilyMemberId()).getValue();
-//        List<AncestorDescendant> ancestorDescendants = mRepository.getAncestorDescendantsByAncestorId(root.getFamilyMemberId());
 
         if (ancestorDescendants == null) {
             List<FamilyMember> grandchildren = new ArrayList<>();
-//            grandchildren.add(root);
             return grandchildren;
-        }
-        else {
+        } else {
             List<FamilyMember> children = new ArrayList<>();
             for (AncestorDescendant ancestorDescendant : ancestorDescendants) {
                 FamilyMember child = getFamilyMemberById(ancestorDescendant.getDescendantId());
@@ -252,20 +198,11 @@ public class FamilyMemberViewModel extends AndroidViewModel {
                 List<FamilyMember> grandchildren = makeFamilyTree(child);
                 child.setChildren(grandchildren);
 
-//            root.addChild(child);
                 children.add(child);
             }
             return children;
         }
     }
-
-//    private static class GetAncestorDescendants extends AsyncTask<Void, Void, List<AncestorDescendant>> {
-//
-//        @Override
-//        protected List<AncestorDescendant> doInBackground(Void... voids) {
-//            return
-//        }
-//    }
 
     public void sync(int familyTreeId) {
         ExecutorService executor = Executors.newSingleThreadExecutor();

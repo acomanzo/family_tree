@@ -1,11 +1,7 @@
 package com.example.family_tree_temp.ViewModels.FamilyTree;
 
 import android.app.Application;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 
-import com.example.family_tree_temp.Activities.WelcomeActivity;
 import com.example.family_tree_temp.Database.FamilyTreeSqlDatabase;
 import com.example.family_tree_temp.Models.FamilyTree;
 
@@ -25,10 +21,10 @@ import androidx.lifecycle.MutableLiveData;
 
 public class FamilyTreeViewModel extends AndroidViewModel {
 
-    private int appUserId;
+    private final int appUserId;
 
-    private MutableLiveData<List<FamilyTree>> mAllFamilyTrees;
-    private FamilyTreeSqlDatabase familyTreeSqlDatabase;
+    private final MutableLiveData<List<FamilyTree>> mAllFamilyTrees;
+    private final FamilyTreeSqlDatabase familyTreeSqlDatabase;
 
     public FamilyTreeViewModel(@NonNull Application application, int appUserId) {
         super(application);
@@ -105,8 +101,6 @@ public class FamilyTreeViewModel extends AndroidViewModel {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             String response = familyTreeSqlDatabase.shareFamilyTree(appUserId, familyTreeId, email);
-
         });
-
     }
 }

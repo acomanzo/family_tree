@@ -14,9 +14,9 @@ import androidx.lifecycle.LiveData;
 
 public class ContactInformationViewModel extends AndroidViewModel {
 
-    private ContactInformationRepository mRepository;
+    private final ContactInformationRepository mRepository;
 
-    private LiveData<List<ContactInformation>> mAllContactInformation;
+    private final LiveData<List<ContactInformation>> mAllContactInformation;
 
     public ContactInformationViewModel (Application application) {
         super(application);

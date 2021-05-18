@@ -6,16 +6,15 @@ import android.util.Log;
 import com.example.family_tree_temp.Models.MedicalHistory;
 import com.example.family_tree_temp.Repository.MedicalHistoryRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 public class MedicalHistoryViewModel extends AndroidViewModel {
-    private MedicalHistoryRepository mRepository;
+    private final MedicalHistoryRepository mRepository;
 
-    private LiveData<List<MedicalHistory>> mAllMedicalHistories;
+    private final LiveData<List<MedicalHistory>> mAllMedicalHistories;
 
     public MedicalHistoryViewModel (Application application) {
         super(application);

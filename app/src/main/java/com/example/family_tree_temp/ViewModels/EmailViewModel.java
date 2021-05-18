@@ -12,9 +12,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 public class EmailViewModel extends AndroidViewModel {
-    private EmailRepository mRepository;
+    private final EmailRepository mRepository;
 
-    private LiveData<List<Email>> mAllEmails;
+    private final LiveData<List<Email>> mAllEmails;
 
     public EmailViewModel (Application application) {
         super(application);
