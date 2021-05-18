@@ -42,7 +42,7 @@ An Android app for creating, editing, and sharing family trees.
     - in particular I would want to make the UI more expressive and more informative
 - publish the app on the Google Play Store
 ## Presentations
-If you'd like to watch some of the presentations I gave on the project, you can watch my final presentation [here](https://youtu.be/yu6og2PHEG8) and my final demo here. Thanks for watching! 🥺
+If you'd like to watch some of the presentations I gave on the project, you can watch my final presentation [here](https://youtu.be/yu6og2PHEG8) and my final demo [here](https://youtu.be/eiKf_q6p5d0). Thanks for watching! 🥺
 ## Technologies Used 
 - Programming Language: Java
 - Libraries: Room, Material Design
